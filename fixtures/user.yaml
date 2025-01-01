@@ -1,0 +1,9 @@
+App\Entity\User:
+    user (template):
+        email: <email()>
+        password: '\$2y\$13\$VKURJOAKS15p6L30RbCdQOR06drjiLUGrA42CYoTXK8WRHYk1PJim' #aaaaaaaa
+        roles: ['ROLE_USER']
+    
+    user_admin (extends user):
+        email: 'admin@gmail.com'
+        roles: ['ROLE_USER', 'ROLE_ADMIN']
