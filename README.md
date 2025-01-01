@@ -1,2 +1,2 @@
 # movies player
-## symfony webpack-encore react.js react-router-dom
+## symfony api-platform webpack-encore react.js react-router-dom
