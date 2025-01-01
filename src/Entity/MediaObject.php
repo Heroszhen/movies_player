@@ -10,8 +10,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model;
+use App\Controller\CreateMediaObjectAction;
 use App\Entity\Traits\TimestampableTrait;
-use App\State\SaveMediaObject;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,6 +28,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         new GetCollection(),
         new Post(
             inputFormats: ['multipart' => ['multipart/form-data']],
+            // controller: CreateMediaObjectAction::class,
             openapi: new Model\Operation(
                 requestBody: new Model\RequestBody(
                     content: new \ArrayObject([
@@ -70,14 +71,14 @@ class MediaObject
     private ?int $imageSize = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $originalName = null;
+    private ?string $originalName = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setImageFile(?File $imageFile = null): void
+    public function setImageFile(?File $imageFile = null): static
     {
         $this->imageFile = $imageFile;
 
@@ -86,6 +87,8 @@ class MediaObject
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTime();
         }
+
+        return $this;
     }
 
     public function getImageFile(): ?File
@@ -93,9 +96,11 @@ class MediaObject
         return $this->imageFile;
     }
 
-    public function setImageName(?string $imageName): void
+    public function setImageName(?string $imageName): static
     {
         $this->imageName = $imageName;
+
+        return $this;
     }
 
     public function getImageName(): ?string
@@ -103,9 +108,11 @@ class MediaObject
         return $this->imageName;
     }
 
-    public function setImageSize(?int $imageSize): void
+    public function setImageSize(?int $imageSize): static
     {
         $this->imageSize = $imageSize;
+
+        return $this;
     }
 
     public function getImageSize(): ?int
@@ -113,12 +120,14 @@ class MediaObject
         return $this->imageSize;
     }
 
-    public function setOriginalName(?int $originalName): void
+    public function setOriginalName(?string $originalName): static
     {
         $this->originalName = $originalName;
+
+        return $this;
     }
 
-    public function getOriginalName(): ?int
+    public function getOriginalName(): ?string
     {
         return $this->originalName;
     }
