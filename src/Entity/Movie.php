@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\TimestampableTrait;
 use App\Repository\MovieRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 class Movie
 {
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,6 +28,9 @@ class Movie
 
     #[ORM\ManyToOne]
     private ?VideoType $type = null;
+
+    #[ORM\ManyToOne]
+    private ?MediaObject $poster = null;
 
     public function getId(): ?int
     {
@@ -75,6 +81,18 @@ class Movie
     public function setType(?VideoType $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPoster(): ?MediaObject
+    {
+        return $this->poster;
+    }
+
+    public function setPoster(?MediaObject $poster): static
+    {
+        $this->poster = $poster;
 
         return $this;
     }
