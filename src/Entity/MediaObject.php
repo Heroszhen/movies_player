@@ -61,6 +61,10 @@ class MediaObject
 
     #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'imageName', size: 'imageSize', originalName: 'originalName')]
     #[Groups(['media_object:write'])]
+    #[Assert\File(
+        mimeTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+        mimeTypesMessage: 'Please upload a valid image (png, jpeg, or jpg).'
+    )]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
