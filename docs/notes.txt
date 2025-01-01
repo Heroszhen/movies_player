@@ -1,0 +1,5 @@
+---tables
+user
+movie : poster(picture), photos
+actor
+videoType
