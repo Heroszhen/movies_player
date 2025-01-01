@@ -1,5 +1,11 @@
+---templates
+--movies : https://www.bootstrapmb.com/item/534/preview
+--admin : https://www.bootstrapmb.com/item/7244/preview
+
+
 ---tables
 user
 movie : poster(picture), photos
 actor
 videoType
+
