@@ -1,0 +1,7 @@
+App\Entity\Actor:
+  actor (template):
+    name: <lastName()> <firstName()>
+    birthday: <dateTimeInInterval('-200 years', '-15 years')>
+    country: <country()>
+  
+  actor_{1..11} (extends actor):

@@ -4,12 +4,10 @@ namespace App\Entity;
 
 use App\Repository\MediaObjectRepository;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\OpenApi\Model;
 use App\Traits\TimestampableTrait;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -25,27 +23,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     operations: [
         new Get(),
         new GetCollection(),
-        new Post(
-            inputFormats: ['multipart' => ['multipart/form-data']],
-            // controller: CreateMediaObjectAction::class,
-            openapi: new Model\Operation(
-                requestBody: new Model\RequestBody(
-                    content: new \ArrayObject([
-                        'multipart/form-data' => [
-                            'schema' => [
-                                'type' => 'object', 
-                                'properties' => [
-                                    'imageFile' => [
-                                        'type' => 'string', 
-                                        'format' => 'binary'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ])
-                )
-            )
-        )
+        new Delete()
     ]
 )]
 class MediaObject
@@ -61,8 +39,8 @@ class MediaObject
     #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'imageName', size: 'imageSize', originalName: 'originalName')]
     #[Groups(['media_object:write'])]
     #[Assert\File(
+        maxSize: '5M',
         mimeTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-        mimeTypesMessage: 'Please upload a valid image (png, jpeg, or jpg).'
     )]
     private ?File $imageFile = null;
 

@@ -26,6 +26,8 @@ yarn-error.log
 
 /public/upload/*
 !/public/upload/.gitkeep
+public/*.html
+
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###

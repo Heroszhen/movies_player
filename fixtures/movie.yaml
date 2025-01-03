@@ -1,0 +1,15 @@
+App\Entity\Movie:
+  movie (template):
+    title: <sentence()>
+    releasedAt: <dateTimeInInterval('-6 months', '-1 year')>
+    duration: <numberBetween(100, 200)>
+    type: '@video_type_<numberBetween(1, 2)>'
+    actors: ['@actor_<numberBetween(2, 11)>', '@actor_<numberBetween(2, 11)>']
+
+  movie_{1..10} (extends movie):
+    type: '@video_type_1'
+    link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/Wjy7GcOMKgQ?si=AVEcrlyPU_djgr1B" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
+  
+  movie_{11..20} (extends movie):
+    type: '@video_type_2'
+    link: 'https://www.youtube.com/embed/wBkIrHcuHew?si=ahk0abVz8RgLshvY'

@@ -10,12 +10,12 @@ trait TimestampableTrait
 {
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(name: "created_at", type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => 'CURRENT_TIMESTAMP'])]
-    #[Groups(['read'])]
+    #[Groups(['read', 'media_object:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(name: "updated_at", type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => 'CURRENT_TIMESTAMP'])]
-    #[Groups(['read'])]
+    #[Groups(['read', 'media_object:read'])]
     protected ?\DateTimeInterface $updatedAt = null;
 
     public function getCreatedAt(): ?\DateTimeInterface
