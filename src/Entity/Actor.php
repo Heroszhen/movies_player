@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
 class Actor
@@ -15,10 +16,12 @@ class Actor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['movie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups(['movie:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

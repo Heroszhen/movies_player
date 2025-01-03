@@ -17,13 +17,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: VideoTypeRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'This name is already in use.')]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read']],
-    denormalizationContext: ['groups' => ['write']],
+    normalizationContext: ['groups' => ['video_type:read']],
+    denormalizationContext: ['groups' => ['video_type:write']],
     operations: [
         new Get(),
         new GetCollection(),
-        new Post(),
-        new Patch()
+        new Post(security: "is_granted('ROLE_ADMIN')"),
+        new Patch(security: "is_granted('ROLE_ADMIN')")
     ]
 )]
 class VideoType
@@ -33,12 +33,12 @@ class VideoType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read'])]
+    #[Groups(['video_type:read', 'movie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['read', 'write'])]
+    #[Groups(['video_type:read', 'video_type:write', 'movie:read'])]
     private ?string $name = null;
 
     public function getId(): ?int

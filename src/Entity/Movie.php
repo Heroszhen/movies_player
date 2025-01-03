@@ -9,8 +9,24 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['movie:read']],
+    denormalizationContext: ['groups' => ['movie:write']],
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(security: "is_granted('ROLE_ADMIN')"),
+        new Patch(security: "is_granted('ROLE_ADMIN')")
+    ]
+)]
 class Movie
 {
     use TimestampableTrait;
@@ -18,20 +34,25 @@ class Movie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['movie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups(['movie:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['movie:read'])]
     private ?\DateTimeInterface $releasedAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['movie:read'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne]
     #[Assert\NotBlank]
+    #[Groups(['movie:read'])]
     private ?VideoType $type = null;
 
     #[ORM\ManyToOne]
@@ -41,9 +62,11 @@ class Movie
      * @var Collection<int, Actor>
      */
     #[ORM\ManyToMany(targetEntity: Actor::class, inversedBy: 'movies')]
+    #[Groups(['movie:read'])]
     private Collection $actors;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['movie:read'])]
     private ?string $link = null;
 
     public function __construct()
