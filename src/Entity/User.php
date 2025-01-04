@@ -7,9 +7,37 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\Action\EditUserPassword;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ApiResource(
+    security: "is_granted('ROLE_ADMIN')",
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
+        new Patch(
+            name: 'editUserPassword',
+            uriTemplate: '/users/{id}/password',
+            requirements: ['id' => '\d+'], 
+            controller: EditUserPassword::class,
+            security: "is_granted('ROLE_ADMIN') or object.owner == user",
+            denormalizationContext: ['groups' => 'user:password:write'],
+            validationContext: ['groups' => ['user:password:write']]
+        )
+    ]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableTrait;
@@ -17,16 +45,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['user:write', 'user:read'])]
+    #[Assert\Email()]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = [];
+    #[Groups(['user:write', 'user:read'])]
+    // #[Assert\Choice(['ROLE_USER','ROLE_ADMIN'])]
+    private array $roles = ['ROLE_USER'];
 
     /**
      * @var string The hashed password
@@ -34,7 +67,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Assert\Regex(
+        pattern: '/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}/', 
+        message: 'It must contain at least eight characters, one digit, one lowercase letter, and one uppercase letter.',
+        groups: ['user:password:write']
+    )]
+    #[Assert\NotBlank(groups: ['user:password:write'])]
+    #[Groups(['user:password:write'])]
+    private ?string $plainPassword = null;
+
     #[ORM\ManyToOne]
+    #[Groups(['user:write', 'user:read'])]
     private ?MediaObject $photo = null;
 
     public function getId(): ?int
@@ -96,7 +139,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
 
@@ -120,6 +163,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?MediaObject $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): static
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
