@@ -37,22 +37,20 @@ class MediaObjectSubscriber implements EventSubscriber
             return;
         }
 
-        // $filePath = $this->parameterBag->get('public_dir') . "/upload/{$entity->getImageName()}";
-        // $result = $this->s3Service->sendFile(
-        //     $entity->getImageName(),
-        //     $filePath
-        // );
-        // if (isset($result['ObjectURL']) && $this->filesystem->exists($filePath)) {
-        //     //$this->filesystem->remove($filePath);
-        // }
+        $filePath = $this->parameterBag->get('public_dir') . "/upload/{$entity->getImageName()}";
+        $this->s3Service->sendFile(
+            $entity->getImageName(),
+            $filePath
+        );
     }
 
     public function postRemove(PostRemoveEventArgs $args): void
     {
         $entity = $args->getObject();
-        // if (!$entity instanceof MediaObject) {
-        //     return;
-        // }
-        $this->logger->info("zhen-remove : {$entity->getImageName()}");
+        if (!$entity instanceof MediaObject) {
+            return;
+        }
+        
+        $this->s3Service->deleteFile($entity->getImageName());
     }
 }

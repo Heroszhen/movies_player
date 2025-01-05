@@ -26,10 +26,20 @@ class S3Service
     {
         try {
             return $this->s3Client->putObject([
-                'Bucket' => $_ENV['AWS_BUCKET_NAME'],
+                'Bucket' => $_ENV['AWS_BUCKET'],
                 'Key'    => $_ENV['APP_ENV'] . '/' . $fileName,
                 'Body'   => fopen($filePath, 'r'),
                 'ACL'    => 'public-read',
+            ]);
+        } catch (S3Exception $e) {}
+    }
+
+    public function deleteFile(string $fileName): Result
+    {
+        try {
+            return $this->s3Client->deleteObject([
+                'Bucket' => $_ENV['AWS_BUCKET'],
+                'Key'    => $_ENV['APP_ENV'] . '/' . $fileName
             ]);
         } catch (S3Exception $e) {}
     }
