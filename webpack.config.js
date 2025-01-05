@@ -1,5 +1,6 @@
 const Encore = require('@symfony/webpack-encore');
 const dotenv = require('dotenv');
+const CopyPlugin = require("copy-webpack-plugin");
 
 dotenv.config({ path: '.env.local' });
 
@@ -76,7 +77,13 @@ Encore
     //.autoProvidejQuery()
     .configureDefinePlugin(options => {
         options['process.env'] = JSON.stringify(process.env);
-    });
+    })
+    .addPlugin(new CopyPlugin({
+        patterns: [
+            { from: "./node_modules/@unocss/runtime/uno.global.js", to: 'js/uno.global.js' },
+            { from: "./assets/js", to: 'js' },
+        ]
+    }))
 ;
 
 module.exports = Encore.getWebpackConfig();
