@@ -5,7 +5,8 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="/favicon.ico">
         {% block stylesheets %}
-            {{ encore_entry_link_tags('styles/app') }}
+            {{ encore_entry_link_tags('styles/main') }}
+            {{ encore_entry_link_tags('main') }}
         {% endblock %}
     </head>
     <body>

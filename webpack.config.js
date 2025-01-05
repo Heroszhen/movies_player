@@ -1,4 +1,7 @@
 const Encore = require('@symfony/webpack-encore');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: '.env.local' });
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -21,7 +24,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('main', './assets/main.js')
-    .addStyleEntry('styles/app', './assets/styles/app.scss')
+    .addStyleEntry('styles/main', './assets/styles/main.scss')
 
     .enableStimulusBridge('./assets/controllers.json')
 
@@ -71,6 +74,9 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+    .configureDefinePlugin(options => {
+        options['process.env'] = JSON.stringify(process.env);
+    });
 ;
 
 module.exports = Encore.getWebpackConfig();

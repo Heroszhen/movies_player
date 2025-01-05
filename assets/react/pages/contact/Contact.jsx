@@ -1,7 +1,9 @@
+
+
 const Contact = (props) => {
     return (
         <section id="contact">
-           contact
+          contact
         </section>
     );
 }
