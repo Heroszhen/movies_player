@@ -6,7 +6,7 @@ use Doctrine\ORM\Events;
 use Psr\Log\LoggerInterface;
 use Doctrine\Common\EventSubscriber;
 use App\Entity\MediaObject;
-use App\Services\S3Service;
+use App\Service\S3Service;
 use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Event\PostRemoveEventArgs;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -37,14 +37,14 @@ class MediaObjectSubscriber implements EventSubscriber
             return;
         }
 
-        $filePath = $this->parameterBag->get('public_dir') . "/upload/{$entity->getImageName()}";
-        $result = $this->s3Service->sendFile(
-            $entity->getImageName(),
-            $filePath
-        );
-        if (isset($result['ObjectURL']) && $this->filesystem->exists($filePath)) {
-            //$this->filesystem->remove($filePath);
-        }
+        // $filePath = $this->parameterBag->get('public_dir') . "/upload/{$entity->getImageName()}";
+        // $result = $this->s3Service->sendFile(
+        //     $entity->getImageName(),
+        //     $filePath
+        // );
+        // if (isset($result['ObjectURL']) && $this->filesystem->exists($filePath)) {
+        //     //$this->filesystem->remove($filePath);
+        // }
     }
 
     public function postRemove(PostRemoveEventArgs $args): void
