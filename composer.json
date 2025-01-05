@@ -10,6 +10,7 @@
         "api-platform/core": "^3.4",
         "api-platform/doctrine-orm": "^3.4",
         "api-platform/symfony": "^3.4",
+        "aws/aws-sdk-php": "^3.336",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
