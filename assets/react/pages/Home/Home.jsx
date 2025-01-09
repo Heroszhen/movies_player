@@ -2,7 +2,7 @@ import './Home.scss';
 
 const Home = (props) => {
     return (
-        <section id="home" class="hero-bg-color-red">
+        <section id="home">
            accueil
         </section>
     );

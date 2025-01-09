@@ -1,4 +1,6 @@
-window.__unocss = {
+import { defineConfig } from 'unocss'
+
+export default defineConfig({
     rules: [
         [/^hero-bg-color-(\w+)$/, ([, color]) => ({ 'background-color': color })],
         [/^hero-color-(\w+)$/, ([, color]) => ({ 'color': color })],
@@ -8,5 +10,6 @@ window.__unocss = {
         [/^hero-p-(\d+)$/, ([, size]) => ({ 'padding': `${size}px` })],
         [/^hero-p-(\w+)-(\d+)$/, ([, position, size]) => ({ [`padding-${position}`]: `${size}px` })],
         [/^hero-fs-(\d+)$/, ([, size]) => ({ 'font-size': `${size}px` })],
+        [/^hero-cursor-(\w+)$/, ([, cursor]) => ({ 'cursor': cursor })],
     ]
-}
+})

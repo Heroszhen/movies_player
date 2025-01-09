@@ -28,9 +28,9 @@ function App() {
             <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" onClick={()=>setLogin(false)}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="loginModalLabel">Modal title</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div className="modal-header justify-content-between align-items-center">
+                            <h1 className="modal-title fs-5" id="loginModalLabel">Connecte-toi</h1>
+                            <div className="hero-cursor-pointer" data-bs-dismiss="modal" aria-label="Close">X</div>
                         </div>
                         <div className="modal-body">
                             ...

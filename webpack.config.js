@@ -78,12 +78,20 @@ Encore
     .configureDefinePlugin(options => {
         options['process.env'] = JSON.stringify(process.env);
     })
-    .addPlugin(new CopyPlugin({
-        patterns: [
-            { from: "./node_modules/@unocss/runtime/uno.global.js", to: 'js/uno.global.js' },
-            { from: "./assets/js", to: 'js' },
-        ]
-    }))
+    // .addPlugin(new CopyPlugin({
+    //     patterns: []
+    // }))
 ;
 
-module.exports = Encore.getWebpackConfig();
+const unoCSSPlugin = () =>
+    import('@unocss/webpack').then(({ default: UnoCSS }) =>
+        UnoCSS({
+            configFile: './uno.config.js',
+        })
+    );
+
+module.exports = async () => {
+    Encore.addPlugin(await unoCSSPlugin());
+    return Encore.getWebpackConfig();
+};
+
