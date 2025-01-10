@@ -83,6 +83,15 @@ Encore
             { from: "assets/static", to: 'static' }
         ]
     }))
+    .configureDevServerOptions(options => {
+        options.hot = true; 
+        options.liveReload = true;
+        options.watchFiles = [
+            'src/**/*.php', 
+            'templates/**/*',
+            'assets/**/*'
+        ]
+    });
 ;
 
 const unoCSSPlugin = () =>
