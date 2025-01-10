@@ -78,9 +78,11 @@ Encore
     .configureDefinePlugin(options => {
         options['process.env'] = JSON.stringify(process.env);
     })
-    // .addPlugin(new CopyPlugin({
-    //     patterns: []
-    // }))
+    .addPlugin(new CopyPlugin({
+        patterns: [
+            { from: "assets/static", to: 'static' }
+        ]
+    }))
 ;
 
 const unoCSSPlugin = () =>
