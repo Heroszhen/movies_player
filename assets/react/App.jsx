@@ -6,12 +6,14 @@ import { setLogin, getAuth } from './stores/userStore';
 import Banner from './components/banner/Banner';
 import { Modal } from 'bootstrap';
 import { useForm } from "react-hook-form";
+import useLoaderStore from './stores/loaderStore';
 
 function App() {
     const { user, login } = useUserStore();
     const [loginModal, setLoginModal] = useState(null);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const [passwordType, setPasswordType] = useState('password')
+    const [passwordType, setPasswordType] = useState('password');
+    const { loader } = useLoaderStore();
 
     useEffect(() => {
         setLoginModal(new Modal('#loginModal', {

@@ -11,5 +11,6 @@ export default defineConfig({
         [/^hero-p-(\w+)-(\d+)$/, ([, position, size]) => ({ [`padding-${position}`]: `${size}px` })],
         [/^hero-fs-(\d+)$/, ([, size]) => ({ 'font-size': `${size}px` })],
         [/^hero-cursor-(\w+)$/, ([, cursor]) => ({ 'cursor': cursor })],
+        [/^hero-zindex-(\d+)$/, ([, index]) => ({ 'z-index': index })],
     ]
 })
