@@ -38,10 +38,9 @@ class MediaObjectController extends AbstractController
         
         $errors = $this->validator->validate($mediaObject);
         if (count($errors) > 0) {
-            $violations = [];dd($errors);
+            $violations = [];
             foreach ($errors as $error) {
                  /** @var ConstraintViolationInterface $error */
-                 
                  $violations[] = [
                     'propertyPath' => $error->getPropertyPath(),
                     'message' => $error->getMessage(),

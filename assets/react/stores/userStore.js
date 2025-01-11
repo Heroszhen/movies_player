@@ -17,11 +17,8 @@ export const getAuth = async (data) => {
         headers: getRequestHeaders(),
         body: JSON.stringify(data)
     })
+    .then(response => response.json())
     .then(response => {
-        if (response.status !== 404) {
-            return response.json()
-        }
-    })
-    .then(response => {})
-    .finally()
+        if (response.status >= 300)return;
+    });
 }

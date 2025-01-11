@@ -7,15 +7,55 @@ import Banner from './components/banner/Banner';
 import { Modal } from 'bootstrap';
 import { useForm } from "react-hook-form";
 import useLoaderStore from './stores/loaderStore';
+import { Alert, Snackbar } from '@mui/material';
+import parse from 'html-react-parser';
+
+import Loader from './components/loader/loader';
 
 function App() {
     const { user, login } = useUserStore();
     const [loginModal, setLoginModal] = useState(null);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [passwordType, setPasswordType] = useState('password');
-    const { loader } = useLoaderStore();
+    const { loader, setLoader } = useLoaderStore();
+    const { fetch: originalFetch } = window;
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertDuration, setAlertDuration] = useState(5000);
+    //success, error
+    const [alertSeverity, setAlertSeverity] = useState(null);
+    const [alertMessages, setAlertMessages] = useState('');
+    const snackbarPosition = {
+        vertical: 'top',
+        horizontal: 'right',
+    }
 
     useEffect(() => {
+        window.fetch = async (...args) => {
+            setLoader(true);
+            const response = await originalFetch.apply(this, args);
+            setLoader(false);
+            const clonedResponse = response.clone();
+            if (clonedResponse.ok === false) {
+                setAlertDuration(10000);
+                setAlertSeverity('error');
+                const jsonResponse = await clonedResponse.json();
+                let msg = '';
+                if (jsonResponse.message)msg += jsonResponse.message + "<br>";
+                if (jsonResponse.violation) {
+                    for(let entry of jsonResponse.violation) {
+                        msg += `${entry['propertyPath']} : ${entry['message']}<br>`;
+                    }
+                }
+                setAlertMessages(msg);
+            } else {
+                setAlertDuration(3000);
+                setAlertSeverity('success');
+                setAlertMessages('Envoyé');
+            }
+            setOpenAlert(true)
+            return response;
+        };
+
         setLoginModal(new Modal('#loginModal', {
             keyboard: false
         }));
@@ -33,11 +73,18 @@ function App() {
             email: null,
             password: null
         });
-    }
+    };
 
     const onSubmit = (data) => {
         getAuth(data)
-    }
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenAlert(false);
+    };
 
     return (
         <>
@@ -83,6 +130,18 @@ function App() {
                     </div>
                 </div>
             </div>
+            {loader && <Loader />}
+            
+            <Snackbar anchorOrigin={snackbarPosition} open={openAlert} autoHideDuration={alertDuration} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    severity={alertSeverity}
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {parse(alertMessages)}
+                </Alert>
+            </Snackbar>
         </>
     )
 }
