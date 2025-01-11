@@ -4,4 +4,4 @@ App\Entity\Actor:
     birthday: <dateTimeInInterval('-200 years', '-15 years')>
     country: <country()>
   
-  actor_{1..11} (extends actor):
+  actor_{1..200} (extends actor):
