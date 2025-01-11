@@ -13,19 +13,24 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\Action\EditUserPassword;
+use App\Controller\Action\GetUserByToken;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ApiResource(
-    security: "is_granted('ROLE_ADMIN')",
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
     operations: [
-        new Get(),
-        new GetCollection(),
-        new Post(),
+        new Get(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
+        new Post(
+            name: 'getUserByToken',
+            uriTemplate: '/users/profile',
+            controller: GetUserByToken::class,
+        ),
+        new GetCollection(security: "is_granted('ROLE_ADMIN')"),
+        new Post(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
         new Patch(
             name: 'editUserPassword',

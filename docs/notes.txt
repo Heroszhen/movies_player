@@ -9,3 +9,5 @@ movie : poster(picture), photos
 actor
 videoType
 
+
+401, expiration token Invalid JWT Token

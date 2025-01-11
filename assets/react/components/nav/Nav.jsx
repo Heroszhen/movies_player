@@ -1,10 +1,18 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { setLogin } from "../../stores/userStore";
+import { NavLink, useNavigate } from "react-router-dom";
+import useUserStore, { setLogin } from "../../stores/userStore";
 
 const Nav = (props) => {
+    const { user, setUser } = useUserStore();
     const collapseRef = useRef(null);
+    const navigate = useNavigate();
+
+    const logout = () => {
+        setUser(null);
+        localStorage.clear();
+        navigate('/');
+    }
 
     return (
         <nav className="navbar navbar-expand-md bg-transparent position-absolute top-0 w-100">
@@ -30,21 +38,21 @@ const Nav = (props) => {
                                 Contact
                             </NavLink>
                         </li>
-                        {props.user !== null &&
+                        {user !== null &&
                             <li className="nav-item">
                                 <NavLink to="/videos" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
                                     Vidéos
                                 </NavLink>
                             </li>
                         }
-                        {props.user !== null &&
+                        {user !== null &&
                             <li className="nav-item">
                                 <NavLink to="/actrices" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
                                     Actrices
                                 </NavLink>
                             </li>
                         }
-                        {props.user?.roles.includes('ROLE_ADMIN') &&
+                        {user?.roles.includes('ROLE_ADMIN') &&
                             <li className="nav-item">
                                 <NavLink to="/contact" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
                                     Admin
@@ -53,8 +61,11 @@ const Nav = (props) => {
                         }
                     </ul>
                     <div className="d-flex">
-                        {props.user === null &&
+                        {user === null &&
                             <button type="button" className='btn btn-movify btn-sm' onClick={()=>setLogin(true)}>Login</button>
+                        }
+                        {user !== null &&
+                            <button type="button" className='btn btn-dark btn-sm' onClick={()=>logout()}>Logout</button>
                         }
                     </div>
                 </div>

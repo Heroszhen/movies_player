@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './App.scss';
 import RoutesWrapper from './routes/RoutesWrapper';
 import useUserStore from './stores/userStore';
-import { setLogin, getAuth } from './stores/userStore';
+import { setLogin, getAuth, getUser } from './stores/userStore';
 import Banner from './components/banner/Banner';
 import { Modal } from 'bootstrap';
 import { useForm } from "react-hook-form";
@@ -48,13 +48,17 @@ function App() {
                 }
                 setAlertMessages(msg);
             } else {
-                setAlertDuration(3000);
+                setAlertDuration(2000);
                 setAlertSeverity('success');
                 setAlertMessages('Envoyé');
             }
             setOpenAlert(true)
             return response;
         };
+
+        if (user === null && localStorage.getItem('token') !== null) {
+            getUser();
+        }
 
         setLoginModal(new Modal('#loginModal', {
             keyboard: false
@@ -63,8 +67,10 @@ function App() {
 
     useEffect(() => {
         if(login === true) {
-            loginModal.show();
             resetLoginForm();
+            loginModal.show();
+        } else {
+            loginModal?.hide();
         }
     }, [login]);
 
@@ -75,8 +81,10 @@ function App() {
         });
     };
 
-    const onSubmit = (data) => {
-        getAuth(data)
+    const onSubmit = async (data) => {
+        localStorage.removeItem('token');
+        const response = await getAuth(data);
+        if (response === true)setLogin(false);
     };
 
     const handleClose = (event, reason) => {
@@ -91,20 +99,20 @@ function App() {
             <Banner />
             <RoutesWrapper />
 
-            <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" onClick={()=>setLogin(false)}>
+            <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header justify-content-between align-items-center">
                             <h1 className="modal-title fs-5" id="loginModalLabel">Connecte-toi</h1>
-                            <div className="hero-cursor-pointer" data-bs-dismiss="modal" aria-label="Close">X</div>
+                            <div className="hero-cursor-pointer" data-bs-dismiss="modal" aria-label="Close" onClick={()=>setLogin(false)}>X</div>
                         </div>
-                        <div className="modal-body">
+                        <div className="modal-body" onClick={(e)=>e.stopPropagation()}>
                             <div className="container-fluid">
                                 <form onSubmit={handleSubmit(onSubmit)} className="row">
                                     <div className="col-12 mb-3">
                                         <label htmlFor="email" className="form-label">Mail*</label>
                                         <input type="email" className="form-control" id="email" name="email" {...register("email", { required: { value: true, message: 'Le champ est obligatoire'}, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i })}/>
-                                        {errors.password?.type === 'required' && <div className="alert alert-danger mt-1">{errors.email.message}</div>}
+                                        {errors.email?.type === 'required' && <div className="alert alert-danger mt-1">{errors.email?.message}</div>}
                                     </div>
                                     <div className="col-12 mb-3">
                                         <label htmlFor="password" className="form-label">Mot de passe*</label>
@@ -130,6 +138,7 @@ function App() {
                     </div>
                 </div>
             </div>
+
             {loader && <Loader />}
             
             <Snackbar anchorOrigin={snackbarPosition} open={openAlert} autoHideDuration={alertDuration} onClose={handleClose}>
