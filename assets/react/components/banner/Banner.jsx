@@ -6,10 +6,20 @@ import { useLocation } from "react-router-dom";
 const Banner = (props) => {
     const reactLocation = useLocation();
 
+    const displayBanner = () => {
+        if (!reactLocation.pathname.includes('admin') && 
+            !reactLocation.pathname.includes('/videos') &&
+            !reactLocation.pathname.includes('/acteurs')
+        ){
+            return <img src="/build/static/ad.png" alt="" className="w-100" />;
+        } 
+        return <img src="/build/static/fire.png" alt="" className="w-100" />
+    }
+
     return (
         <section id="banner" className="position-relative">
             <Nav />
-            <img src="/build/static/ad.png" alt="" className="w-100" />
+            {displayBanner()}
             <h1 className="position-absolute top-50 w-100 d-flex justify-content-center align-items-center text-white">
                 {reactLocation.pathname === "/" && "Bienvenue"}
                 {reactLocation.pathname === "/about" && "Qui somme nous?"}

@@ -1,16 +1,19 @@
 import { Routes, Route } from "react-router-dom";
+import LoginGuard from "./LoginGuard.jsx";
 
 import Home from '../pages/home/Home.jsx';
-import About from '../pages/about/About.jsx';
 import Contact from '../pages/contact/Contact.jsx';
+import Movie from "../pages/movie/Movie.jsx";
 
 const RoutesWrapper = (props) => {
     return (
         <>
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+                <Route element={<LoginGuard />}>
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/videos" element={<Movie />} />
+                </Route>
             </Routes>
         </>
     )

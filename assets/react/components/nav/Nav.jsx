@@ -29,16 +29,13 @@ const Nav = (props) => {
                                 Accueil
                             </NavLink>
                         </li>
-                        <li className="nav-item">
-                            <NavLink to="/about" className={({ isActive }) => isActive ? "nav-link text-white active" : "nav-link text-white"}>
-                                A propos
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to="/contact" className={({ isActive }) => isActive ? "nav-link text-white active" : "nav-link text-white"}>
-                                Contact
-                            </NavLink>
-                        </li>
+                        {user !== null &&
+                            <li className="nav-item">
+                                <NavLink to="/contact" className={({ isActive }) => isActive ? "nav-link text-white active" : "nav-link text-white"}>
+                                    Contact
+                                </NavLink>
+                            </li>
+                        }
                         {user !== null &&
                             <li className="nav-item">
                                 <NavLink to="/videos" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
@@ -46,13 +43,13 @@ const Nav = (props) => {
                                 </NavLink>
                             </li>
                         }
-                        {user !== null &&
+                        {/* {user !== null &&
                             <li className="nav-item">
-                                <NavLink to="/actrices" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
-                                    Actrices
+                                <NavLink to="/acteurs" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
+                                    Acteurs
                                 </NavLink>
                             </li>
-                        }
+                        } */}
                         {user?.roles.includes('ROLE_ADMIN') &&
                             <li className="nav-item">
                                 <NavLink to="/contact" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
@@ -66,7 +63,7 @@ const Nav = (props) => {
                             <button type="button" className='btn btn-movify btn-sm' onClick={()=>setLogin(true)}>Connexion</button>
                         }
                         {user !== null &&
-                            <button type="button" className='btn btn-dark btn-sm' onClick={()=>logout()}>Déconnexion</button>
+                            <button type="button" className='btn btn-outline-dark btn-sm' onClick={()=>logout()}>Déconnexion</button>
                         }
                     </div>
                 </div>

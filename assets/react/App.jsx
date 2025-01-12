@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import useLoaderStore from './stores/loaderStore';
 import { Alert, Snackbar } from '@mui/material';
 import parse from 'html-react-parser';
+import { useLocation } from "react-router-dom";
 
 import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
@@ -29,6 +30,7 @@ function App() {
         vertical: 'top',
         horizontal: 'right',
     }
+    const reactLocation = useLocation();
 
     useEffect(() => {
         window.fetch = async (...args) => {
@@ -102,9 +104,9 @@ function App() {
 
     return (
         <>
-            <Banner />
+            {!reactLocation.pathname.includes('admin') && <Banner />}
             <RoutesWrapper />
-            <Footer />
+            {!reactLocation.pathname.includes('admin') && <Footer />}
 
             <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel">
                 <div className="modal-dialog modal-dialog-centered">
