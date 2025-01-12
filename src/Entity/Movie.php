@@ -21,8 +21,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['movie:read']],
     denormalizationContext: ['groups' => ['movie:write']],
     operations: [
+        new GetCollection(
+            paginationEnabled: true, 
+            paginationItemsPerPage: 3,
+            name: 'get_last_three_movies', 
+            uriTemplate: '/movies/last-three-movies', 
+            order: ['id' => 'DESC']
+        ),
         new Get(),
-        new GetCollection(),
+        new GetCollection(
+            order: ['id' => 'DESC']
+        ),
         new Post(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN')")
     ]

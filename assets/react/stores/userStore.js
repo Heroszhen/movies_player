@@ -49,6 +49,6 @@ export const getUser = () => {
     })
     .then(response => response.json())
     .then(response => {
-        if (response.id)useUserStore.setState((state) => ({user: response}));
+        if (response?.id)useUserStore.setState((state) => ({user: response}));
     });
 }

@@ -34,25 +34,30 @@ function App() {
             setLoader(true);
             const response = await originalFetch.apply(this, args);
             setLoader(false);
-            const clonedResponse = response.clone();
-            if (clonedResponse.ok === false) {
-                setAlertDuration(10000);
-                setAlertSeverity('error');
-                const jsonResponse = await clonedResponse.json();
-                let msg = '';
-                if (jsonResponse.message)msg += jsonResponse.message + "<br>";
-                if (jsonResponse.violation) {
-                    for(let entry of jsonResponse.violation) {
-                        msg += `${entry['propertyPath']} : ${entry['message']}<br>`;
-                    }
+            if (!response.url.includes('http')) {
+                const clonedResponse = response.clone();
+                if (clonedResponse.ok === false) {
+                    setAlertDuration(10000);
+                    setAlertSeverity('error');
+                    try {
+                        const jsonResponse = await clonedResponse.json();
+                        let msg = '';
+                        if (jsonResponse.message)msg += jsonResponse.message + "<br>";
+                        if (jsonResponse.violation) {
+                            for(let entry of jsonResponse.violation) {
+                                msg += `${entry['propertyPath']} : ${entry['message']}<br>`;
+                            }
+                        }
+                        setAlertMessages(msg);
+                    } catch(e) {}
+                } else {
+                    setAlertDuration(2000);
+                    setAlertSeverity('success');
+                    setAlertMessages('Envoyé');
                 }
-                setAlertMessages(msg);
-            } else {
-                setAlertDuration(2000);
-                setAlertSeverity('success');
-                setAlertMessages('Envoyé');
+                setOpenAlert(true);
             }
-            setOpenAlert(true)
+
             return response;
         };
 
