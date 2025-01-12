@@ -45,7 +45,7 @@ class MediaObject
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['media_object:read', 'user:read', 'movie:read'])]
+    #[Groups(['media_object:read', 'user:read', 'movie:read', 'movie:poster'])]
     private ?string $imageName = null;
 
     #[ORM\Column(nullable: true)]

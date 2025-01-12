@@ -28,6 +28,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             uriTemplate: '/movies/last-three-movies', 
             order: ['id' => 'DESC']
         ),
+        new GetCollection(
+            name: 'get_movies_poster', 
+            uriTemplate: '/movies/poster', 
+            order: ['id' => 'DESC'],
+            normalizationContext: ['groups' => 'movie:poster']
+        ),
         new Get(),
         new GetCollection(
             order: ['id' => 'DESC']
@@ -43,12 +49,12 @@ class Movie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:poster'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:poster'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -56,7 +62,7 @@ class Movie
     private ?\DateTimeInterface $releasedAt = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:poster'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne]
@@ -65,7 +71,7 @@ class Movie
     private ?VideoType $type = null;
 
     #[ORM\ManyToOne]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:poster'])]
     private ?MediaObject $poster = null;
 
     /**

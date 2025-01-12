@@ -8,8 +8,8 @@ const Banner = (props) => {
 
     const displayBanner = () => {
         if (!reactLocation.pathname.includes('admin') && 
-            !reactLocation.pathname.includes('/videos') &&
-            !reactLocation.pathname.includes('/acteurs')
+            !reactLocation.pathname.includes('/video') &&
+            !reactLocation.pathname.includes('/acteur')
         ){
             return <img src="/build/static/ad.png" alt="" className="w-100" />;
         } 
