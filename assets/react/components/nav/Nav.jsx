@@ -12,6 +12,7 @@ const Nav = (props) => {
         setUser(null);
         localStorage.clear();
         navigate('/');
+        window.location.reload();
     }
 
     return (

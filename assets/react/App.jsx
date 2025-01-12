@@ -3,14 +3,15 @@ import './App.scss';
 import RoutesWrapper from './routes/RoutesWrapper';
 import useUserStore from './stores/userStore';
 import { setLogin, getAuth, getUser } from './stores/userStore';
-import Banner from './components/banner/Banner';
 import { Modal } from 'bootstrap';
 import { useForm } from "react-hook-form";
 import useLoaderStore from './stores/loaderStore';
 import { Alert, Snackbar } from '@mui/material';
 import parse from 'html-react-parser';
 
+import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
+import Footer from './components/footer/Footer';
 
 function App() {
     const { user, login } = useUserStore();
@@ -103,6 +104,7 @@ function App() {
         <>
             <Banner />
             <RoutesWrapper />
+            <Footer />
 
             <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel">
                 <div className="modal-dialog modal-dialog-centered">

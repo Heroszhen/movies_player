@@ -2,8 +2,8 @@ import { defineConfig } from 'unocss'
 
 export default defineConfig({
     rules: [
-        [/^hero-bg-color-(\d+)$/, ([, color]) => ({ 'background-color': color })],
-        [/^hero-color-(\d+)$/, ([, color]) => ({ 'color': color })],
+        [/^hero-bg-color-(.+)$/, ([, color]) => ({ 'background-color': `#${color}` })],
+        [/^hero-color-(.+)$/, ([, color]) => ({ 'color': `#${color}` })],
         [/^hero-width-(\d+)$/, ([, width]) => ({ 'width': `${width}px` })],
         [/^hero-m-(\d+)$/, ([, size]) => ({ 'margin': `${size}px` })],
         [/^hero-m-(\w+)-(\d+)$/, ([, position, size]) => ({ [`margin-${position}`]: `${size}px` })],

@@ -6,7 +6,7 @@ import './Home.scss';
 const Home = (props) => {
     const { user } = useUserStore()
     const [counts, setCounts] = useState(null);
-    const [photos, setPhotos] = useState(null);
+    const [movies, setMovies] = useState([]);
 
     useEffect(() => {
         if (user !== null) {
@@ -24,15 +24,24 @@ const Home = (props) => {
         getLastThreeMovies()
         .then(response => response.json())
         .then(response => {
-            console.log(response)
+            if (response && response['hydra:member'])setMovies(response['hydra:member']);
         });
     }
 
     return (
         <section id="home">
-            <section className="pt-5 pb-5 hero-fs-30">
-
+            <section className="hero-p-top-100 hero-p-bottom-100 d-flex justify-content-center" id="wrap-movies">
+                {
+                    movies.map((movie, index) => {
+                        return (
+                            <article className="wrap-image" key={index}>
+                                {movie.poster && <img src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`} alt="" />}
+                            </article>
+                        )
+                    })
+                }
             </section>
+
             {counts !==null &&
                 <section id="wrap-counts" className="text-white pt-5 pb-5 hero-fs-30">
                     <div className="container">
@@ -53,6 +62,10 @@ const Home = (props) => {
                     </div>
                 </section>
             }
+
+            <section className="hero-bg-color-e7edef pt-5 pb-5 text-center">
+                <h2>Bienvenue à {process.env.NAV_TITLE}</h2>
+            </section>
         </section>
     );
 }

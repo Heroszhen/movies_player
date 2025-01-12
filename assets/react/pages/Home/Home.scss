@@ -1,4 +1,18 @@
 #home {
+    #wrap-movies {
+        flex-wrap: wrap;
+        .wrap-image {
+            width: 17%;
+            &:not(:last-child) {
+                margin-right: 10px;
+            }
+        }
+        @media (max-width: 767px) {
+            .wrap-image {
+                width: 50%;
+            }
+        }
+    }
     #wrap-counts {
         background: linear-gradient(to right, #9352b3 0, #a11f3c 100%);
     }

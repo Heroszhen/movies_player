@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new GetCollection(
             paginationEnabled: true, 
-            paginationItemsPerPage: 3,
+            paginationItemsPerPage: 4,
             name: 'get_last_three_movies', 
             uriTemplate: '/movies/last-three-movies', 
             order: ['id' => 'DESC']
@@ -65,6 +65,7 @@ class Movie
     private ?VideoType $type = null;
 
     #[ORM\ManyToOne]
+    #[Groups(['movie:read'])]
     private ?MediaObject $poster = null;
 
     /**
