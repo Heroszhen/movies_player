@@ -5,7 +5,7 @@ const useUserStore = create((set, get) => ({
     user: null,
     login: false,
     setUser: (newUser) => {
-        set((state) => ({user: newUser}))
+        set((state) => ({...state, user: newUser}))
     }
 }));
 export default useUserStore;
@@ -49,6 +49,6 @@ export const getUser = () => {
     })
     .then(response => response.json())
     .then(response => {
-        if (response?.id)useUserStore.setState((state) => ({user: response}));
+        if (response?.id)useUserStore.setState((state) => ({...state, user: response}));
     });
 }

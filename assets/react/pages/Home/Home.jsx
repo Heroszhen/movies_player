@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { getRequestHeaders } from '../../services/data';
-import { readFile } from '../../services/utils';
+import { getCounts, getLastThreeMovies } from '../../services/api';
 import useUserStore from '../../stores/userStore';
 import './Home.scss';
 
@@ -15,17 +14,18 @@ const Home = (props) => {
         }
     }, [user]);
 
-    const getData = () => {
-        fetch(`/api/counts`, {
-            method: 'GET',
-            headers: getRequestHeaders(),
-        })
+    const getData = async () => {
+        getCounts()
         .then(response => response.json())
         .then(response => {
             if (response?.data)setCounts(response.data);
         });
 
-       
+        getLastThreeMovies()
+        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+        });
     }
 
     return (
