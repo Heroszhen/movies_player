@@ -4,15 +4,30 @@
 
 .btn-movify {
     color: white;
-    background-color: #9352b3;
+    background-color: $mainColor;
     &:hover, &:active, &:focus {
         filter: brightness(113%);
         color: #fff !important;
-        background-color: #9352b3 !important;
+        background-color: $mainColor !important;
     }
 }
 
 img {
     width: 100%;
     height: auto;
+}
+
+.wrap-paginator {
+    .page-item {
+        .page-link {
+            color: $mainColor !important;
+        }
+        &.active {
+            .page-link {
+                background-color: $mainColor !important;
+                color: white !important;
+                border-color: $mainColor !important;
+            }
+        }
+    }
 }

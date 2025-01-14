@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import useMovieStore from "../../stores/movieStore";
 import useUserStore from "../../stores/userStore";
-import usePaginatorStore, { getPaginator, setRoute, setPage } from "../../stores/paginatorStore";
+import usePaginatorStore, { getPaginator, setRoute, setPage, setKeywords } from "../../stores/paginatorStore";
 import { useLocation } from "react-router-dom";
+import ResponsivePagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
 
 const Movies = (props) => {
     const { user } = useUserStore();
@@ -19,7 +21,7 @@ const Movies = (props) => {
         if(user !== null) {
             getMovies();
         }
-    }, [user]);
+    }, [user, page, keywords]);
 
     const getMovies = async () => {
         const query = keywords === '' ? null : `title=${keywords}`;
@@ -30,9 +32,21 @@ const Movies = (props) => {
         <section id="movies" className="min-vh-100">
             <div className="container pt-5 pb-5">
                 <div className="row">
-                    <div className="col-12">
+                    <div className="col-12 mb-5">
                         
                     </div> 
+                    {movies.length > 0 &&
+                        <div className="col-12 mb-3">
+                            <div className='wrap-paginator'>
+                                <ResponsivePagination
+                                    current={page}
+                                    total={Math.ceil(total / itemsPerPage)}
+                                    onPageChange={setPage}
+                                    maxWidth={400}
+                                />
+                            </div>
+                        </div>
+                    }
                     {
                         movies.map((movie, index) => {
                             return (
@@ -46,6 +60,18 @@ const Movies = (props) => {
                                 </div>
                             );
                         })   
+                    }
+                    {movies.length > 0 &&
+                        <div className="col-12">
+                            <div className='wrap-paginator'>
+                                <ResponsivePagination
+                                    current={page}
+                                    total={Math.ceil(total / itemsPerPage)}
+                                    onPageChange={setPage}
+                                    maxWidth={400}
+                                />
+                            </div>
+                        </div>
                     }
                 </div>          
             </div>
