@@ -1,21 +1,37 @@
 import { useEffect } from "react";
 import useMovieStore from "../../stores/movieStore";
 import useUserStore from "../../stores/userStore";
+import usePaginatorStore, { getPaginator, setRoute, setPage } from "../../stores/paginatorStore";
+import { useLocation } from "react-router-dom";
 
 const Movies = (props) => {
     const { user } = useUserStore();
     const { movies, getMoviesPoster } = useMovieStore();
+    const reactLocation = useLocation();
 
     useEffect(() => {
-        if(user !== null)getMoviesPoster();
+        getPaginator(reactLocation.pathname);
+        setRoute(reactLocation.pathname);
+    }, []);
+    const { page, itemsPerPage, total, keywords } = usePaginatorStore();
+
+    useEffect(() => {
+        if(user !== null) {
+            getMovies();
+        }
     }, [user]);
+
+    const getMovies = async () => {
+        const query = keywords === '' ? null : `title=${keywords}`;
+        getMoviesPoster(page, query);
+    }
 
     return (
         <section id="movies" className="min-vh-100">
             <div className="container pt-5 pb-5">
                 <div className="row">
                     <div className="col-12">
-
+                        
                     </div> 
                     {
                         movies.map((movie, index) => {

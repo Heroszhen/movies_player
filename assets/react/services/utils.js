@@ -6,3 +6,11 @@ export const readFile = (file) => {
         reader.readAsDataURL(file);
     });
 }
+
+export const wait = (n) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(1)
+        }, n * 1000);
+    });
+}

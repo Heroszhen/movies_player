@@ -81,6 +81,10 @@ function App() {
         }
     }, [login]);
 
+    useEffect(() => {
+        
+    }, [reactLocation]);
+
     const resetLoginForm = () => {
         reset({
             email: null,
