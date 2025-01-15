@@ -2,7 +2,7 @@
 
 const Contact = (props) => {
     return (
-        <section id="contact">
+        <section id="contact" className="min-vh-100">
           contact
         </section>
     );

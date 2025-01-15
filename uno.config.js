@@ -12,5 +12,7 @@ export default defineConfig({
         [/^hero-fs-(\d+)$/, ([, size]) => ({ 'font-size': `${size}px` })],
         [/^hero-cursor-(\w+)$/, ([, cursor]) => ({ 'cursor': cursor })],
         [/^hero-zindex-(\d+)$/, ([, index]) => ({ 'z-index': index })],
+        [/^hero-maxh-(\d+)$/, ([, size]) => ({ 'max-height': `${size}px` })],
+        [/^hero-minh-(\d+)$/, ([, size]) => ({ 'min-height': `${size}px` })],
     ]
 })

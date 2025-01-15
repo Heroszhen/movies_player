@@ -29,7 +29,7 @@ const Home = (props) => {
     }
 
     return (
-        <section id="home">
+        <section id="home" className="min-vh-100">
             <section className="hero-p-top-100 hero-p-bottom-100 d-flex justify-content-center" id="wrap-movies">
                 {
                     movies.map((movie, index) => {

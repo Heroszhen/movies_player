@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
 import { Link } from "react-router-dom";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import useUserStore, { setLogin } from "../../stores/userStore";
+import './Nav.scss';
 
 const Nav = (props) => {
     const { user, setUser } = useUserStore();
     const collapseRef = useRef(null);
     const navigate = useNavigate();
+    const reactLocation = useLocation();
 
     const logout = () => {
         setUser(null);
@@ -16,11 +18,11 @@ const Nav = (props) => {
     }
 
     return (
-        <nav className="navbar navbar-expand-md bg-transparent position-absolute top-0 w-100">
+        <nav className="navbar navbar-expand-md bg-transparent position-absolute top-0 w-100" id="client-nav">
             <div className="container">
                 <Link to="/" className="navbar-brand  text-white hero-fs-25">{process.env.NAV_TITLE}</Link>
                 <button className="navbar-toggler" type="button" onClick={()=>collapseRef.current.classList.toggle('show')}>
-                    <span className="navbar-toggler-icon"></span>
+                    <i className="bi bi-justify"></i>
                 </button>
                 <div className="collapse navbar-collapse hero-fs-20" id="navbarSupportedContent" ref={collapseRef}>
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">

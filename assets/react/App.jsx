@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import useLoaderStore from './stores/loaderStore';
 import { Alert, Snackbar } from '@mui/material';
 import parse from 'html-react-parser';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
@@ -31,6 +31,7 @@ function App() {
         horizontal: 'right',
     }
     const reactLocation = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.fetch = async (...args) => {
@@ -52,14 +53,17 @@ function App() {
                         }
                     }
                     setAlertMessages(msg);
+                    setOpenAlert(true);
                 } catch(e) {}
-            } else {
+                finally {
+                    if (clonedResponse.status === 401 && reactLocation.pathname !== '/')navigate('/');
+                }
+            } else if (reactLocation.pathname.includes('admin')) {
                 setAlertDuration(1000);
                 setAlertSeverity('success');
                 setAlertMessages('Envoyé');
+                setOpenAlert(true);
             }
-            setOpenAlert(true);
-
             return response;
         };
 
@@ -108,7 +112,9 @@ function App() {
     return (
         <>
             {!reactLocation.pathname.includes('admin') && <Banner />}
-            <RoutesWrapper />
+            <main>
+                <RoutesWrapper />
+            </main>
             {!reactLocation.pathname.includes('admin') && <Footer />}
 
             <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel">

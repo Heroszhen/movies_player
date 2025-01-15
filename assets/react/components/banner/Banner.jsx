@@ -11,9 +11,9 @@ const Banner = (props) => {
             !reactLocation.pathname.includes('/video') &&
             !reactLocation.pathname.includes('/acteur')
         ){
-            return <img src="/build/static/ad.png" alt="" className="w-100" />;
+            return <img src="/build/static/ad.png" alt="" className="w-100 hero-minh-60" />;
         } 
-        return <img src="/build/static/fire.png" alt="" className="w-100" />
+        return <img src="/build/static/fire.png" alt="" className="w-100 hero-maxh-100 hero-minh-60" />
     }
 
     return (
