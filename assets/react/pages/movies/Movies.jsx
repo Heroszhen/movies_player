@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useMovieStore from "../../stores/movieStore";
 import useUserStore from "../../stores/userStore";
 import usePaginatorStore, { getPaginator, setRoute, setPage, setKeywords } from "../../stores/paginatorStore";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
 
@@ -10,6 +10,7 @@ const Movies = (props) => {
     const { user } = useUserStore();
     const { movies, getMoviesPoster } = useMovieStore();
     const reactLocation = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getPaginator(reactLocation.pathname);
@@ -50,7 +51,11 @@ const Movies = (props) => {
                     {
                         movies.map((movie, index) => {
                             return (
-                                <div className="col-12 col-md-4 col-lg-3 wrap-video mb-5 hero-cursor-pointer" key={index}>
+                                <div 
+                                    className="col-12 col-md-4 col-lg-3 wrap-video mb-5 hero-cursor-pointer" 
+                                    key={index}
+                                    onClick={()=>navigate(`/video/${movie.id}`)}
+                                >
                                     <div>
                                         {movie.poster && <img src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`} />}
                                         {!movie.poster && <img src="/build/static/poster_not_found.png" />}
