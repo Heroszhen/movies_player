@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use App\Traits\TimestampableTrait;
 use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -42,6 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(security: "is_granted('ROLE_ADMIN')")
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'actors.name' => 'ipartial'])]
 class Movie
 {
     use TimestampableTrait;

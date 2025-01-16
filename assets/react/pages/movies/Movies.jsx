@@ -20,21 +20,28 @@ const Movies = (props) => {
 
     useEffect(() => {
         if(user !== null) {
-            getMovies();
+            getMoviesPoster(page, keywords);
         }
     }, [user, page, keywords]);
 
-    const getMovies = async () => {
-        const query = keywords === '' ? null : `title=${keywords}`;
-        getMoviesPoster(page, query);
+    const searchByKeywords = (e) => {
+        if (e.type === 'keyup' && e.keyCode === 13) {
+            setKeywords(e.target.value);
+        } else if (e.type === 'change' && e.target.value === '') {
+            setKeywords(e.target.value);
+        }
     }
 
     return (
         <section id="movies" className="min-vh-100">
             <div className="container pt-5 pb-5">
                 <div className="row">
-                    <div className="col-12 mb-5">
-                        
+                    <div className="col-12 mb-3">
+                        <input type="search" className="form-control form-control-sm" id="search" name="name"
+                            defaultValue={keywords}
+                            onChange={(e)=>searchByKeywords(e)}
+                            onKeyUp={(e)=>searchByKeywords(e)}
+                        />
                     </div> 
                     {movies.length > 0 &&
                         <div className="col-12 mb-3">

@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 
 const Movie = (props) => {
     const { id } = useParams();
+    const [movie, setMovie] = useState(null);
 
     useEffect(() => {
         console.log(id)

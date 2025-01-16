@@ -14,3 +14,15 @@ export const wait = (n) => {
         }, n * 1000);
     });
 }
+
+/**
+ * remove all duplications with one field from one array
+ * @param {Array<Object>} tab 
+ * @param {string} field 
+ * @returns {Array<Object>}
+ */
+export const cleanArrayObjects = (tab, field) => {
+    const map = new Map();
+    tab.forEach((obj) => map.set(obj[field], obj));
+    return Array.from(map.values());
+}
