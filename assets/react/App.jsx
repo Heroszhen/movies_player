@@ -14,6 +14,9 @@ import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
 import Footer from './components/footer/Footer';
 
+//admin
+import AdminNav from './components/admin_nav/AdminNav';
+
 function App() {
     const { user, login } = useUserStore();
     const [loginModal, setLoginModal] = useState(null);
@@ -112,6 +115,7 @@ function App() {
     return (
         <>
             {!reactLocation.pathname.includes('admin') && <Banner />}
+            {reactLocation.pathname.includes('admin') && <AdminNav />}
             <main>
                 <RoutesWrapper />
             </main>
