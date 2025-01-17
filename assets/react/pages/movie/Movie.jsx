@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
+import VideoPlayer from "../../components/video_player/VideoPlayer";
+import { getMovie } from "../../stores/movieStore";
 
 const Movie = (props) => {
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
 
     useEffect(() => {
-        console.log(id)
+        (async ()=>{
+            const result = await getMovie(id);
+            if(result.id)setMovie(result);
+        })();
     }, [id]);
-
 
     return (
         <section id="movie" className="min-vh-100">
-            contact
+            <VideoPlayer video={movie} />
         </section>
     );
 }

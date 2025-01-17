@@ -1,7 +1,9 @@
 App\Entity\VideoType:
   video_type_1:
-    name: 'iframe'
+    name: 'integration'
   video_type_2:
-    name: 'mp4'
+    name: 'iframe'
   video_type_3:
+    name: 'mp4'
+  video_type_4:
     name: 'external'

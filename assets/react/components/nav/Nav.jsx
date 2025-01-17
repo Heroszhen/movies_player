@@ -24,8 +24,8 @@ const Nav = (props) => {
                 <button className="navbar-toggler" type="button" onClick={()=>collapseRef.current.classList.toggle('show')}>
                     <i className="bi bi-justify"></i>
                 </button>
-                <div className="collapse navbar-collapse hero-fs-20" id="navbarSupportedContent" ref={collapseRef}>
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <div className="collapse navbar-collapse hero-fs-20 z-3 p-2" id="navbarSupportedContent" ref={collapseRef}>
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0" onClick={()=>collapseRef.current.classList.remove('show')}>
                         <li className="nav-item">
                             <NavLink to="/" className={({ isActive }) => isActive ? "nav-link text-white active" : "nav-link text-white"}>
                                 Accueil

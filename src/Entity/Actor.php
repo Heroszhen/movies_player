@@ -48,7 +48,7 @@ class Actor
     private ?string $country = null;
 
     #[ORM\ManyToOne]
-    #[Groups(['actor:write', 'actor:read'])]
+    #[Groups(['actor:write', 'actor:read', 'movie:read'])]
     private ?MediaObject $currentPhoto = null;
 
     /**

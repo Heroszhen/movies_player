@@ -8,8 +8,7 @@ const useMovieStore = create((set, get) => ({
    getMoviesPoster: async (page = 1, keywords = '') => {
       try {
          const fetchMovies = async (page, query) => {
-            let url = `/api/movies/poster?page=${page}${query}`;
-            let response = await fetch(url, {
+            let response = await fetch(`/api/movies/poster?page=${page}${query}`, {
                method: 'GET',
                headers: getRequestHeaders()
             });
@@ -24,14 +23,20 @@ const useMovieStore = create((set, get) => ({
             movies: movies
          }));
          setTotal(titleResponse['hydra:totalItems'] > actorNameResponse['hydra:totalItems'] ? titleResponse['hydra:totalItems'] : actorNameResponse['hydra:totalItems']);
-      } catch(e) {console.log(e)}
+      } catch(e) {}
    },
    getMovies: (page, queryOptions = null) => {
 
-   },
+   }
 }));
 export default useMovieStore;
 
-export const getMovie = (id) => {
-   
+export const getMovie = async (id) => {
+   try {
+      let response = await fetch(`/api/movies/${id}`, {
+         method: 'GET',
+         headers: getRequestHeaders()
+      });
+      return await response.json();
+   } catch(e) {}
 }
