@@ -29,7 +29,10 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/users/profile',
             controller: GetUserByToken::class,
         ),
-        new GetCollection(security: "is_granted('ROLE_ADMIN')"),
+        new GetCollection(
+            paginationEnabled: false,
+            security: "is_granted('ROLE_ADMIN')"
+        ),
         new Post(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
         new Patch(

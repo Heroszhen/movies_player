@@ -27,6 +27,8 @@ class MediaObjectController extends AbstractController
     #[Route('', name: 'media_objects_post', methods: ['POST'])]
     public function index(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $uploadedFile = $request->files->get('imageFile');
 
         if (!$uploadedFile) {

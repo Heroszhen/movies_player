@@ -4,8 +4,20 @@ import { getRequestHeaders } from "../services/data";
 const useUserStore = create((set, get) => ({
     user: null,
     login: false,
+    users: [],
     setUser: (newUser) => {
         set((state) => ({...state, user: newUser}))
+    },
+    getUsers: async () => {
+        try {
+            let response = await fetch(`/api/users`, {
+                method: 'GET',
+                headers: getRequestHeaders()
+            });
+    
+            response = await response.json();
+            if (response['hydra:member'])set((state) => ({users: response['hydra:member']}))
+        } catch(e) {}
     }
 }));
 export default useUserStore;

@@ -4,7 +4,8 @@ export default defineConfig({
     rules: [
         [/^hero-bg-color-(.+)$/, ([, color]) => ({ 'background-color': `#${color}` })],
         [/^hero-color-(.+)$/, ([, color]) => ({ 'color': `#${color}` })],
-        [/^hero-width-(\d+)$/, ([, width]) => ({ 'width': `${width}px` })],
+        [/^hero-width-(\d+)$/, ([, size]) => ({ 'width': `${size}px` })],
+        [/^hero-height-(\d+)$/, ([, size]) => ({ 'height': `${size}px` })],
         [/^hero-m-(\d+)$/, ([, size]) => ({ 'margin': `${size}px` })],
         [/^hero-m-(\w+)-(\d+)$/, ([, position, size]) => ({ [`margin-${position}`]: `${size}px` })],
         [/^hero-p-(\d+)$/, ([, size]) => ({ 'padding': `${size}px` })],

@@ -11,4 +11,4 @@ App\Entity\User:
     user_user (extends user):
         email: 'user@gmail.com'
     
-    user_{1..500} (extends user):
+    user_{1..10} (extends user):

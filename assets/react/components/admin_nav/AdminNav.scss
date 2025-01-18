@@ -1,6 +1,20 @@
+@import '../../styles/utils.scss';
+
 #admin-nav {
     background: linear-gradient(135deg, #ff516b 0%, #826cfd 100%);
     width: 230px;
     height: calc(100vh - 50px);
-    position: fixed;
+    z-index: 100;
+    a {
+        @include flex(flex-start, center);
+        color: white;
+        text-decoration: none;
+        padding: 12px 14px;
+        div {
+            margin-left: 10px;
+        }
+        &.active, &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    }
 }

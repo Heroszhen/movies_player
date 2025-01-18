@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import './App.scss';
 import RoutesWrapper from './routes/RoutesWrapper';
 import useUserStore from './stores/userStore';
@@ -16,6 +16,7 @@ import Footer from './components/footer/Footer';
 
 //admin
 import AdminNav from './components/admin_nav/AdminNav';
+import AdminHeader from './components/admin_header/AdminHeader';
 
 function App() {
     const { user, login } = useUserStore();
@@ -35,6 +36,8 @@ function App() {
     }
     const reactLocation = useLocation();
     const navigate = useNavigate();
+    const mainRef = useRef(null);
+    const adminNavRef = useRef(null);
 
     useEffect(() => {
         window.fetch = async (...args) => {
@@ -62,7 +65,7 @@ function App() {
                     if (clonedResponse.status === 401 && reactLocation.pathname !== '/')navigate('/');
                 }
             } else if (reactLocation.pathname.includes('admin')) {
-                setAlertDuration(1000);
+                setAlertDuration(500);
                 setAlertSeverity('success');
                 setAlertMessages('Envoyé');
                 setOpenAlert(true);
@@ -115,8 +118,9 @@ function App() {
     return (
         <>
             {!reactLocation.pathname.includes('admin') && <Banner />}
-            {reactLocation.pathname.includes('admin') && <AdminNav />}
-            <main>
+            {reactLocation.pathname.includes('admin') && <AdminHeader mainRef={mainRef} adminNavRef={adminNavRef} />}
+            {reactLocation.pathname.includes('admin') && <AdminNav ref={adminNavRef} />}
+            <main ref={mainRef}>
                 <RoutesWrapper />
             </main>
             {!reactLocation.pathname.includes('admin') && <Footer />}
