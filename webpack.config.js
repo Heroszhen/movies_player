@@ -1,6 +1,7 @@
 const Encore = require('@symfony/webpack-encore');
 const dotenv = require('dotenv');
 const CopyPlugin = require("copy-webpack-plugin");
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 dotenv.config({ path: '.env.local' });
 
@@ -80,7 +81,8 @@ Encore
     })
     .addPlugin(new CopyPlugin({
         patterns: [
-            { from: "assets/static", to: 'static' }
+            { from: "assets/static", to: 'static' },
+            { from: "assets/pwa", to: 'pwa' }
         ]
     }))
     .configureDevServerOptions(options => {
@@ -91,7 +93,24 @@ Encore
             'templates/**/*',
             'assets/**/*'
         ]
-    });
+    })
+    .addPlugin(new WorkboxPlugin.GenerateSW({
+        clientsClaim: true,
+        skipWaiting: true,
+        runtimeCaching: [
+            {
+              urlPattern: /.*\.(?:js|css|html|woff2?|png|jpg|jpeg|svg|gif)/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'assets-cache',
+                expiration: {
+                  maxEntries: 50,
+                  maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
+                },
+              },
+            },
+        ],
+    }))
 ;
 
 const unoCSSPlugin = () =>
