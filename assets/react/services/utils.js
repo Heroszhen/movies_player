@@ -26,3 +26,19 @@ export const cleanArrayObjects = (tab, field) => {
     tab.forEach((obj) => map.set(obj[field], obj));
     return Array.from(map.values());
 }
+
+/**
+ * 
+ * @param {File} file 
+ * @returns {boolean}
+ */
+export const isImageFile = (file) => {
+    const extensions = ['jpg', 'jpeg', 'png', 'avif'];
+
+    if (!file.type.includes('image')) return false;
+
+    const tab = file.type.split('/');
+    if (!extensions.includes(tab[tab.length - 1].toLowerCase()))return false;
+
+    return true;
+}

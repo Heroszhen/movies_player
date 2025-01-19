@@ -42,7 +42,13 @@ function App() {
     useEffect(() => {
         window.fetch = async (...args) => {
             setLoader(true);
-            const response = await originalFetch.apply(this, args);
+
+            const [url, options = {}] = args;
+            if (options.method.toLowerCase() === 'patch') {
+                options.headers['Content-Type'] = 'application/merge-patch+json';
+            }
+            const response = await originalFetch.apply(this, [url, options]);
+
             setLoader(false);
             
             const clonedResponse = response.clone();
@@ -58,6 +64,7 @@ function App() {
                             msg += `${entry['propertyPath']} : ${entry['message']}<br>`;
                         }
                     }
+                    if (jsonResponse['hydra:description'])msg += jsonResponse['hydra:description'] + '<br>';
                     setAlertMessages(msg);
                     setOpenAlert(true);
                 } catch(e) {}
@@ -65,7 +72,7 @@ function App() {
                     if (clonedResponse.status === 401 && reactLocation.pathname !== '/')navigate('/');
                 }
             } else if (reactLocation.pathname.includes('admin')) {
-                setAlertDuration(500);
+                setAlertDuration(1000);
                 setAlertSeverity('success');
                 setAlertMessages('Envoyé');
                 setOpenAlert(true);

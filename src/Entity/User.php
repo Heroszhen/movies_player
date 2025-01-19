@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
@@ -31,7 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             paginationEnabled: false,
-            security: "is_granted('ROLE_ADMIN')"
+            security: "is_granted('ROLE_ADMIN')",
+            order: ['id' => 'DESC']
         ),
         new Post(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
@@ -43,7 +45,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: "is_granted('ROLE_ADMIN') or object.owner == user",
             denormalizationContext: ['groups' => 'user:password:write'],
             validationContext: ['groups' => ['user:password:write']]
-        )
+        ),
+        new Delete(security: "is_granted('ROLE_ADMIN')"),
     ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -72,7 +75,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
     #[Assert\Regex(

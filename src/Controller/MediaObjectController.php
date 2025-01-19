@@ -65,7 +65,7 @@ class MediaObjectController extends AbstractController
 
         return $this->json(array_merge([
             "@context" => "/api/contexts/MediaObject",
-            "@id" => "/api/media_object/{$mediaObject->getId()}",
+            "@id" => "/api/media_objects/{$mediaObject->getId()}",
             "@type" => "MediaObject",
         ], $serialized), 
         Response::HTTP_CREATED);
