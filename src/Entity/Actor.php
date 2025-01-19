@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use App\Repository\ActorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,6 +19,7 @@ use ApiPlatform\Metadata\Post;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
 #[ApiResource(
+    order: ['name' => 'ASC'],
     normalizationContext: ['groups' => ['actor:read']],
     denormalizationContext: ['groups' => ['actor:write']],
     operations: [
@@ -26,12 +29,13 @@ use ApiPlatform\Metadata\Post;
         new Patch(security: "is_granted('ROLE_ADMIN')")
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial', 'country' => 'ipartial'])]
 class Actor
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['actor:write', 'movie:read'])]
+    #[Groups(['actor:write', 'actor:read', 'movie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]

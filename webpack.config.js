@@ -94,24 +94,17 @@ Encore
             'assets/**/*'
         ]
     })
-    .addPlugin(new WorkboxPlugin.GenerateSW({
-        clientsClaim: true,
-        skipWaiting: true,
-        runtimeCaching: [
-            {
-              urlPattern: /.*\.(?:js|css|html|woff2?|png|jpg|jpeg|svg|gif)/,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'assets-cache',
-                expiration: {
-                  maxEntries: 50,
-                  maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
-                },
-              },
-            },
-        ],
-    }))
 ;
+
+if (process.env.APP_ENV === 'prod') {
+    Encore
+        .addPlugin(new WorkboxPlugin.GenerateSW({
+            clientsClaim: true,
+            skipWaiting: true,
+            maximumFileSizeToCacheInBytes: 20 * 1024 * 1024, // 15 MB
+        }))
+    ;
+}
 
 const unoCSSPlugin = () =>
     import('@unocss/webpack').then(({ default: UnoCSS }) =>

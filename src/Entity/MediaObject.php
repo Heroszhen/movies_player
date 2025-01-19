@@ -33,7 +33,7 @@ class MediaObject
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['media_object:read', 'user:read', 'movie:read'])]
+    #[Groups(['media_object:read', 'user:read', 'movie:read', 'actor:read'])]
     private ?int $id = null;
 
     #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'imageName', size: 'imageSize', originalName: 'originalName')]
@@ -45,7 +45,7 @@ class MediaObject
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['media_object:read', 'user:read', 'movie:read', 'movie:poster'])]
+    #[Groups(['media_object:read', 'user:read', 'movie:read', 'movie:poster', 'actor:read'])]
     private ?string $imageName = null;
 
     #[ORM\Column(nullable: true)]

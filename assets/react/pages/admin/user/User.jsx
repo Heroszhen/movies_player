@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react';
-import './User.scss';
 import useUserStore from '../../../stores/userStore';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -28,7 +27,7 @@ const AdminUser = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [userIndex, setUserIndex] = useState(null);
-    const { register, handleSubmit, formState: { errors }, reset, getValues, setValue, control } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset, control } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -47,7 +46,6 @@ const AdminUser = (props) => {
     }, [user]);
 
     const toggleForm = (type = null, index = null) => {
-
         if (type === null) {
             handleClose();
         } else {
@@ -97,7 +95,7 @@ const AdminUser = (props) => {
     return (
         <>
             <section id="admin-users" className="vidoe">
-                <div className="container pt-3">
+                <div className="container-fluid pt-3">
                     <div className="row">
                         <div className="col-12 mb-3">
                             <h3 className="d-flex align-items-center">
