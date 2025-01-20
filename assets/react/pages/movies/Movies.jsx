@@ -22,13 +22,14 @@ const Movies = (props) => {
         if(user !== null) {
             getMoviesPoster(page, keywords);
         }
-    }, [user, page, keywords]);
+    }, [user, page]);
 
     const searchByKeywords = (e) => {
+        const oldKeywords = keywords;
         if (e.type === 'keyup' && e.keyCode === 13) {
             setKeywords(e.target.value);
-        } else if (e.type === 'change' && e.target.value === '') {
-            setKeywords(e.target.value);
+            if (oldKeywords !== keywords && page === 1)getMoviesPoster(page, keywords);
+            else setPage(1);
         }
     }
 

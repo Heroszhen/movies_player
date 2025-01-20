@@ -9,6 +9,7 @@ import Movie from "../pages/movie/movie.jsx";
 
 import AdminUser from "../pages/admin/user/User.jsx";
 import AdminActor from "../pages/admin/actor/AdminActor.jsx";
+import AdminMovie from "../pages/admin/movie/AdminMovie.jsx";
 
 
 const RoutesWrapper = (props) => {
@@ -24,6 +25,7 @@ const RoutesWrapper = (props) => {
                 <Route element={<AdminGuard />}>
                     <Route path="/admin/utilisateurs" element={<AdminUser />} />
                     <Route path="/admin/acteurs" element={<AdminActor />} />
+                    <Route path="/admin/videos" element={<AdminMovie />} />
                 </Route>
             </Routes>
         </>

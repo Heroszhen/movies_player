@@ -3,20 +3,21 @@ import { getRequestHeaders } from "../services/data";
 import { cleanArrayObjects } from "../services/utils";
 import { setTotal } from "./paginatorStore";
 
+const fetchMovies = async (url, page, query) => {
+   let response = await fetch(`${url}?page=${page}${query}`, {
+      method: 'GET',
+      headers: getRequestHeaders()
+   });
+   return await response.json();
+}
+
 const useMovieStore = create((set, get) => ({
    movies: [],
+   emptyMovies: () => {set((state)=>({movies:[]}))},
    getMoviesPoster: async (page = 1, keywords = '') => {
       try {
-         const fetchMovies = async (page, query) => {
-            let response = await fetch(`/api/movies/poster?page=${page}${query}`, {
-               method: 'GET',
-               headers: getRequestHeaders()
-            });
-            return await response.json();
-         }
-
-         const titleResponse = await fetchMovies(page, `&title=${keywords}`);
-         const actorNameResponse = await fetchMovies(page, `&actors.name=${keywords}`);
+         const titleResponse = await fetchMovies('/api/movies/poster', page, `&title=${keywords}`);
+         const actorNameResponse = await fetchMovies('/api/movies/poster', page, `&actors.name=${keywords}`);
          const movies = cleanArrayObjects([...titleResponse['hydra:member'], ...actorNameResponse['hydra:member']], 'id');
          set((state) => ({
             ...state, 

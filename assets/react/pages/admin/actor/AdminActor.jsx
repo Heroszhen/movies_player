@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import useActorStore from '../../../stores/actorStore';
 import useUserStore from '../../../stores/userStore';
-import usePaginatorStore, { getPaginator, setRoute, setPage, setKeywords } from '../../../stores/paginatorStore'; 
+import usePaginatorStore, { setRoute, setPage, setKeywords } from '../../../stores/paginatorStore'; 
 import { useLocation } from "react-router-dom";
 import {
     Box,
