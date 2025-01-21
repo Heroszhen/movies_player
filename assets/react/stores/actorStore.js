@@ -38,3 +38,14 @@ const useActorStore = create((set, get) => ({
     }
 }));
 export default useActorStore;
+
+export const getActorsName = async () => {
+    try {
+        let response = await fetch(`/api/actors/name`, {
+           method: 'GET',
+           headers: getRequestHeaders()
+        });
+        response = await response.json();
+        return response['hydra:member'] ?? [];
+    } catch(e) {}
+}

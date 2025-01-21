@@ -23,8 +23,14 @@ use ApiPlatform\Metadata\Post;
     normalizationContext: ['groups' => ['actor:read']],
     denormalizationContext: ['groups' => ['actor:write']],
     operations: [
-        new Get(),
         new GetCollection(),
+        new GetCollection(
+            name: 'getActorName',
+            uriTemplate: '/actors/name',
+            normalizationContext: ['groups' => ['actor:name']],
+            paginationEnabled: false
+        ),
+        new Get(),
         new Post(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN')")
     ]
@@ -35,12 +41,12 @@ class Actor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['actor:write', 'actor:read', 'movie:read'])]
+    #[Groups(['actor:write', 'actor:read', 'movie:read', 'actor:name'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups(['actor:write', 'actor:read', 'movie:read'])]
+    #[Groups(['actor:write', 'actor:read', 'movie:read', 'actor:name'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

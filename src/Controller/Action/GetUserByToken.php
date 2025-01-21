@@ -18,13 +18,6 @@ class GetUserByToken extends AbstractController
 
     public function __invoke(Request $request): User
     {
-        $content = json_decode($request->getContent(), true);
-        /** @var User $user */
-        $user = $this->security->getUser();
-        if (!$user || $content['email'] !== $user->getEmail()) {
-            throw new Exception('User not found');
-        }
-
-        return $user;
+        return $this->security->getUser();
     }
 }

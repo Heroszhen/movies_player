@@ -8,7 +8,7 @@ import 'react-responsive-pagination/themes/classic.css';
 
 const Movies = (props) => {
     const { user } = useUserStore();
-    const { movies, getMoviesPoster } = useMovieStore();
+    const { movies, getMovies } = useMovieStore();
     const reactLocation = useLocation();
     const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const Movies = (props) => {
 
     useEffect(() => {
         if(user !== null) {
-            getMoviesPoster(page, keywords);
+            getMovies(page, keywords, true);
         }
     }, [user, page]);
 
@@ -28,7 +28,7 @@ const Movies = (props) => {
         const oldKeywords = keywords;
         if (e.type === 'keyup' && e.keyCode === 13) {
             setKeywords(e.target.value);
-            if (oldKeywords !== keywords && page === 1)getMoviesPoster(page, keywords);
+            if (oldKeywords !== keywords && page === 1)getMovies(page, keywords, true);
             else setPage(1);
         }
     }

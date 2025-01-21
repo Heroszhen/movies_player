@@ -90,11 +90,8 @@ export const getAuth = async (data) => {
 
 export const getUser = () => {
     fetch(`/api/users/profile`, {
-        method: 'POST',
+        method: 'GET',
         headers: getRequestHeaders(),
-        body: JSON.stringify({
-            email: JSON.parse(localStorage.getItem('token')).email
-        })
     })
     .then(response => response.json())
     .then(response => {

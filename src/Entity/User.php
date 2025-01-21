@@ -24,17 +24,18 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
     operations: [
-        new Get(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
-        new Post(
+        new Get(
             name: 'getUserByToken',
             uriTemplate: '/users/profile',
             controller: GetUserByToken::class,
+            read: false
         ),
         new GetCollection(
             paginationEnabled: false,
             security: "is_granted('ROLE_ADMIN')",
             order: ['id' => 'DESC']
         ),
+        new Get(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
         new Post(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
         new Patch(

@@ -14,10 +14,11 @@ const fetchMovies = async (url, page, query) => {
 const useMovieStore = create((set, get) => ({
    movies: [],
    emptyMovies: () => {set((state)=>({movies:[]}))},
-   getMoviesPoster: async (page = 1, keywords = '') => {
+   getMovies: async (page = 1, keywords = '', needPoster = false) => {
+      const url = needPoster === true ? '/api/movies/poster' : '/api/movies';
       try {
-         const titleResponse = await fetchMovies('/api/movies/poster', page, `&title=${keywords}`);
-         const actorNameResponse = await fetchMovies('/api/movies/poster', page, `&actors.name=${keywords}`);
+         const titleResponse = await fetchMovies(url, page, `&title=${keywords}`);
+         const actorNameResponse = await fetchMovies(url, page, `&actors.name=${keywords}`);
          const movies = cleanArrayObjects([...titleResponse['hydra:member'], ...actorNameResponse['hydra:member']], 'id');
          set((state) => ({
             ...state, 
@@ -25,9 +26,6 @@ const useMovieStore = create((set, get) => ({
          }));
          setTotal(titleResponse['hydra:totalItems'] > actorNameResponse['hydra:totalItems'] ? titleResponse['hydra:totalItems'] : actorNameResponse['hydra:totalItems']);
       } catch(e) {}
-   },
-   getMovies: (page, queryOptions = null) => {
-
    }
 }));
 export default useMovieStore;
