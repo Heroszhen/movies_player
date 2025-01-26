@@ -57,35 +57,35 @@ class Movie
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups(['movie:read', 'movie:poster'])]
+    #[Groups(['movie:read', 'movie:poster', 'movie:write'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:write'])]
     private ?\DateTimeInterface $releasedAt = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['movie:read', 'movie:poster'])]
+    #[Groups(['movie:read', 'movie:poster', 'movie:write'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne]
     #[Assert\NotBlank]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:write'])]
     private ?VideoType $type = null;
 
     #[ORM\ManyToOne]
-    #[Groups(['movie:read', 'movie:poster'])]
+    #[Groups(['movie:read', 'movie:poster', 'movie:write'])]
     private ?MediaObject $poster = null;
 
     /**
      * @var Collection<int, Actor>
      */
     #[ORM\ManyToMany(targetEntity: Actor::class, inversedBy: 'movies')]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:write'])]
     private Collection $actors;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['movie:read'])]
+    #[Groups(['movie:read', 'movie:write'])]
     private ?string $link = null;
 
     public function __construct()

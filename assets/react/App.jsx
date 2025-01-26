@@ -40,6 +40,7 @@ function App() {
     const navigate = useNavigate();
     const mainRef = useRef(null);
     const adminNavRef = useRef(null);
+    const [precRoute, setPrecRoute] = useState(null);
 
     useEffect(() => {
         window.fetch = async (...args) => {
@@ -101,7 +102,8 @@ function App() {
     }, [login]);
 
     useEffect(() => {
-        emptyMovies();
+        if (reactLocation.pathname !== precRoute)emptyMovies();
+        setPrecRoute(reactLocation.pathname);
     }, [reactLocation]);
 
     const resetLoginForm = () => {

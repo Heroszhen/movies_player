@@ -13,7 +13,7 @@ export const getCounts = () => {
 /**
  * @returns {Fetch}
  */
- export const getLastThreeMovies = () => {
+export const getLastThreeMovies = () => {
     return  fetch(`/api/movies/last-three-movies`, {
         method: 'GET',
         headers: getRequestHeaders(),

@@ -13,6 +13,7 @@ const fetchMovies = async (url, page, query) => {
 
 const useMovieStore = create((set, get) => ({
    movies: [],
+   videoTypes: [],
    emptyMovies: () => {set((state)=>({movies:[]}))},
    getMovies: async (page = 1, keywords = '', needPoster = false) => {
       const url = needPoster === true ? '/api/movies/poster' : '/api/movies';
@@ -26,6 +27,54 @@ const useMovieStore = create((set, get) => ({
          }));
          setTotal(titleResponse['hydra:totalItems'] > actorNameResponse['hydra:totalItems'] ? titleResponse['hydra:totalItems'] : actorNameResponse['hydra:totalItems']);
       } catch(e) {}
+   },
+   editVideoType: async (data, id = null) => {
+      try {
+         let response = await fetch(`/api/video_types${id === null ? '' : '/' + id}`, {
+            method: id === null ? 'POST' : 'PATCH',
+            headers: getRequestHeaders(),
+            body: JSON.stringify(data)
+         });
+
+         const jsonResponse = await response.json();
+         if (id === null) {
+            useMovieStore.setState((state) => ({
+               videoTypes: [...get().videoTypes, jsonResponse]
+            }));
+         } else {
+            useMovieStore.setState((state) => ({
+               videoTypes: state.videoTypes.map(type=>{
+                  if (type.id === id)return jsonResponse;
+                  return type;
+               })
+            }));
+         }
+         
+      } catch(e) {}
+   },
+   editMovie: async (data, id = null) => {
+      try {
+         let response = await fetch(`/api/movies${id === null ? '' : '/' + id}`, {
+            method: id === null ? 'POST' : 'PATCH',
+            headers: getRequestHeaders(),
+            body: JSON.stringify(data)
+         });
+
+         const jsonResponse = await response.json();
+         if (id === null) {
+            useMovieStore.setState((state) => ({
+               movies: [jsonResponse, ...state.movies]
+            }));
+         } else {
+            useMovieStore.setState((state) => ({
+               movies: state.movies.map(movie=>{
+                  if (movie.id === id)return jsonResponse;
+                  return movie;
+               })
+            }));
+         }
+         
+      } catch(e) {}
    }
 }));
 export default useMovieStore;
@@ -37,5 +86,18 @@ export const getMovie = async (id) => {
          headers: getRequestHeaders()
       });
       return await response.json();
+   } catch(e) {}
+}
+
+export const getVideoTypes = async () => {
+   try {
+      let response = await fetch(`/api/video_types`, {
+         method: 'GET',
+         headers: getRequestHeaders()
+      });
+      const jsonResponse = await response.json();
+      useMovieStore.setState((state) => ({videoTypes: jsonResponse['hydra:member']}));
+
+      return jsonResponse['hydra:member'];
    } catch(e) {}
 }

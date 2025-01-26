@@ -1,6 +1,18 @@
 import { defineConfig } from 'unocss'
 
 export default defineConfig({
+    variants: [
+        // hover:
+        (matcher) => {
+          if (!matcher.startsWith('hover:'))
+            return matcher
+          return {
+            // slice `hover:` prefix and passed to the next variants and rules
+            matcher: matcher.slice(6),
+            selector: s => `${s}:hover`,
+          }
+        },
+    ],
     rules: [
         [/^hero-bg-color-(.+)$/, ([, color]) => ({ 'background-color': `#${color}` })],
         [/^hero-color-(.+)$/, ([, color]) => ({ 'color': `#${color}` })],
