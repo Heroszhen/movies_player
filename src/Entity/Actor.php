@@ -67,7 +67,7 @@ class Actor
      * @var Collection<int, Movie>
      */
     #[ORM\ManyToMany(targetEntity: Movie::class, mappedBy: 'actors')]
-    #[Groups(['actor:write', 'actor:read'])]
+    #[Groups(['actor:write'])]
     private Collection $movies;
 
     public function __construct()

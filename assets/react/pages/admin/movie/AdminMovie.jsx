@@ -24,7 +24,6 @@ import {
   FormControl,
   Select,
   Autocomplete,
-  AlertTitle
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -42,6 +41,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { addFile } from '../../../stores/fileStore';
 import { isImageFile } from '../../../services/utils';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CachedIcon from '@mui/icons-material/Cached';
 
 const AdminMovie = (props) => {
   const reactLocation = useLocation();
@@ -60,15 +60,26 @@ const AdminMovie = (props) => {
   const handleCloseAlert = () => {setOpenAlert(false);setMovieIndex(null);};
   const [alertTitle, setAlertTitle] = useState(null);
   const [alertContent, setAlertContent] = useState(null);
+  const bc = new BroadcastChannel("admin_movie");
 
   useEffect(() => {
     setRoute(reactLocation.pathname);
     emptyMovies(),
     (async()=>{
       getVideoTypes();
-      const results = await getActorsName();
-      setActors(results);
+      getListActors();
+      
     })();
+    
+    bc.onmessage = (event) => {
+      if (event.data && event.data.data === 'actor') {
+        getListActors();
+      }
+    };
+
+    return () => {
+      bc.close();
+    }
   }, []);
   const { movies, emptyMovies, getMovies, videoTypes, editVideoType, editMovie, deleteMovie } = useMovieStore();
   const { page, itemsPerPage, total, keywords } = usePaginatorStore();
@@ -78,6 +89,11 @@ const AdminMovie = (props) => {
       getMovies(page, keywords);
     }
   }, [user, page]);
+
+  const getListActors = async () => {
+    const results = await getActorsName();
+    setActors(results);
+  }
 
   const searchByKeywords = (e) => {
     const oldKeywords = keywords;
@@ -146,6 +162,12 @@ const AdminMovie = (props) => {
     handleClickOpenAlert(true);
   }
 
+  const reloadAll = async () => {
+    getVideoTypes();
+    getMovies(page, keywords);
+    getListActors();
+  }
+
   return (
       <>
         <section id="admin-movie" className="vidoe">
@@ -154,8 +176,9 @@ const AdminMovie = (props) => {
               <div className="col-12 mb-3">
                 <h3 className="d-flex align-items-center">
                     Vidéos
-                    <AddCircleIcon className="hero-cursor-pointer ms-2" onClick={()=>toggleForm(2)} />
-                    <CategoryIcon className="hero-cursor-pointer ms-2" onClick={()=>{if(sectionTypes){setSectionTypes(false)}else{setSectionTypes(true)}}}/>
+                    <AddCircleIcon className="hero-cursor-pointer ms-3" onClick={()=>toggleForm(2)} />
+                    <CategoryIcon className="hero-cursor-pointer ms-3" onClick={()=>{if(sectionTypes){setSectionTypes(false)}else{setSectionTypes(true)}}}/>
+                    <CachedIcon className="hero-cursor-pointer ms-3" onClick={()=>reloadAll()} />
                 </h3>
               </div>
 

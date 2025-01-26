@@ -87,9 +87,7 @@ function App() {
             getUser();
         }
 
-        setLoginModal(new Modal('#loginModal', {
-            keyboard: false
-        }));
+        setLoginModal(new Modal('#loginModal', {keyboard: false}));
     }, []);
 
     useEffect(() => {

@@ -38,9 +38,14 @@ const AdminActor = (props) => {
     const handleClose = () => setOpen(false);
     const [actorIndex, setActorIndex] = useState(null);
     const { register, handleSubmit, formState: { errors }, reset, control } = useForm();
+    const bc = new BroadcastChannel('admin_movie');
 
     useEffect(() => {
         setRoute(reactLocation.pathname);
+
+        return () => {
+            bc.close();
+        }
     }, []);
     const { page, itemsPerPage, total, keywords } = usePaginatorStore();
 
@@ -64,7 +69,7 @@ const AdminActor = (props) => {
                 reset({
                     name: index === null ? null : actors[index].name,
                     country: index === null ? null : actors[index].country,
-                    birthday: index === null ? null : actors[index].birthday.split('T')[0]
+                    birthday: index === null || !actors[index].birthday ? null : actors[index].birthday.split('T')[0]
                 });
             }
             if (type === 2) {
@@ -87,6 +92,7 @@ const AdminActor = (props) => {
             const photo = await addFile(data.imageFile);
             if (photo['@id'])editActor({currentPhoto: photo['@id']}, actors[actorIndex].id);
         }
+        bc.postMessage({data:'actor'});
     }
 
     const searchByKeywords = (e) => {
@@ -139,7 +145,7 @@ const AdminActor = (props) => {
                                                             <TableCell>{actor.id}</TableCell>
                                                             <TableCell>{actor.name}</TableCell>
                                                             <TableCell>
-                                                                {actor.birthday !== null && moment(actor.birthday).format('DD/MM/YYYY')}
+                                                                {actor.birthday && moment(actor.birthday).format('DD/MM/YYYY')}
                                                             </TableCell>
                                                             <TableCell>{actor.country}</TableCell>
                                                             <TableCell>

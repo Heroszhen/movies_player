@@ -24,7 +24,7 @@ const useActorStore = create((set, get) => ({
                headers: getRequestHeaders(),
                body: JSON.stringify(data)
             });
-            const jsonResponse = await response.json();console.log(response.ok)
+            const jsonResponse = await response.json();
             if (response.ok && jsonResponse['id']) {
                 if(id === null) set((state) => ({actors: [jsonResponse, ...get().actors]}));
                 else {
