@@ -75,6 +75,18 @@ const useMovieStore = create((set, get) => ({
          }
          
       } catch(e) {}
+   },
+   deleteMovie: async (id) => {
+      try {
+         let response = await fetch(`/api/movies/${id}`, {
+            method: 'DELETE',
+            headers: getRequestHeaders()
+         });
+
+         if(response.ok) {
+            useMovieStore.setState((state) => ({movies: state.movies.filter(movie=>movie.id !== id)}));
+         }
+      } catch(e) {}
    }
 }));
 export default useMovieStore;

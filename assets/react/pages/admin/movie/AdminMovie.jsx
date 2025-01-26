@@ -23,8 +23,14 @@ import {
   MenuItem,
   FormControl,
   Select,
-  Autocomplete
+  Autocomplete,
+  AlertTitle
 } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { getActorsName } from '../../../stores/actorStore';
 import moment from "moment";
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -49,6 +55,11 @@ const AdminMovie = (props) => {
   const [movieIndex, setMovieIndex] = useState(null);
   const [typeIndex, setTypeIndex] = useState(null);
   const { register, handleSubmit, formState: { errors }, reset, control, getValues, setValue } = useForm();
+  const [openAlert, setOpenAlert] = useState(false);
+  const handleClickOpenAlert = () => {setOpenAlert(true);};
+  const handleCloseAlert = () => {setOpenAlert(false);setMovieIndex(null);};
+  const [alertTitle, setAlertTitle] = useState(null);
+  const [alertContent, setAlertContent] = useState(null);
 
   useEffect(() => {
     setRoute(reactLocation.pathname);
@@ -59,7 +70,7 @@ const AdminMovie = (props) => {
       setActors(results);
     })();
   }, []);
-  const { movies, emptyMovies, getMovies, videoTypes, editVideoType, editMovie } = useMovieStore();
+  const { movies, emptyMovies, getMovies, videoTypes, editVideoType, editMovie, deleteMovie } = useMovieStore();
   const { page, itemsPerPage, total, keywords } = usePaginatorStore();
 
   useEffect(() => {
@@ -126,6 +137,13 @@ const AdminMovie = (props) => {
       const photo = await addFile(data.imageFile);
       if (photo['@id'])editMovie({poster: photo['@id']}, movies[movieIndex].id);
     }
+  }
+
+  const alertDeleteMovie = (index) => {
+    setMovieIndex(index);
+    setAlertTitle(`Suppression`);
+    setAlertContent(`Voulez-vous supprimer la vidéo ${movies[index].id} : ${movies[index].title}`);
+    handleClickOpenAlert(true);
   }
 
   return (
@@ -221,7 +239,7 @@ const AdminMovie = (props) => {
                                   <TableCell>
                                       <PhotoIcon className="me-4 hero-cursor-pointer" onClick={()=>toggleForm(3, index)}  />
                                       <ModeEditIcon className="hero-cursor-pointer me-4" onClick={()=>toggleForm(2, index)} />
-                                      <DeleteForeverIcon className="hero-cursor-pointer hover:hero-color-ff0000" />
+                                      <DeleteForeverIcon className="hero-cursor-pointer hover:hero-color-ff0000" onClick={()=>alertDeleteMovie(index)} />
                                   </TableCell>
                               </TableRow>
                           );
@@ -438,6 +456,22 @@ const AdminMovie = (props) => {
             </form>
           </Box>
         </Modal>
+
+        <Dialog
+          open={openAlert}
+          onClose={handleCloseAlert}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{alertTitle}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">{alertContent}</DialogContentText>
+          </DialogContent>
+          <DialogActions className="d-flex justify-content-between align-items-center">
+            <Button onClick={()=>{deleteMovie(movies[movieIndex].id);handleCloseAlert()}} autoFocus color="error">Oui</Button>
+            <Button onClick={handleCloseAlert}>Non</Button>
+          </DialogActions>
+        </Dialog>
       </>
   );
 }

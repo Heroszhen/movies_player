@@ -62,11 +62,12 @@ const Nav = (props) => {
                     </ul>
                     <div className="d-flex">
                         {user === null &&
-                            <button type="button" className='btn btn-movify btn-sm' onClick={()=>setLogin(true)}>Connexion</button>
+                            <button type="button" className='btn btn-movify btn-sm me-2' onClick={()=>setLogin(true)}>Connexion</button>
                         }
                         {user !== null &&
-                            <button type="button" className='btn btn-outline-dark btn-sm' onClick={()=>logout()}>Déconnexion</button>
+                            <button type="button" className='btn btn-outline-dark btn-sm me-2' onClick={()=>logout()}>Déconnexion</button>
                         }
+                        <button type="button" className='btn btn-outline-info btn-sm text-white me-2' onClick={()=>location.reload()}>Actualiser</button>
                     </div>
                 </div>
             </div>
