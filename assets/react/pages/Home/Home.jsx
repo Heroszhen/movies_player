@@ -34,7 +34,7 @@ const Home = (props) => {
                 {
                     movies.map((movie, index) => {
                         return (
-                            <article className="wrap-image" key={index}>
+                            <article className="wrap-image mb-3" key={index}>
                                 {movie.poster && <img src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`} alt="" />}
                             </article>
                         )

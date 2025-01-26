@@ -1,13 +1,17 @@
 #video-player {
     .wrap-video {
-        height: calc(100vh - 169px);
+        &:not(:has(.wrap-photo)) {
+            height: calc(100vh - 169px);
+        }
         video, iframe {
             width: 100%;
             height: 100%;
             background-color: black;
         }
         @media (max-width: 767px) {
-            height: 45vh;
+            &:not(:has(.wrap-photo)) {
+                height: 45vh;
+            }
         }
     }
 }

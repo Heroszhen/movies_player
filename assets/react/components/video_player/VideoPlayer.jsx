@@ -17,14 +17,14 @@ const VideoPlayer = (props) => {
                     </video>
                 }
                 {props.video !== null && props.video.type.id === 4 && 
-                    <div>
-                        {props.video.poster && <img src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`} />}
-                        {!props.video.poster && <img src="/build/static/poster_not_found.png" />}
+                    <div className="wrap-photo text-center hero-cursor-pointer" onClick={()=>window.open(props.video.link)}>
+                        {props.video.poster && <img src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`} alt="" className="w-75" />}
+                        {!props.video.poster && <img src="/build/static/poster_not_found.png" alt="" className="w-75" />}
                     </div>
                 }
            </div>
            {props.video !== null &&
-                <section className="container mt-4">
+                <section className="container pt-4">
                     <div className="row">
                         <div className="col-12">
                             <h4 className="fw-bold">{props.video.title}</h4>
@@ -32,7 +32,7 @@ const VideoPlayer = (props) => {
                                 {props.video.duration} min  
                                 {props.video.releasedAt !== null && ' | ' + moment(props.video.releasedAt).format('DD/MM/YYYY')}
                             </small>
-                            <div className="wrap-actors mt-3">
+                            <div className="wrap-actors pt-3">
                                 {
                                     props.video.actors.map((actor, index)=> {
                                         return (
