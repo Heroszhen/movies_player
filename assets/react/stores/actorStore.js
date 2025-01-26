@@ -24,12 +24,12 @@ const useActorStore = create((set, get) => ({
                headers: getRequestHeaders(),
                body: JSON.stringify(data)
             });
-            response = await response.json();
-            if (response['@id']) {
-                if(id === null) set((state) => ({actors: [response, ...get().actors]}));
+            const jsonResponse = await response.json();console.log(response.ok)
+            if (response.ok && jsonResponse['id']) {
+                if(id === null) set((state) => ({actors: [jsonResponse, ...get().actors]}));
                 else {
                     set((state) => ({actors: get().actors.map(actor=>{
-                        if (actor.id === id)return response;
+                        if (actor.id === id)return jsonResponse;
                         return actor;
                     })}));
                 }

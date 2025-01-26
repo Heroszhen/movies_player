@@ -16,8 +16,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
+#[UniqueEntity('name')]
 #[ApiResource(
     order: ['name' => 'ASC'],
     normalizationContext: ['groups' => ['actor:read']],
@@ -44,7 +46,7 @@ class Actor
     #[Groups(['actor:write', 'actor:read', 'movie:read', 'actor:name'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
     #[Assert\NotBlank]
     #[Groups(['actor:write', 'actor:read', 'movie:read', 'actor:name'])]
     private ?string $name = null;

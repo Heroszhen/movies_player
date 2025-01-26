@@ -37,19 +37,20 @@ const useMovieStore = create((set, get) => ({
          });
 
          const jsonResponse = await response.json();
-         if (id === null) {
-            useMovieStore.setState((state) => ({
-               videoTypes: [...get().videoTypes, jsonResponse]
-            }));
-         } else {
-            useMovieStore.setState((state) => ({
-               videoTypes: state.videoTypes.map(type=>{
-                  if (type.id === id)return jsonResponse;
-                  return type;
-               })
-            }));
+         if (response.ok && jsonResponse['id']) {
+            if (id === null) {
+               useMovieStore.setState((state) => ({
+                  videoTypes: [...get().videoTypes, jsonResponse]
+               }));
+            } else {
+               useMovieStore.setState((state) => ({
+                  videoTypes: state.videoTypes.map(type=>{
+                     if (type.id === id)return jsonResponse;
+                     return type;
+                  })
+               }));
+            }
          }
-         
       } catch(e) {}
    },
    editMovie: async (data, id = null) => {
@@ -61,19 +62,20 @@ const useMovieStore = create((set, get) => ({
          });
 
          const jsonResponse = await response.json();
-         if (id === null) {
-            useMovieStore.setState((state) => ({
-               movies: [jsonResponse, ...state.movies]
-            }));
-         } else {
-            useMovieStore.setState((state) => ({
-               movies: state.movies.map(movie=>{
-                  if (movie.id === id)return jsonResponse;
-                  return movie;
-               })
-            }));
+         if (response.ok && jsonResponse['id']) {
+            if (id === null) {
+               useMovieStore.setState((state) => ({
+                  movies: [jsonResponse, ...state.movies]
+               }));
+            } else {
+               useMovieStore.setState((state) => ({
+                  movies: state.movies.map(movie=>{
+                     if (movie.id === id)return jsonResponse;
+                     return movie;
+                  })
+               }));
+            }
          }
-         
       } catch(e) {}
    },
    deleteMovie: async (id) => {

@@ -62,8 +62,8 @@ function App() {
                     const jsonResponse = await clonedResponse.json();
                     let msg = '';
                     if (jsonResponse.message)msg += jsonResponse.message + "<br>";
-                    if (jsonResponse.violation) {
-                        for(let entry of jsonResponse.violation) {
+                    if (jsonResponse.violations) {
+                        for(let entry of jsonResponse.violations) {
                             msg += `${entry['propertyPath']} : ${entry['message']}<br>`;
                         }
                     }
