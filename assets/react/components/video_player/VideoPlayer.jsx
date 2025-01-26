@@ -16,6 +16,12 @@ const VideoPlayer = (props) => {
                         <source src={props.video.link} type="video/mp4" />
                     </video>
                 }
+                {props.video !== null && props.video.type.id === 4 && 
+                    <div>
+                        {props.video.poster && <img src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`} />}
+                        {!props.video.poster && <img src="/build/static/poster_not_found.png" />}
+                    </div>
+                }
            </div>
            {props.video !== null &&
                 <section className="container mt-4">

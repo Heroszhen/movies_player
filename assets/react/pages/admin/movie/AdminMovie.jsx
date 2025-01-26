@@ -260,8 +260,8 @@ const AdminMovie = (props) => {
                                       {movie.createdAt !== null && moment(movie.createdAt).format('DD/MM/YYYY')}
                                   </TableCell>
                                   <TableCell>
-                                      <PhotoIcon className="me-4 hero-cursor-pointer" onClick={()=>toggleForm(3, index)}  />
-                                      <ModeEditIcon className="hero-cursor-pointer me-4" onClick={()=>toggleForm(2, index)} />
+                                      <PhotoIcon className="me-4 mb-4 hero-cursor-pointer" onClick={()=>toggleForm(3, index)}  />
+                                      <ModeEditIcon className="hero-cursor-pointer me-4 mb-4" onClick={()=>toggleForm(2, index)} />
                                       <DeleteForeverIcon className="hero-cursor-pointer hover:hero-color-ff0000" onClick={()=>alertDeleteMovie(index)} />
                                   </TableCell>
                               </TableRow>
