@@ -134,14 +134,14 @@ function App() {
             </main>
             {!reactLocation.pathname.includes('admin') && <Footer />}
 
-            <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel">
-                <div className="modal-dialog modal-dialog-centered">
+            <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel" onClick={()=>setLogin(false)}>
+                <div className="modal-dialog modal-dialog-centered" onClick={(e)=>e.stopPropagation()}>
                     <div className="modal-content">
                         <div className="modal-header justify-content-between align-items-center">
                             <h1 className="modal-title fs-5" id="loginModalLabel">Connecte-toi</h1>
                             <div className="hero-cursor-pointer" data-bs-dismiss="modal" aria-label="Close" onClick={()=>setLogin(false)}>X</div>
                         </div>
-                        <div className="modal-body" onClick={(e)=>e.stopPropagation()}>
+                        <div className="modal-body">
                             <div className="container-fluid">
                                 <form onSubmit={handleSubmit(onSubmit)} className="row">
                                     <div className="col-12 mb-3">
