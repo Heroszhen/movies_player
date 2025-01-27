@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import useMovieStore from "../../stores/movieStore";
 import useUserStore from "../../stores/userStore";
 import usePaginatorStore, { getPaginator, setRoute, setPage, setKeywords } from "../../stores/paginatorStore";
@@ -11,6 +11,7 @@ const Movies = (props) => {
     const { movies, getMovies } = useMovieStore();
     const reactLocation = useLocation();
     const navigate = useNavigate();
+    const searchRef = useRef(null);
 
     useEffect(() => {
         getPaginator(reactLocation.pathname);
@@ -26,9 +27,13 @@ const Movies = (props) => {
 
     const searchByKeywords = (e) => {
         const oldKeywords = keywords;
-        if (e.type === 'keyup' && e.keyCode === 13) {
-            setKeywords(e.target.value);
-            if (oldKeywords !== keywords && page === 1)getMovies(page, keywords, true);
+        if ((e.type === 'keyup' && e.keyCode === 13) || 
+            (e.type === 'change' && !e.nativeEvent.data) ||
+            e.type === 'click'
+        ) {
+            const newKeywords = searchRef.current.value;
+            setKeywords(newKeywords);
+            if (oldKeywords !== newKeywords && page === 1)getMovies(page, newKeywords, true);
             else setPage(1);
         }
     }
@@ -38,11 +43,18 @@ const Movies = (props) => {
             <div className="container pt-5 pb-5">
                 <div className="row">
                     <div className="col-12 mb-3">
-                        <input type="search" className="form-control form-control-sm" id="search" name="name"
-                            defaultValue={keywords}
-                            onChange={(e)=>searchByKeywords(e)}
-                            onKeyUp={(e)=>searchByKeywords(e)}
-                        />
+                        <div className="input-group input-group-sm mb-3">
+                            <input type="search" className="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-sm" id="search" name="name" 
+                                defaultValue={keywords}
+                                ref={searchRef}
+                                onChange={(e)=>searchByKeywords(e)}
+                                onKeyUp={(e)=>searchByKeywords(e)}
+                            />
+                            <span className="input-group-text hero-cursor-pointer" onClick={searchByKeywords}>
+                                <i class="bi bi-search"></i>
+                            </span>
+                        </div>
                     </div> 
                     {movies.length > 0 &&
                         <div className="col-12 mb-3">

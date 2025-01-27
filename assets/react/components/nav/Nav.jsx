@@ -54,7 +54,7 @@ const Nav = (props) => {
                         } */}
                         {user?.roles.includes('ROLE_ADMIN') &&
                             <li className="nav-item">
-                                <NavLink to="/admin/utilisateurs" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
+                                <NavLink to="/admin/videos" className={({ isActive }) => isActive ? "nav-link text-white  active" : "nav-link text-white "}>
                                     Admin
                                 </NavLink>
                             </li>
