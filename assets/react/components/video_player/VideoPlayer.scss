@@ -13,5 +13,11 @@
                 height: 45vh;
             }
         }
+
+        @media (max-width: 575px) {
+            &:not(:has(.wrap-photo)) {
+                height: 30vh;
+            }
+        }
     }
 }

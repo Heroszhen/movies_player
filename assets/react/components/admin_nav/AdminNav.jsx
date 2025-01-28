@@ -5,6 +5,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MovieCreationIcon from '@mui/icons-material/MovieCreation';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import HomeIcon from '@mui/icons-material/Home';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
 const AdminNav = (props, ref) => {
     return (
@@ -29,6 +30,12 @@ const AdminNav = (props, ref) => {
                 <MovieCreationIcon />
                 <div>Vidéos</div>
             </NavLink>
+            <a className="hero-cursor-pointer"
+                onClick={()=>props.toggleAdminNav()} 
+            >
+                <MenuOpenIcon />
+                <div>Fermer</div>
+            </a>
         </nav>
     );
 }

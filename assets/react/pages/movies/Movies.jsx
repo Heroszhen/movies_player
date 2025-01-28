@@ -52,7 +52,7 @@ const Movies = (props) => {
                                 onKeyUp={(e)=>searchByKeywords(e)}
                             />
                             <span className="input-group-text hero-cursor-pointer" onClick={searchByKeywords}>
-                                <i class="bi bi-search"></i>
+                                <i className="bi bi-search"></i>
                             </span>
                         </div>
                     </div> 

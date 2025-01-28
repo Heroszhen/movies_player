@@ -90,8 +90,9 @@ const AdminActor = (props) => {
         }
         if (formType === 2) {
             const photo = await addFile(data.imageFile);
-            if (photo['@id'])editActor({currentPhoto: photo['@id']}, actors[actorIndex].id);
+            if (photo['@id'])await editActor({currentPhoto: photo['@id']}, actors[actorIndex].id);
         }
+        handleClose();
         bc.postMessage({data:'actor'});
     }
 

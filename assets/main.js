@@ -23,7 +23,7 @@ if ('serviceWorker' in navigator && process.env.APP_ENV === 'prod') {
                 const installingWorker = registration.installing;
                 installingWorker.onstatechange = () => {
                     if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        window.location.reload();
+                        //window.location.reload();
                     }
                 };
             };

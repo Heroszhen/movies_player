@@ -153,6 +153,7 @@ const AdminMovie = (props) => {
       const photo = await addFile(data.imageFile);
       if (photo['@id'])editMovie({poster: photo['@id']}, movies[movieIndex].id);
     }
+    handleClose();
   }
 
   const alertDeleteMovie = (index) => {

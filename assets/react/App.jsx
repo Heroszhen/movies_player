@@ -124,11 +124,16 @@ function App() {
         setOpenAlert(false);
     };
 
+    const toggleAdminNav = () => {
+        mainRef.current.classList.toggle('admin-nav-close');
+        adminNavRef.current.classList.toggle('d-none');
+    }
+
     return (
         <>
             {!reactLocation.pathname.includes('admin') && <Banner />}
             {reactLocation.pathname.includes('admin') && <AdminHeader mainRef={mainRef} adminNavRef={adminNavRef} />}
-            {reactLocation.pathname.includes('admin') && <AdminNav ref={adminNavRef} />}
+            {reactLocation.pathname.includes('admin') && <AdminNav ref={adminNavRef} toggleAdminNav={toggleAdminNav} />}
             <main ref={mainRef}>
                 <RoutesWrapper />
             </main>
