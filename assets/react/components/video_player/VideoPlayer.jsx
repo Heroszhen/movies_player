@@ -1,15 +1,34 @@
+import { useRef } from 'react';
 import './VideoPlayer.scss';
 import parse from 'html-react-parser';
 import moment from "moment";
+import { useNavigate } from 'react-router-dom';
 
 const VideoPlayer = (props) => {
+    const navigate = useNavigate();
+    const wrapVideoRef = useRef(null);
+
+    const setFullScreen = () => {
+        const video = wrapVideoRef.current.querySelector('iframe') ?? wrapVideoRef.current.querySelector('video');
+        if (video) {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.mozRequestFullScreen) { // Firefox
+                video.mozRequestFullScreen();
+            } else if (video.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) { // IE/Edge
+                video.msRequestFullscreen();
+            }
+        }
+    }
 
     return (
         <section id="video-player" className="pb-5">
-           <div className="wrap-video hero-bg-color-000000" data-type={props.video?.type.id}>
-                {props.video !== null && props.video.type.id === 1 && parse(props.video.link)}
+           <div className="wrap-video hero-bg-color-000000" data-type={props.video?.type.id} ref={wrapVideoRef}>
+                {props.video !== null && [1, 5].includes(props.video.type.id) && parse(props.video.link)}
                 {props.video !== null && props.video.type.id === 2 &&
-                    <iframe src={props.video.link} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="unsafe-url" allowFullScreen></iframe>
+                    <iframe src={props.video.link} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="unsafe-url" webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
                 }
                 {props.video !== null && props.video.type.id === 3 && 
                     <video controls>
@@ -22,11 +41,16 @@ const VideoPlayer = (props) => {
                         {!props.video.poster && <img src="/build/static/poster_not_found.png" alt="" className="hero-width-400" />}
                     </div>
                 }
-                {props.video !== null && props.video.type.id === 5 && parse(props.video.link)}
            </div>
            {props.video !== null &&
                 <section className="container pt-4">
                     <div className="row">
+                        <div className="col-12 mb-1">
+                            <div className="d-flex justify-content-end align-items-center">
+                                <i className="bi bi-arrow-return-left hero-cursor-pointer fs-3 me-4" onClick={()=>navigate(-1)}></i>
+                                <i className="bi bi-arrows-fullscreen hero-cursor-pointer fs-3 me-4" onClick={()=>setFullScreen()}></i>
+                            </div>
+                        </div>
                         <div className="col-12">
                             <h4 className="fw-bold">{props.video.title}</h4>
                             <small>
@@ -34,7 +58,7 @@ const VideoPlayer = (props) => {
                             </small>
                             <div className="row mt-5">
                                 <div className="col-md-8 mb-3">
-                                    {props.video.poster && <img src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`} alt="" className="hero-width-400" />}
+                                    {props.video.poster && <img src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`} alt="" className="hero-width-500 mw-100" />}
                                 </div>
                                 <div className="col-md-4">
                                     <div className="wrap-actors border border-secondary-subtle p-4">

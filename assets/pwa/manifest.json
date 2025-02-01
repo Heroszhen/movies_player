@@ -18,5 +18,5 @@
     "theme_color": "linear-gradient(to bottom, #a11f3c 0%, #9352b3 100%)",
     "background_color": "#fff",
     "scope": "./",
-    "orientation": "portrait"
+    "orientation": "any"
   }
