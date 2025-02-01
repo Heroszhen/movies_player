@@ -19,5 +19,14 @@
                 height: 30vh;
             }
         }
+        &[data-type="5"] {
+            height: auto !important;
+            iframe {
+                margin: 0 auto;
+                width: 323px !important;
+                min-height: 740px !important;
+                border-radius: 10px;
+            }
+        }
     }
 }

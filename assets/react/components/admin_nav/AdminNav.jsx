@@ -10,7 +10,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 const AdminNav = (props, ref) => {
     return (
         <nav id="admin-nav" className="position-fixed bottom-0 start-0" ref={ref} {...props}>
-            <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>
+            <NavLink to="/videos" className={({ isActive }) => isActive ? "active" : ""}>
                 <HomeIcon />
                 <div>Accueil</div>
             </NavLink>

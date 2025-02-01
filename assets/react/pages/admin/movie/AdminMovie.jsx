@@ -141,17 +141,17 @@ const AdminMovie = (props) => {
 
   const onSubmit = async (data) => {
     if (formType === 1) {
-      editVideoType(data, typeIndex === null ? null : videoTypes[typeIndex].id);
+      await editVideoType(data, typeIndex === null ? null : videoTypes[typeIndex].id);
     }
     if (formType === 2) {
       const newActors = data.actors.map((id)=>`/api/actors/${id}`);
       const newTypes = `/api/video_types/${data.type}`;
       data = {...data, actors:newActors, type:newTypes, duration: parseInt(data.duration)};
-      editMovie(data, movieIndex === null ? null : movies[movieIndex].id);
+      await editMovie(data, movieIndex === null ? null : movies[movieIndex].id);
     }
     if (formType === 3) {
       const photo = await addFile(data.imageFile);
-      if (photo['@id'])editMovie({poster: photo['@id']}, movies[movieIndex].id);
+      if (photo['@id'])await editMovie({poster: photo['@id']}, movies[movieIndex].id);
     }
     handleClose();
   }
@@ -244,19 +244,23 @@ const AdminMovie = (props) => {
                                       {movie.poster && <img src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`} alt="" className="hero-width-170" />}
                                   </TableCell>
                                   <TableCell>
-                                    {
-                                      movie.actors.map((actor, index)=>{
-                                        return (
-                                          <Box component={'div'} key={index}>{actor.name}</Box>
-                                        )
-                                      })
+                                    {movie?.actors &&
+                                      <>
+                                        {
+                                          movie.actors.map((actor, index)=>{
+                                            return (
+                                              <Box component={'div'} key={index}>{actor.name}</Box>
+                                            )
+                                          })
+                                        }
+                                      </>
                                     }
                                   </TableCell>
                                   <TableCell>{movie.duration}</TableCell>
                                   <TableCell>
                                       {movie.releasedAt !== null && moment(movie.releasedAt).format('DD/MM/YYYY')}
                                   </TableCell>
-                                  <TableCell>{movie.type.name}</TableCell>
+                                  <TableCell>{movie.type?.name}</TableCell>
                                   <TableCell>
                                       {movie.createdAt !== null && moment(movie.createdAt).format('DD/MM/YYYY')}
                                   </TableCell>

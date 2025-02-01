@@ -86,7 +86,7 @@ const AdminActor = (props) => {
 
     const onSubmit = async (data) => {
         if (formType === 1) {
-           editActor(data, actorIndex === null ? null : actors[actorIndex].id);
+           await editActor(data, actorIndex === null ? null : actors[actorIndex].id);
         }
         if (formType === 2) {
             const photo = await addFile(data.imageFile);
