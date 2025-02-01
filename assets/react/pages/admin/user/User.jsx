@@ -106,7 +106,7 @@ const AdminUser = (props) => {
                         {
                             users.map((account, index)=>{
                                 return (
-                                    <div className="col-12 col-md-4 col-lg-3 text-center mb-4" key={index}>
+                                    <div className="col-12 col-md-6 col-lg-3 text-center mb-4" key={index}>
                                         <Card sx={{ width: '100%', margin:'auto' }}>
                                             <CardActionArea>
                                                 <CardMedia
