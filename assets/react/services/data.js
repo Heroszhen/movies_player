@@ -24,5 +24,7 @@ export const getModalStyle = () => {
         border: '2px solid #000',
         boxShadow: 24,
         p: 2,
+        maxHeight: '99%',
+        overflow: 'auto'
     };
 }

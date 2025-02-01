@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import useMovieStore, {getVideoTypes} from '../../../stores/movieStore';
-import usePaginatorStore, { getPaginator, setRoute, setPage, setKeywords } from '../../../stores/paginatorStore'; 
+import usePaginatorStore, { setRoute, setPage, setKeywords } from '../../../stores/paginatorStore'; 
 import { useLocation } from "react-router-dom";
 import useUserStore from '../../../stores/userStore';
 import {
@@ -42,6 +42,7 @@ import { addFile } from '../../../stores/fileStore';
 import { isImageFile } from '../../../services/utils';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CachedIcon from '@mui/icons-material/Cached';
+import FileForm from '../../../components/file_form/FileForm';
 
 const AdminMovie = (props) => {
   const reactLocation = useLocation();
@@ -68,7 +69,6 @@ const AdminMovie = (props) => {
     (async()=>{
       getVideoTypes();
       getListActors();
-      
     })();
     
     bc.onmessage = (event) => {
@@ -150,8 +150,7 @@ const AdminMovie = (props) => {
       await editMovie(data, movieIndex === null ? null : movies[movieIndex].id);
     }
     if (formType === 3) {
-      const photo = await addFile(data.imageFile);
-      if (photo['@id'])await editMovie({poster: photo['@id']}, movies[movieIndex].id);
+      if (data['@id'])await editMovie({poster: data['@id']}, movies[movieIndex].id);
     }
     handleClose();
   }
@@ -176,10 +175,10 @@ const AdminMovie = (props) => {
             <div className="row">
               <div className="col-12 mb-3">
                 <h3 className="d-flex align-items-center">
-                    Vidéos
-                    <AddCircleIcon className="hero-cursor-pointer ms-3" onClick={()=>toggleForm(2)} />
-                    <CategoryIcon className="hero-cursor-pointer ms-3" onClick={()=>{if(sectionTypes){setSectionTypes(false)}else{setSectionTypes(true)}}}/>
-                    <CachedIcon className="hero-cursor-pointer ms-3" onClick={()=>reloadAll()} />
+                  Vidéos
+                  <AddCircleIcon className="hero-cursor-pointer ms-3" onClick={()=>toggleForm(2)} />
+                  <CategoryIcon className="hero-cursor-pointer ms-3" onClick={()=>{if(sectionTypes){setSectionTypes(false)}else{setSectionTypes(true)}}}/>
+                  <CachedIcon className="hero-cursor-pointer ms-3" onClick={()=>reloadAll()} />
                 </h3>
               </div>
 
@@ -302,7 +301,8 @@ const AdminMovie = (props) => {
                 {formType===2 && `${movieIndex === null ? 'Ajouter' : 'Modifier'} une video`}
                 {formType===3 && `Ajouter une image`}
             </Typography>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {[1, 2].includes(formType) &&
+              <form onSubmit={handleSubmit(onSubmit)}>
                 {formType === 1 && (
                   <>
                     <TextField
@@ -439,7 +439,7 @@ const AdminMovie = (props) => {
                     />
                   </>
                 )}
-                {formType === 3 && (
+                {/* {formType === 3 && (
                   <>
                     <Box component="div" sx={{mb: 2}}>
                       <Controller
@@ -479,9 +479,13 @@ const AdminMovie = (props) => {
                       )}
                     </Box>
                   </>
-                )}
+                )} */}
                 <Button variant="contained" type='submit'>Envoyer</Button>
-            </form>
+              </form>
+            }
+            {formType === 3 &&
+              <FileForm setFile={onSubmit} />
+            }
           </Box>
         </Modal>
 
