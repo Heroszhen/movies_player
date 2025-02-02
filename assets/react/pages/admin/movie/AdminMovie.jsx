@@ -17,7 +17,6 @@ import {
   TableRow,
   Typography,
   Pagination,
-  Input,
   Grid,
   InputLabel,
   MenuItem,
@@ -38,8 +37,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CategoryIcon from '@mui/icons-material/Category';
 import { getModalStyle } from '../../../services/data';
 import { Controller, useForm } from 'react-hook-form';
-import { addFile } from '../../../stores/fileStore';
-import { isImageFile } from '../../../services/utils';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CachedIcon from '@mui/icons-material/Cached';
 import FileForm from '../../../components/file_form/FileForm';
@@ -439,53 +436,10 @@ const AdminMovie = (props) => {
                     />
                   </>
                 )}
-                {/* {formType === 3 && (
-                  <>
-                    <Box component="div" sx={{mb: 2}}>
-                      <Controller
-                        control={control}
-                        name={"imageFile"}
-                        rules={{ 
-                          required: "The picture is required",
-                          validate: (value) => {
-                            if (value) {
-                                if(!isImageFile(value)) return 'This is not an image';
-                            }
-                          },
-                        }}
-                        render={({ field: { value, onChange, ...field } }) => {
-                          return (
-                            <Input
-                              {...field}
-                              onChange={(event) => {
-                                  onChange(event.target.files[0]);
-                              }}
-                              type="file"
-                              id="imageFile"
-                              inputProps={{accept: "image/*"}}
-                              fullWidth="true"
-                            />
-                          );
-                        }}
-                      />
-                      {errors.imageFile && (
-                        <Typography
-                          variant="caption"
-                          color="error"
-                          sx={{ mt: 1, display: "block" }}
-                        >
-                          {errors.imageFile.message}
-                        </Typography>
-                      )}
-                    </Box>
-                  </>
-                )} */}
                 <Button variant="contained" type='submit'>Envoyer</Button>
               </form>
             }
-            {formType === 3 &&
-              <FileForm setFile={onSubmit} />
-            }
+            {formType === 3 && <FileForm setFile={onSubmit} />}
           </Box>
         </Modal>
 

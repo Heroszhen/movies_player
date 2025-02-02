@@ -18,15 +18,13 @@ import {
     TableRow,
     Typography,
     Pagination,
-    Input,
 } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import PhotoIcon from '@mui/icons-material/Photo';
 import { getModalStyle } from '../../../services/data';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import moment from "moment";
-import { addFile } from '../../../stores/fileStore';
-import { isImageFile } from '../../../services/utils';
+import FileForm from '../../../components/file_form/FileForm';
 
 const AdminActor = (props) => {
     const {actors, getActors, editActor} = useActorStore();
@@ -89,8 +87,7 @@ const AdminActor = (props) => {
            await editActor(data, actorIndex === null ? null : actors[actorIndex].id);
         }
         if (formType === 2) {
-            const photo = await addFile(data.imageFile);
-            if (photo['@id'])await editActor({currentPhoto: photo['@id']}, actors[actorIndex].id);
+            if (data['@id'])await editActor({currentPhoto: data['@id']}, actors[actorIndex].id);
         }
         handleClose();
         bc.postMessage({data:'actor'});
@@ -187,81 +184,84 @@ const AdminActor = (props) => {
                         {formType===1 && 'Editer un acteur'}
                         {formType===2 && 'Editer une photo de profil'}
                     </Typography>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        {formType === 1 && (
-                            <>
-                                <TextField
-                                    label='Nom *'
-                                    type='text'
-                                    fullWidth={true}
-                                    sx={{mb: 2}}
-                                    size="small"
-                                    {...register('name', {required: "Le champs est obligatoire"})}
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
-                                />
-                                <TextField
-                                    label='Pays'
-                                    type='text'
-                                    fullWidth={true}
-                                    sx={{mb: 2}}
-                                    size="small"
-                                    {...register('country')}
-                                />
-                                <TextField
-                                    label='Date de naissance'
-                                    type='date'
-                                    InputLabelProps={{shrink: true}}
-                                    fullWidth={true}
-                                    sx={{mb: 2}}
-                                    size="small"
-                                    {...register('birthday')}
-                                />
-                            </>
-                        )}
-                        {formType === 2 && (
-                            <>
-                                <Box component="div" sx={{mb: 2}}>
-                                    <Controller
-                                        control={control}
-                                        name={"imageFile"}
-                                        rules={{ 
-                                            required: "The picture is required",
-                                            validate: (value) => {
-                                                if (value) {
-                                                    if(!isImageFile(value)) return 'This is not an image';
-                                                }
-                                            },
-                                        }}
-                                        render={({ field: { value, onChange, ...field } }) => {
-                                            return (
-                                                <Input
-                                                    {...field}
-                                                    onChange={(event) => {
-                                                        onChange(event.target.files[0]);
-                                                    }}
-                                                    type="file"
-                                                    id="imageFile"
-                                                    inputProps={{accept: "image/*"}}
-                                                    fullWidth="true"
-                                                />
-                                            );
-                                        }}
+                    {[1].includes(formType) &&
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            {formType === 1 && (
+                                <>
+                                    <TextField
+                                        label='Nom *'
+                                        type='text'
+                                        fullWidth={true}
+                                        sx={{mb: 2}}
+                                        size="small"
+                                        {...register('name', {required: "Le champs est obligatoire"})}
+                                        error={!!errors.name}
+                                        helperText={errors.name?.message}
                                     />
-                                    {errors.imageFile && (
-                                        <Typography
-                                            variant="caption"
-                                            color="error"
-                                            sx={{ mt: 1, display: "block" }}
-                                        >
-                                            {errors.imageFile.message}
-                                        </Typography>
-                                    )}
-                                </Box>
-                            </>
-                        )}
-                        <Button variant="contained" type='submit'>Envoyer</Button>
-                    </form>
+                                    <TextField
+                                        label='Pays'
+                                        type='text'
+                                        fullWidth={true}
+                                        sx={{mb: 2}}
+                                        size="small"
+                                        {...register('country')}
+                                    />
+                                    <TextField
+                                        label='Date de naissance'
+                                        type='date'
+                                        InputLabelProps={{shrink: true}}
+                                        fullWidth={true}
+                                        sx={{mb: 2}}
+                                        size="small"
+                                        {...register('birthday')}
+                                    />
+                                </>
+                            )}
+                            {/* {formType === 2 && (
+                                <>
+                                    <Box component="div" sx={{mb: 2}}>
+                                        <Controller
+                                            control={control}
+                                            name={"imageFile"}
+                                            rules={{ 
+                                                required: "The picture is required",
+                                                validate: (value) => {
+                                                    if (value) {
+                                                        if(!isImageFile(value)) return 'This is not an image';
+                                                    }
+                                                },
+                                            }}
+                                            render={({ field: { value, onChange, ...field } }) => {
+                                                return (
+                                                    <Input
+                                                        {...field}
+                                                        onChange={(event) => {
+                                                            onChange(event.target.files[0]);
+                                                        }}
+                                                        type="file"
+                                                        id="imageFile"
+                                                        inputProps={{accept: "image/*"}}
+                                                        fullWidth="true"
+                                                    />
+                                                );
+                                            }}
+                                        />
+                                        {errors.imageFile && (
+                                            <Typography
+                                                variant="caption"
+                                                color="error"
+                                                sx={{ mt: 1, display: "block" }}
+                                            >
+                                                {errors.imageFile.message}
+                                            </Typography>
+                                        )}
+                                    </Box>
+                                </>
+                            )} */}
+                            <Button variant="contained" type='submit'>Envoyer</Button>
+                        </form>
+                    }
+                    {formType === 2 && <FileForm setFile={onSubmit} />}
                 </Box>
             </Modal>
         </>
