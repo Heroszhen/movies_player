@@ -1,20 +1,44 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import useUserStore, { setLogin } from "../../stores/userStore";
 import './Nav.scss';
+import { Tooltip } from 'bootstrap';
 
 const Nav = (props) => {
     const { user, setUser } = useUserStore();
     const collapseRef = useRef(null);
     const navigate = useNavigate();
     const reactLocation = useLocation();
+    const [deferredPrompt, setDeferredPrompt] = useState(null)
+
+    useEffect(() => {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach((tooltipTriggerEl) => {
+            new Tooltip(tooltipTriggerEl);
+        });
+
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event?.preventDefault()
+            setDeferredPrompt(event);
+        });
+    }, []);console.log(deferredPrompt)
 
     const logout = () => {
         setUser(null);
         localStorage.clear();
         navigate('/');
         window.location.reload();
+    }
+
+    const installApp = async () => {
+        if (deferredPrompt === null)return;
+
+        deferredPrompt.prompt();
+        const {outcome: outcome, platform:platform} = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+            setDeferredPrompt(null);
+        }
     }
 
     return (
@@ -60,14 +84,17 @@ const Nav = (props) => {
                             </li>
                         }
                     </ul>
-                    <div className="d-flex">
+                    <div className="d-flex align-items-center">
+                        <i className="bi bi-arrow-clockwise hero-cursor-pointer text-white me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Actualiser" onClick={()=>location.reload()}></i>
+                        {deferredPrompt !== null && 
+                            <i className="bi bi-download hero-cursor-pointer text-white me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Installer" onClick={()=>installApp()}></i>
+                        }
                         {user === null &&
-                            <button type="button" className='btn btn-movify btn-sm me-2' onClick={()=>setLogin(true)}>Connexion</button>
+                            <button type="button" className='btn btn-movify btn-sm ms-2' onClick={()=>setLogin(true)}>Connexion</button>
                         }
                         {user !== null &&
-                            <button type="button" className='btn btn-outline-dark btn-sm me-2' onClick={()=>logout()}>Déconnexion</button>
+                            <button type="button" className='btn btn-outline-dark btn-sm ms-2' onClick={()=>logout()}>Déconnexion</button>
                         }
-                        <button type="button" className='btn btn-outline-info btn-sm me-2' onClick={()=>location.reload()}>Actualiser</button>
                     </div>
                 </div>
             </div>

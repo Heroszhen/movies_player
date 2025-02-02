@@ -43,7 +43,7 @@ const VideoPlayer = (props) => {
                 }
            </div>
            {props.video !== null &&
-                <section className="container pt-4">
+                <section className="container pt-2">
                     <div className="row">
                         <div className="col-12 mb-1">
                             <div className="d-flex justify-content-end align-items-center">
