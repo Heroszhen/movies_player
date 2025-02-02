@@ -13,16 +13,24 @@ const Nav = (props) => {
     const [deferredPrompt, setDeferredPrompt] = useState(null)
 
     useEffect(() => {
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        tooltipTriggerList.forEach((tooltipTriggerEl) => {
-            new Tooltip(tooltipTriggerEl);
-        });
-
         window.addEventListener('beforeinstallprompt', (event) => {
             event?.preventDefault()
             setDeferredPrompt(event);
         });
-    }, []);console.log(deferredPrompt)
+
+        setTooltips();
+    }, []);
+
+    useEffect(() => {
+        setTooltips();
+    }, [deferredPrompt]);
+
+    const setTooltips = () => {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach((tooltipTriggerEl) => {
+            new Tooltip(tooltipTriggerEl);
+        });
+    }
 
     const logout = () => {
         setUser(null);
@@ -85,15 +93,15 @@ const Nav = (props) => {
                         }
                     </ul>
                     <div className="d-flex align-items-center">
-                        <i className="bi bi-arrow-clockwise hero-cursor-pointer text-white me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Actualiser" onClick={()=>location.reload()}></i>
+                        <i className="bi bi-arrow-clockwise hero-cursor-pointer text-white me-3" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Actualiser" onClick={()=>location.reload()}></i>
                         {deferredPrompt !== null && 
-                            <i className="bi bi-download hero-cursor-pointer text-white me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Installer" onClick={()=>installApp()}></i>
+                            <i className="bi bi-download hero-cursor-pointer text-white me-3" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Installer" onClick={()=>installApp()}></i>
                         }
                         {user === null &&
-                            <button type="button" className='btn btn-movify btn-sm ms-2' onClick={()=>setLogin(true)}>Connexion</button>
+                            <button type="button" className='btn btn-movify btn-sm ms-3' onClick={()=>setLogin(true)}>Connexion</button>
                         }
                         {user !== null &&
-                            <button type="button" className='btn btn-outline-dark btn-sm ms-2' onClick={()=>logout()}>Déconnexion</button>
+                            <button type="button" className='btn btn-outline-dark btn-sm ms-3' onClick={()=>logout()}>Déconnexion</button>
                         }
                     </div>
                 </div>

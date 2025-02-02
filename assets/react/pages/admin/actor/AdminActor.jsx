@@ -150,8 +150,8 @@ const AdminActor = (props) => {
                                                                 {actor.currentPhoto &&  <img src={`${process.env.AWS_FILE_PREFIX}${actor.currentPhoto.imageName}`} alt="" className="hero-width-120" />}
                                                             </TableCell>
                                                             <TableCell>
-                                                                <PhotoIcon className="me-4 hero-cursor-pointer"  onClick={()=>toggleForm(2, index)} />
-                                                                <ModeEditIcon className="hero-cursor-pointer" onClick={()=>toggleForm(1, index)} />
+                                                                <PhotoIcon className="me-4 mb-3 hero-cursor-pointer"  onClick={()=>toggleForm(2, index)} />
+                                                                <ModeEditIcon className="hero-cursor-pointer mb-3" onClick={()=>toggleForm(1, index)} />
                                                             </TableCell>
                                                         </TableRow>
                                                     );
