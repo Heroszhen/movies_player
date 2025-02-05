@@ -1,21 +1,26 @@
 import {create} from "zustand";
 
-const usePaginatorStore = create((set, get) => ({
-   page:1,
-   itemsPerPage: 20,
-   total:20,
-   route: null,
-   keywords: ''
-}));
+const content = {
+    page:1,
+    itemsPerPage: 20,
+    total:20,
+    route: null,
+    keywords: ''
+}
+
+const usePaginatorStore = create((set, get) => (content));
 export default usePaginatorStore;
 
 export const getPaginator = (route) => {
     let config = localStorage.getItem('paginator') ?? JSON.parse(localStorage.getItem('paginator'));
-    if (config === null)return;
 
+    if (config === null) {
+        usePaginatorStore.setState((state) => ({...content}));
+        config = usePaginatorStore.getState();
+    }
     if (typeof config === 'string')config = JSON.parse(localStorage.getItem('paginator'));
-    if (config.route !== route)return;
-    usePaginatorStore.setState((state) => ({...config}));
+    if (config.route !== route)usePaginatorStore.setState((state) => ({...content}));
+    else usePaginatorStore.setState((state) => ({...config}));
 }
 
 export const setPaginator = (config) => {

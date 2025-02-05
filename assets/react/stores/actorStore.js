@@ -49,3 +49,14 @@ export const getActorsName = async () => {
         return response['hydra:member'] ?? [];
     } catch(e) {}
 }
+
+export const getActorById = async (id) => {
+    try {
+        let response = await fetch(`/api/actors/${id}`, {
+           method: 'GET',
+           headers: getRequestHeaders()
+        });
+        jsonResponse = await response.json();
+        if (response.ok && jsonResponse['id'])return jsonResponse;
+    } catch(e) {}
+}

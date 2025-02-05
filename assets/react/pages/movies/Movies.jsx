@@ -17,13 +17,13 @@ const Movies = (props) => {
         getPaginator(reactLocation.pathname);
         setRoute(reactLocation.pathname);
     }, []);
-    const { page, itemsPerPage, total, keywords } = usePaginatorStore();
+    const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
 
     useEffect(() => {
-        if(user !== null) {
+        if(user !== null && route === reactLocation.pathname) {
             getMovies(page, keywords, true);
         }
-    }, [user, page]);
+    }, [user, page, route]);
 
     const searchByKeywords = (e) => {
         const oldKeywords = keywords;

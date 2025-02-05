@@ -17,6 +17,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\QueryParameter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
@@ -37,6 +38,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
             order: ['id' => 'DESC'],
             normalizationContext: ['groups' => 'movie:poster']
         ),
+        new GetCollection(
+            name: 'get_movies_by_actor', 
+            uriTemplate: '/movies/actor', 
+            order: ['createdAt' => 'DESC'],
+            parameters: [
+                'actors.id' => new QueryParameter(
+                    required: true,
+                    key: 'actors.id',
+                    schema: ['type' => 'integer']
+                )
+                ],
+            normalizationContext: ['groups' => 'movie:poster']
+        ),
         new Get(),
         new GetCollection(
             order: ['id' => 'DESC']
@@ -46,7 +60,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(security: "is_granted('ROLE_ADMIN')")
     ]
 )]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'actors.name' => 'ipartial'])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'actors.name' => 'ipartial', 'actors.id' => 'exact'])]
 class Movie
 {
     use TimestampableTrait;

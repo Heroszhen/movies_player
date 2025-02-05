@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import useActorStore from '../../../stores/actorStore';
 import useUserStore from '../../../stores/userStore';
-import usePaginatorStore, { setRoute, setPage, setKeywords } from '../../../stores/paginatorStore'; 
+import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore'; 
 import { useLocation } from "react-router-dom";
 import {
     Box,
@@ -39,19 +39,20 @@ const AdminActor = (props) => {
     const bc = new BroadcastChannel('admin_movie');
 
     useEffect(() => {
+        getPaginator(reactLocation.pathname);
         setRoute(reactLocation.pathname);
 
         return () => {
             bc.close();
         }
     }, []);
-    const { page, itemsPerPage, total, keywords } = usePaginatorStore();
+    const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
 
     useEffect(() => {
-        if (user !== null) {
+        if (user !== null && route === reactLocation.pathname) {
             getActors(page, keywords);
         }
-    }, [user, page, keywords]);
+    }, [user, page, keywords, route]);
 
     const handleChangePage = async (event, newPage) => {
         if(newPage !== page) {

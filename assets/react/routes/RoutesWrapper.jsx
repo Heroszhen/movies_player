@@ -7,6 +7,7 @@ import Contact from '../pages/contact/Contact.jsx';
 import Movies from "../pages/movies/Movies.jsx";
 import Movie from "../pages/movie/movie.jsx";
 import Actors from "../pages/actors/Actors.jsx";
+import Actor from "../pages/actor/actor.jsx";
 
 import AdminUser from "../pages/admin/user/User.jsx";
 import AdminActor from "../pages/admin/actor/AdminActor.jsx";
@@ -23,6 +24,7 @@ const RoutesWrapper = (props) => {
                     <Route path="/videos" element={<Movies />} />
                     <Route path="/video/:id" element={<Movie />} />
                     <Route path="/acteurs" element={<Actors />} />
+                    <Route path="/acteur/:id" element={<Actor />} />
                 </Route>
                 <Route element={<AdminGuard />}>
                     <Route path="/admin/utilisateurs" element={<AdminUser />} />

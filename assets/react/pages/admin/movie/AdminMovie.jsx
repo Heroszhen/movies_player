@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import useMovieStore, {getVideoTypes} from '../../../stores/movieStore';
-import usePaginatorStore, { setRoute, setPage, setKeywords } from '../../../stores/paginatorStore'; 
+import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore'; 
 import { useLocation } from "react-router-dom";
 import useUserStore from '../../../stores/userStore';
 import {
@@ -61,7 +61,9 @@ const AdminMovie = (props) => {
   const bc = new BroadcastChannel("admin_movie");
 
   useEffect(() => {
+    getPaginator(reactLocation.pathname);
     setRoute(reactLocation.pathname);
+
     emptyMovies(),
     (async()=>{
       getVideoTypes();
@@ -79,13 +81,13 @@ const AdminMovie = (props) => {
     }
   }, []);
   const { movies, emptyMovies, getMovies, videoTypes, editVideoType, editMovie, deleteMovie } = useMovieStore();
-  const { page, itemsPerPage, total, keywords } = usePaginatorStore();
+  const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
 
   useEffect(() => {
-    if (user !== null) {
+    if (user !== null && route === reactLocation.pathname) {
       getMovies(page, keywords);
     }
-  }, [user, page]);
+  }, [user, page, route]);
 
   const getListActors = async () => {
     const results = await getActorsName();

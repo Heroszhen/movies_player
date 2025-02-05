@@ -89,6 +89,21 @@ const useMovieStore = create((set, get) => ({
             useMovieStore.setState((state) => ({movies: state.movies.filter(movie=>movie.id !== id)}));
          }
       } catch(e) {}
+   },
+   getVideoByActor: async (page = 1, actorId, keywords = '') =>{
+      try {
+         let response = await fetch(`/api/movies/actor?page=${page}&actors.id=${actorId}`, {
+            method: 'GET',
+            headers: getRequestHeaders()
+         });
+         const jsonResponse = await response.json();
+         if (response.ok && jsonResponse['hydra:member']) {
+            useMovieStore.setState((state) => ({movies: jsonResponse['hydra:member']}));
+            setTotal(jsonResponse['hydra:totalItems']);
+         }
+   
+         return jsonResponse['hydra:member'];
+      } catch(e) {}
    }
 }));
 export default useMovieStore;
