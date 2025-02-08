@@ -89,7 +89,7 @@ const AdminMovie = (props) => {
     if (user !== null && route === reactLocation.pathname) {
       getMovies(page, keywords);
     }
-  }, [user, page, route]);
+  }, [user, page, route, keywords]);
 
   const getListActors = async () => {
     const results = await getActorsName();
@@ -97,11 +97,10 @@ const AdminMovie = (props) => {
   }
 
   const searchByKeywords = (e) => {
-    const oldKeywords = keywords;
     if (e.type === 'keyup' && e.keyCode === 13) {
-        setKeywords(e.target.value);
-        if (oldKeywords !== keywords && page === 1)getMovies(page, keywords);
-        else setPage(1);
+      setKeywords(e.target.value);
+    } else if (e.type === 'change' && e.target.value === '') {
+      setKeywords(e.target.value);
     }
   }
 
@@ -219,6 +218,16 @@ const AdminMovie = (props) => {
               }
 
               <div className="col-12 mb-3">
+                <Box component="div" sx={{mb: 2}}>
+                  <TextField
+                    type='search'
+                    fullWidth={true}
+                    placeholder='Rechercher...'
+                    size="small"
+                    onChange={(e)=>searchByKeywords(e)}
+                    onKeyUp={(e)=>searchByKeywords(e)}
+                  />
+              </Box>
                 <TableContainer component={Paper} >
                   <Table className="striped">
                     <TableHead sx={{ fontWeight: 'bold'}}>
