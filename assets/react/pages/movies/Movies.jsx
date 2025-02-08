@@ -42,32 +42,23 @@ const Movies = (props) => {
         <section id="movies" className="min-vh-100">
             <div className="container pt-5 pb-5">
                 <div className="row">
-                    <div className="col-12 mb-3">
-                        <div className="input-group input-group-sm mb-3">
-                            <input type="search" className="form-control" aria-label="Sizing example input"
-                                aria-describedby="inputGroup-sizing-sm" id="search" name="name" 
-                                defaultValue={keywords}
-                                ref={searchRef}
-                                onChange={(e)=>searchByKeywords(e)}
-                                onKeyUp={(e)=>searchByKeywords(e)}
-                            />
-                            <span className="input-group-text hero-cursor-pointer" onClick={searchByKeywords}>
-                                <i className="bi bi-search"></i>
-                            </span>
-                        </div>
-                    </div> 
-                    {movies.length > 0 &&
-                        <div className="col-12 mb-3">
-                            <div className='wrap-paginator'>
-                                <ResponsivePagination
-                                    current={page}
-                                    total={Math.ceil(total / itemsPerPage)}
-                                    onPageChange={setPage}
-                                    maxWidth={400}
+                    <div className="col-12 mb-4">
+                        <div className="d-flex justify-content-end">
+                            <div className="input-group input-group-sm mb-3 hero-width-300">
+                                <input type="search" className="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" id="search" name="name" 
+                                    defaultValue={keywords}
+                                    ref={searchRef}
+                                    onChange={(e)=>searchByKeywords(e)}
+                                    onKeyUp={(e)=>searchByKeywords(e)}
                                 />
+                                <span className="input-group-text hero-cursor-pointer" onClick={searchByKeywords}>
+                                    <i className="bi bi-search"></i>
+                                </span>
                             </div>
                         </div>
-                    }
+                    </div> 
+                   
                     {
                         movies.map((movie, index) => {
                             return (

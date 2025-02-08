@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 import moment from "moment";
 import { useNavigate } from 'react-router-dom';
 
+
 const VideoPlayer = (props) => {
     const navigate = useNavigate();
     const wrapVideoRef = useRef(null);
@@ -53,23 +54,38 @@ const VideoPlayer = (props) => {
                         </div>
                         <div className="col-12">
                             <h4 className="fw-bold">{props.video.title}</h4>
-                            <small>
-                                {props.video.releasedAt !== null && moment(props.video.releasedAt).format('DD/MM/YYYY')}
-                            </small>
                             <div className="row mt-5">
                                 <div className="col-md-8 mb-3">
                                     {props.video.poster && <img src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`} alt="" className="hero-width-500 mw-100" />}
+                                    <div className="mt-5">
+                                        {parse(props.video.description)}
+                                    </div>
                                 </div>
                                 <div className="col-md-4">
+                                    <div className="wrap-actors border border-secondary-subtle p-4 mb-4">
+                                        <h4 className="mb-4">Détails</h4>
+                                        <div className="mb-2">
+                                            <strong>Date de sortie : </strong>
+                                            {props.video.releasedAt && moment(props.video.releasedAt).format('DD/MM/YYYY')}
+                                        </div>
+                                        <div className="mb-2">
+                                            <strong>Durée : </strong>
+                                            {props.video.duration} min
+                                        </div>
+                                        <div className="mb-2">
+                                            <strong>Date d'ajout : </strong>
+                                            {props.video.createdAt && moment(props.video.createdAt).format('DD/MM/YYYY')}
+                                        </div>
+                                    </div>
                                     <div className="wrap-actors border border-secondary-subtle p-4">
-                                        <h5>Distributions</h5>
+                                        <h4 className="mb-4">Distributions</h4>
                                         {props.video?.actors &&
                                             <>
                                                 {
                                                     props.video.actors.map((actor, index)=> {
                                                         return (
                                                             <div className="actor mb-3 d-flex align-items-center" key={index}>
-                                                                <div className="d-flex justify-content-ceter align-items-center hero-width-60 me-2">
+                                                                <div className="d-flex justify-content-ceter align-items-center hero-width-150 me-2">
                                                                     {actor.currentPhoto && <img src={`${process.env.AWS_FILE_PREFIX}${actor.currentPhoto.imageName}`} alt="" />}
                                                                 </div>
                                                                 <div className="hero-cursor-pointer">{actor.name}</div>
