@@ -12,13 +12,13 @@ export const getRequestHeaders = (isFormData = false) => {
     return headers;
 }
 
-export const getModalStyle = () => {
+export const getModalStyle = (width = 600) => {
     return {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 600,
+        width: width,
         maxWidth: '95%',
         bgcolor: 'background.paper',
         border: '2px solid #000',
@@ -28,3 +28,4 @@ export const getModalStyle = () => {
         overflow: 'auto'
     };
 }
+

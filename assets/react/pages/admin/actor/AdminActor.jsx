@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import useActorStore from '../../../stores/actorStore';
 import useUserStore from '../../../stores/userStore';
@@ -18,13 +18,15 @@ import {
     TableRow,
     Typography,
     Pagination,
+    Grid
 } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import PhotoIcon from '@mui/icons-material/Photo';
-import { getModalStyle } from '../../../services/data';
-import { useForm } from 'react-hook-form';
+import { getModalStyle, editorToolbarConfig } from '../../../services/data';
+import { useForm, Controller } from 'react-hook-form';
 import moment from "moment";
 import FileForm from '../../../components/file_form/FileForm';
+import Editor from '../../../components/editor/Editor';
 
 const AdminActor = (props) => {
     const {actors, getActors, editActor} = useActorStore();
@@ -35,9 +37,10 @@ const AdminActor = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [actorIndex, setActorIndex] = useState(null);
-    const { register, handleSubmit, formState: { errors }, reset, control } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset, getValues } = useForm();
     const bc = new BroadcastChannel('admin_movie');
-
+    const editorRef = useRef(null);
+   
     useEffect(() => {
         getPaginator(reactLocation.pathname);
         setRoute(reactLocation.pathname);
@@ -60,7 +63,7 @@ const AdminActor = (props) => {
         }
     };
 
-    const toggleForm = (type = null, index = null) => {
+    const toggleForm = async (type = null, index = null) => {
         if (type === null) {
             handleClose();
         } else {
@@ -68,15 +71,10 @@ const AdminActor = (props) => {
                 reset({
                     name: index === null ? null : actors[index].name,
                     country: index === null ? null : actors[index].country,
-                    birthday: index === null || !actors[index].birthday ? null : actors[index].birthday.split('T')[0]
+                    birthday: index === null || !actors[index].birthday ? null : actors[index].birthday.split('T')[0],
+                    description: index === null ? null : actors[index].description,
                 });
             }
-            if (type === 2) {
-                reset({
-                    imageFile: null
-                });
-            }
-            
             handleOpen();
         }
         setFormType(type);
@@ -85,7 +83,8 @@ const AdminActor = (props) => {
 
     const onSubmit = async (data) => {
         if (formType === 1) {
-           await editActor(data, actorIndex === null ? null : actors[actorIndex].id);
+            data.description = editorRef.current.getValue();
+            await editActor(data, actorIndex === null ? null : actors[actorIndex].id);
         }
         if (formType === 2) {
             if (data['@id'])await editActor({currentPhoto: data['@id']}, actors[actorIndex].id);
@@ -102,6 +101,7 @@ const AdminActor = (props) => {
         }
     }
 
+    
     return (
         <>
             <section id="admin-user" className="vidoe">
@@ -180,7 +180,7 @@ const AdminActor = (props) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={getModalStyle()}>
+                <Box sx={getModalStyle(1200)}>
                     <Typography id="modal-modal-title" variant="h6" component="h2" sx={{mb: 4}}>
                         {formType===1 && 'Editer un acteur'}
                         {formType===2 && 'Editer une photo de profil'}
@@ -189,76 +189,50 @@ const AdminActor = (props) => {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             {formType === 1 && (
                                 <>
-                                    <TextField
-                                        label='Nom *'
-                                        type='text'
-                                        fullWidth={true}
-                                        sx={{mb: 2}}
-                                        size="small"
-                                        {...register('name', {required: "Le champs est obligatoire"})}
-                                        error={!!errors.name}
-                                        helperText={errors.name?.message}
-                                    />
-                                    <TextField
-                                        label='Pays'
-                                        type='text'
-                                        fullWidth={true}
-                                        sx={{mb: 2}}
-                                        size="small"
-                                        {...register('country')}
-                                    />
-                                    <TextField
-                                        label='Date de naissance'
-                                        type='date'
-                                        InputLabelProps={{shrink: true}}
-                                        fullWidth={true}
-                                        sx={{mb: 2}}
-                                        size="small"
-                                        {...register('birthday')}
-                                    />
-                                </>
-                            )}
-                            {/* {formType === 2 && (
-                                <>
-                                    <Box component="div" sx={{mb: 2}}>
-                                        <Controller
-                                            control={control}
-                                            name={"imageFile"}
-                                            rules={{ 
-                                                required: "The picture is required",
-                                                validate: (value) => {
-                                                    if (value) {
-                                                        if(!isImageFile(value)) return 'This is not an image';
-                                                    }
-                                                },
-                                            }}
-                                            render={({ field: { value, onChange, ...field } }) => {
-                                                return (
-                                                    <Input
-                                                        {...field}
-                                                        onChange={(event) => {
-                                                            onChange(event.target.files[0]);
-                                                        }}
-                                                        type="file"
-                                                        id="imageFile"
-                                                        inputProps={{accept: "image/*"}}
-                                                        fullWidth="true"
-                                                    />
-                                                );
-                                            }}
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={12} md={4}>
+                                            <TextField
+                                                label='Nom *'
+                                                type='text'
+                                                fullWidth={true}
+                                                sx={{mb: 2}}
+                                                size="small"
+                                                {...register('name', {required: "Le champs est obligatoire"})}
+                                                error={!!errors.name}
+                                                helperText={errors.name?.message}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={4}>
+                                            <TextField
+                                                label='Pays'
+                                                type='text'
+                                                fullWidth={true}
+                                                sx={{mb: 2}}
+                                                size="small"
+                                                {...register('country')}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={4}>
+                                            <TextField
+                                                label='Date de naissance'
+                                                type='date'
+                                                InputLabelProps={{shrink: true}}
+                                                fullWidth={true}
+                                                sx={{mb: 2}}
+                                                size="small"
+                                                {...register('birthday')}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Box sx={{mb: 2}}>
+                                        <Editor 
+                                            ref={editorRef}
+                                            label="Description"
+                                            value={getValues('description')}
                                         />
-                                        {errors.imageFile && (
-                                            <Typography
-                                                variant="caption"
-                                                color="error"
-                                                sx={{ mt: 1, display: "block" }}
-                                            >
-                                                {errors.imageFile.message}
-                                            </Typography>
-                                        )}
                                     </Box>
                                 </>
-                            )} */}
+                            )}
                             <Button variant="contained" type='submit'>Envoyer</Button>
                         </form>
                     }

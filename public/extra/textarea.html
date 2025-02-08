@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      #cke_1_contents {
+        min-height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea></textarea>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/libs/ckeditor_4_19_0/ckeditor.js"></script>
+    <script src="/libs/ckeditor_4_19_0/adapters/jquery.js"></script>
+    <script>
+        $('textarea').ckeditor();
+        function setValue(value) {
+            $('textarea').val(value);
+        }
+        function getValue() {
+            return $('textarea').val();
+        }
+    </script>
+  </body>
+</html>

@@ -70,6 +70,10 @@ class Actor
     #[Groups(['actor:write'])]
     private Collection $movies;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['actor:write', 'actor:read', 'movie:read'])]
+    private ?string $description = null;
+
     public function __construct()
     {
         $this->movies = new ArrayCollection();
@@ -151,6 +155,18 @@ class Actor
         if ($this->movies->removeElement($movie)) {
             $movie->removeActor($this);
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
