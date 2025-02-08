@@ -3,5 +3,6 @@ App\Entity\Actor:
     name: <lastName()> <firstName()>
     birthday: <dateTimeInInterval('-200 years', '-15 years')>
     country: <country()>
+    description: <paragraph()>
   
   actor_{1..200} (extends actor):

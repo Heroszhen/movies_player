@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react';
-import useMovieStore, {getVideoTypes} from '../../../stores/movieStore';
+import { useState, useEffect, useRef } from 'react';
+import useMovieStore, { getVideoTypes } from '../../../stores/movieStore';
 import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore'; 
 import { useLocation } from "react-router-dom";
 import useUserStore from '../../../stores/userStore';
@@ -40,6 +40,7 @@ import { Controller, useForm } from 'react-hook-form';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CachedIcon from '@mui/icons-material/Cached';
 import FileForm from '../../../components/file_form/FileForm';
+import Editor from '../../../components/editor/Editor';
 
 const AdminMovie = (props) => {
   const reactLocation = useLocation();
@@ -52,13 +53,14 @@ const AdminMovie = (props) => {
   const [sectionTypes, setSectionTypes] = useState(false);
   const [movieIndex, setMovieIndex] = useState(null);
   const [typeIndex, setTypeIndex] = useState(null);
-  const { register, handleSubmit, formState: { errors }, reset, control, getValues, setValue } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, control, getValues } = useForm();
   const [openAlert, setOpenAlert] = useState(false);
   const handleClickOpenAlert = () => {setOpenAlert(true);};
   const handleCloseAlert = () => {setOpenAlert(false);setMovieIndex(null);};
   const [alertTitle, setAlertTitle] = useState(null);
   const [alertContent, setAlertContent] = useState(null);
   const bc = new BroadcastChannel("admin_movie");
+  const editorRef = useRef(null);
 
   useEffect(() => {
     getPaginator(reactLocation.pathname);
@@ -123,7 +125,8 @@ const AdminMovie = (props) => {
           duration: index === null ? 1 : movies[index].duration,
           link: index === null ? '' : movies[index].link,
           type: index === null ? 1 : movies[index].type.id,
-          actors: index === null ? [] : movies[index].actors.map(actor=>actor.id)
+          actors: index === null ? [] : movies[index].actors.map(actor=>actor.id),
+          description: index === null ? null : movies[index].description
         });
       }
       if (type === 3) {
@@ -145,7 +148,7 @@ const AdminMovie = (props) => {
     if (formType === 2) {
       const newActors = data.actors.map((id)=>`/api/actors/${id}`);
       const newTypes = `/api/video_types/${data.type}`;
-      data = {...data, actors:newActors, type:newTypes, duration: parseInt(data.duration)};
+      data = {...data, actors:newActors, type:newTypes, duration: parseInt(data.duration), description: editorRef.current.getValue()};
       await editMovie(data, movieIndex === null ? null : movies[movieIndex].id);
     }
     if (formType === 3) {
@@ -294,7 +297,7 @@ const AdminMovie = (props) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-          <Box sx={getModalStyle()} onClick={(e)=>e.stopPropagation()}>
+          <Box sx={getModalStyle(800)} onClick={(e)=>e.stopPropagation()}>
             <Typography id="modal-modal-title" variant="h6" component="h2" sx={{mb: 4}}>
                 {formType===1 && `Editer un type`}
                 {formType===2 && `${movieIndex === null ? 'Ajouter' : 'Modifier'} une video`}
@@ -347,83 +350,87 @@ const AdminMovie = (props) => {
                           {...register('duration')}
                         />
                       </Grid>
-                    </Grid>
-                    <Box sx={{mb: 4}}>
-                      <Controller
-                        control={control}
-                        name={"actors"}
-                        rules={{
-                          validate: (value) => value.length > 0 || "Il faut au moins un acteur", // Custom validation rule
-                        }}
-                        render={({ field }) => (
-                          <Autocomplete
-                            multiple
-                            sx={{ mb: 2 }}
-                            options={actors}
-                            getOptionLabel={(option) => option.name}
-                            onChange={(event, newValue) => {
-                              field.onChange(newValue.map((item) => item.id));
+                      <Grid item xs={12} md={6}>
+                        <Box sx={{mb: 4}}>
+                          <Controller
+                            control={control}
+                            name={"actors"}
+                            rules={{
+                              validate: (value) => value.length > 0 || "Il faut au moins un acteur", // Custom validation rule
                             }}
-                            value={actors.filter((actor) => field.value.includes(actor.id))}
-                            renderOption={(props, option) => (
-                              <Box component="li" {...props} display="flex" alignItems="center" key={option.id}>
-                                {option.currentPhoto &&
-                                  <img
-                                    src={`${process.env.AWS_FILE_PREFIX}${option.currentPhoto.imageName}`}
-                                    alt={option.name}
-                                    style={{ width: 60, marginRight: 10 }}
+                            render={({ field }) => (
+                              <Autocomplete
+                                multiple
+                                sx={{ mb: 2 }}
+                                options={actors}
+                                getOptionLabel={(option) => option.name}
+                                onChange={(event, newValue) => {
+                                  field.onChange(newValue.map((item) => item.id));
+                                }}
+                                value={actors.filter((actor) => field.value.includes(actor.id))}
+                                renderOption={(props, option) => (
+                                  <Box component="li" {...props} display="flex" alignItems="center" key={option.id}>
+                                    {option.currentPhoto &&
+                                      <img
+                                        src={`${process.env.AWS_FILE_PREFIX}${option.currentPhoto.imageName}`}
+                                        alt={option.name}
+                                        style={{ width: 60, marginRight: 10 }}
+                                      />
+                                    }
+                                    <span>{option.name}</span>
+                                  </Box>
+                                )}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Acteurs *"
+                                    error={!!errors.actors}
+                                    helperText={errors.actors?.message}
                                   />
-                                }
-                                <span>{option.name}</span>
-                              </Box>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                label="Acteurs *"
-                                error={!!errors.actors}
-                                helperText={errors.actors?.message}
+                                )}
                               />
                             )}
                           />
-                        )}
-                      />
-                    </Box>
-                    <FormControl 
-                      fullWidth
-                      error={!!errors.type}
-                      sx={{ mb: 4 }}
-                    >
-                      <InputLabel id="demo-simple-select-label">Type</InputLabel>
-                      <Controller
-                        name="type"
-                        control={control}
-                        rules={{ required: 'Le champ est obligatoire' }} // Validation rules
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            label="Type"
-                          >
-                            {videoTypes.map((type) => (
-                              <MenuItem value={type.id} key={type.id}>
-                                {type.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        )}
-                      />
-                      {errors.type && (
-                        <Typography
-                          variant="caption"
-                          color="error"
-                          sx={{ mt: 1, ml: 2, display: 'block' }}
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <FormControl 
+                          fullWidth
+                          error={!!errors.type}
+                          sx={{ mb: 4 }}
                         >
-                          {errors.type.message}
-                        </Typography>
-                      )}
-                    </FormControl>
+                          <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                          <Controller
+                            name="type"
+                            control={control}
+                            rules={{ required: 'Le champ est obligatoire' }} // Validation rules
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                label="Type"
+                              >
+                                {videoTypes.map((type) => (
+                                  <MenuItem value={type.id} key={type.id}>
+                                    {type.name}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            )}
+                          />
+                          {errors.type && (
+                            <Typography
+                              variant="caption"
+                              color="error"
+                              sx={{ mt: 1, ml: 2, display: 'block' }}
+                            >
+                              {errors.type.message}
+                            </Typography>
+                          )}
+                        </FormControl>
+                      </Grid>
+                    </Grid>
                     <TextField
                       label="Lien *"
                       multiline
@@ -436,6 +443,13 @@ const AdminMovie = (props) => {
                       error={!!errors.link}
                       helperText={errors.link?.message}
                     />
+                    <Box sx={{mb: 2}}>
+                      <Editor 
+                          ref={editorRef}
+                          label="Description"
+                          value={getValues('description')}
+                      />
+                  </Box>
                   </>
                 )}
                 <Button variant="contained" type='submit'>Envoyer</Button>

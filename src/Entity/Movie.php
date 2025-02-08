@@ -105,6 +105,7 @@ class Movie
     private ?string $link = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['movie:read', 'movie:write'])]
     private ?string $description = null;
 
     public function __construct()
