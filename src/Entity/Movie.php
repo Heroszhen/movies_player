@@ -48,7 +48,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
                     key: 'actors.id',
                     schema: ['type' => 'integer']
                 )
-                ],
+            ],
             normalizationContext: ['groups' => 'movie:poster']
         ),
         new Get(),

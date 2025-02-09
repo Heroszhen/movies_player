@@ -47,7 +47,7 @@ const Actors = (props) => {
                                                 {item.currentPhoto &&  <img src={`${process.env.AWS_FILE_PREFIX}${item.currentPhoto.imageName}`} alt="" className="card-img-top" />}
                                                 {!item.currentPhoto &&  <img src="/build/static/poster_not_found.png" alt="" className="card-img-top" />}
                                                 <div className="card-body hero-bg-color-edf5f7 p-4">
-                                                    <NavLink to={'/acteur/' + item.id} className="text-dark text-decoration-none fs-3" onClick={(e)=>viewOneActor(e, index)}>
+                                                    <NavLink to={'/acteur/' + item.id} className="hero-color-212529 text-decoration-none fs-3 hover:hero-color-9352b3" onClick={(e)=>viewOneActor(e, index)}>
                                                         {item.name}
                                                     </NavLink>
                                                 </div>
@@ -60,7 +60,7 @@ const Actors = (props) => {
                     </div>
                 </section>
                 {actorIndex !== null &&
-                    <section id="list-actors" >
+                    <section>
                         <ActorDetail id={actorIndex === null ? null : actors[actorIndex].id} />
                     </section>
                 }

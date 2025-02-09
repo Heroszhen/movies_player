@@ -1,33 +1,49 @@
 import { useState, useEffect } from 'react';
 import { getActorById } from '../../stores/actorStore';
 import useMovieStore from '../../stores/movieStore';
-import usePaginatorStore, { getPaginator, setRoute, setPage } from '../../stores/paginatorStore';
-import { useLocation } from "react-router-dom";
+import { getPaginator2Stores } from '../../stores/paginator2Store';
 
 const ActorDetail = (props) => {
-    const { getVideoByActor, emptyMovies, movies } = useMovieStore();
-    const reactLocation = useLocation();
+    const { getVideoByActor, movies } = useMovieStore();
     const [actor, setActor] = useState(null);
-    const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
+    const usePaginator2Store = getPaginator2Stores('actor_detail');
+    const { resetPaginator, page } = usePaginator2Store();
 
     useEffect(() => {
-        getPaginator(reactLocation.pathname);
-        setRoute(reactLocation.pathname);
+        resetPaginator();
+        (async()=>{
+            const response = await getActorById(props.id);
+            setActor(response);
+        })();
     }, []);
-    
+   
     useEffect(() => {
         (async()=>{
-            if (props.id !== null && route === reactLocation.pathname) {
+            if (props.id !== null) {
                 getVideoByActor(page, props.id);
-                const response = await getActorById(props.id);
-                setActor(response);
             }
         })();
-    }, [page, route]);
+    }, [page]);
 
     return (
         <section id="actor-detail">
-            {movies.length}
+            <div className="container">
+                <div className="row">
+                    {actor && 
+                        <>
+                            <div className="col-md-4 mb-3">
+                                {actor.currentPhoto && <img src={`${process.env.AWS_FILE_PREFIX}${actor.currentPhoto.imageName}`} alt="" className="hero-shadow-10-10-40-0-rgba(52,58,64,.25)" />}
+                            </div>
+                            <div className="col-md-5 mb-3">
+
+                            </div>
+                            <div className="col-md-3 mb-3">
+
+                            </div>
+                        </>
+                    }
+                </div>
+            </div>
         </section>
     );
 }

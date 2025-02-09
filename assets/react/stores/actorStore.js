@@ -56,7 +56,7 @@ export const getActorById = async (id) => {
            method: 'GET',
            headers: getRequestHeaders()
         });
-        jsonResponse = await response.json();
+        const jsonResponse = await response.json();
         if (response.ok && jsonResponse['id'])return jsonResponse;
     } catch(e) {}
 }

@@ -1,6 +1,6 @@
 import {create} from "zustand";
 
-const content = {
+export const content = {
     page:1,
     itemsPerPage: 20,
     total:20,

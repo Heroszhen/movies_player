@@ -27,5 +27,6 @@ export default defineConfig({
         [/^hero-zindex-(\d+)$/, ([, index]) => ({ 'z-index': index })],
         [/^hero-maxh-(\d+)$/, ([, size]) => ({ 'max-height': `${size}px` })],
         [/^hero-minh-(\d+)$/, ([, size]) => ({ 'min-height': `${size}px` })],
+        [/^hero-shadow-(\d+)-(\d+)-(\d+)-(\d+)-(.+)$/, ([, offsetX, offsetY, blurRadius, spreadRadius, color]) => ({ 'box-shadow': `${offsetX}px ${offsetY}px ${blurRadius}px ${spreadRadius}px ${color}` })],
     ]
 })
