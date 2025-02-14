@@ -57,9 +57,11 @@ const VideoPlayer = (props) => {
                             <div className="row mt-5">
                                 <div className="col-md-8 mb-3">
                                     {props.video.poster && <img src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`} alt="" className="hero-width-500 mw-100" />}
-                                    <div className="mt-5">
-                                        {parse(props.video.description)}
-                                    </div>
+                                    {props.video.description &&
+                                        <div className="mt-5">
+                                            {parse(props.video.description)}
+                                        </div>
+                                    }
                                 </div>
                                 <div className="col-md-4">
                                     <div className="wrap-actors border border-secondary-subtle p-4 mb-4">

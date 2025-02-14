@@ -14,6 +14,7 @@ import useMovieStore from './stores/movieStore';
 import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
 import Footer from './components/footer/Footer';
+import Notifier from './components/notifier/Notifier';
 
 //admin
 import AdminNav from './components/admin_nav/AdminNav';
@@ -191,6 +192,8 @@ function App() {
                     {parse(alertMessages)}
                 </Alert>
             </Snackbar>
+
+            <Notifier pathname={reactLocation.pathname} user={user} />
         </>
     )
 }

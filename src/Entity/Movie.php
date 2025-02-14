@@ -108,6 +108,9 @@ class Movie
     #[Groups(['movie:read', 'movie:write'])]
     private ?string $description = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $notified = null;
+
     public function __construct()
     {
         $this->actors = new ArrayCollection();
@@ -222,6 +225,18 @@ class Movie
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function isNotified(): ?bool
+    {
+        return $this->notified;
+    }
+
+    public function setNotified(?bool $notified): static
+    {
+        $this->notified = $notified;
 
         return $this;
     }
