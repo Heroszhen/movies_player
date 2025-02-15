@@ -120,7 +120,7 @@ const AdminMovie = (props) => {
       if (type === 2) {
         reset({
           title: index === null ? '' : movies[index].title,
-          releasedAt: index === null || movies[index].releasedAt === null ? null : movies[index].releasedAt.split('T')[0],
+          releasedAt: index === null || !movies[index].releasedAt ? null : movies[index].releasedAt.split('T')[0],
           duration: index === null ? 1 : movies[index].duration,
           link: index === null ? '' : movies[index].link,
           type: index === null ? 1 : movies[index].type.id,
