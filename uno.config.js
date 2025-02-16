@@ -2,6 +2,12 @@ import { defineConfig, presetUno } from 'unocss'
 
 export default defineConfig({
   presets: [presetUno()],
+  variants: [
+    (matcher) => matcher.startsWith('actived:') ? {
+      matcher: matcher.slice(8), // Remove 'active:' prefix
+      selector: (s) => `${s}.actived`, // Apply styles when "active" class exists
+    } : undefined,
+  ],
   rules: [
     [/^hero-bg-color-(.+)$/, ([, color]) => ({ 'background-color': `#${color}` })],
     [/^hero-color-(.+)$/, ([, color]) => ({ 'color': `#${color}` })],

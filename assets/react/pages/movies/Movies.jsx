@@ -44,7 +44,7 @@ const Movies = (props) => {
                 <div className="row">
                     <div className="col-12 mb-4">
                         <div className="d-flex justify-content-end">
-                            <div className="input-group input-group-sm mb-3 hero-width-300">
+                            <div className="input-group input-group-sm md:hero-width-300">
                                 <input type="search" className="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="search" name="name" 
                                     defaultValue={keywords}

@@ -7,7 +7,7 @@ const Notifier = (props) => {
   const [message, setMessage] = useState(null) 
 
   useEffect(() => {
-    if (!props.pathname.includes('/admin') && null !== props.user) {
+    if (!props.pathname.includes('/admin') && null !== props.user && process.env.SSE_ENABLED === '1') {
       if (null === eventSource)setNewEventSource();
     } else {
       removeEventSource();
