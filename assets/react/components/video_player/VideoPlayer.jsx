@@ -87,7 +87,7 @@ const VideoPlayer = (props) => {
                                                     props.video.actors.map((actor, index)=> {
                                                         return (
                                                             <div className="actor mb-3 d-flex align-items-center" key={index}>
-                                                                <div className="d-flex justify-content-ceter align-items-center hero-width-150 me-2">
+                                                                <div className="d-flex justify-content-ceter align-items-center hero-width-60 me-2">
                                                                     {actor.currentPhoto && <img src={`${process.env.AWS_FILE_PREFIX}${actor.currentPhoto.imageName}`} alt="" />}
                                                                 </div>
                                                                 <div className="hero-cursor-pointer">{actor.name}</div>
