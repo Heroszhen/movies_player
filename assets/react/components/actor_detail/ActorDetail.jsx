@@ -45,7 +45,7 @@ const ActorDetail = (props) => {
                                 </section>
                                 {section===1 &&
                                     <section className="row">
-                                        <div className="col-md-8 mb-3">
+                                        <div className="col-md-8 mb-3 overflow-hidden">
                                             {actor.description && parse(actor.description)}
                                         </div>
                                         <div className="col-md-4">
@@ -71,8 +71,8 @@ const ActorDetail = (props) => {
                                         {
                                             movies.map((movie, index) => {
                                                 return (
-                                                    <div className="col-6 col-lg-4" key={index}>
-                                                        <div className="text-white hero-bg-color-343a40 rounded ps-1 pe-1">
+                                                    <div className="col-6 col-lg-4 mb-3" key={index}>
+                                                        <div className="text-white hero-bg-color-343a40 rounded p-1">
                                                             {movie.poster && <img src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`} alt=""/>}
                                                             <div className="pt-2 pb-2 text-center">
                                                                 <h5 className="mb-4">{movie.title}</h5>

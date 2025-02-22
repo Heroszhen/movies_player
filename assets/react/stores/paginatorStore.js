@@ -5,7 +5,8 @@ export const content = {
     itemsPerPage: 20,
     total:20,
     route: null,
-    keywords: ''
+    keywords: '',
+    top: 0
 }
 
 const usePaginatorStore = create((set, get) => (content));
@@ -51,4 +52,13 @@ export const setRoute = (route) => {
 export const setKeywords = (keywords) => {
     usePaginatorStore.setState((state) => ({keywords: keywords}));    
     setPaginator(usePaginatorStore.getState());
+}
+
+export const setTop = (top) => {
+    usePaginatorStore.setState((state) => ({top: top}));    
+    setPaginator(usePaginatorStore.getState());
+}
+
+export const getTop = () => {
+    return usePaginatorStore.getState().top;    
 }

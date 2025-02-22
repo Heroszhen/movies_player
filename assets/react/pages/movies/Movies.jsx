@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import useMovieStore from "../../stores/movieStore";
 import useUserStore from "../../stores/userStore";
-import usePaginatorStore, { getPaginator, setRoute, setPage, setKeywords } from "../../stores/paginatorStore";
+import usePaginatorStore, { getPaginator, setRoute, setPage, setKeywords, setTop, getTop } from "../../stores/paginatorStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
+import { wait } from "../../services/utils";
 
 const Movies = (props) => {
     const { user } = useUserStore();
@@ -12,17 +13,32 @@ const Movies = (props) => {
     const reactLocation = useLocation();
     const navigate = useNavigate();
     const searchRef = useRef(null);
+    const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
+    const [canStockTop, setCanStockTop] = useState(false);
 
     useEffect(() => {
         getPaginator(reactLocation.pathname);
         setRoute(reactLocation.pathname);
     }, []);
-    const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
 
     useEffect(() => {
-        if(user !== null && route === reactLocation.pathname) {
-            getMovies(page, keywords, true);
-        }
+        const onScroll = () => {
+            if (canStockTop)setTop(window.scrollY);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        return () => window.removeEventListener('scroll', onScroll);
+    }, [canStockTop]);
+    
+    useEffect(() => {
+        (async ()=>{
+            if(user !== null && route === reactLocation.pathname) {
+                await getMovies(page, keywords, true);
+                await wait(0.1);
+                window.scrollTo(0, getTop());
+                if(!canStockTop)setCanStockTop(true);
+            }
+        })();
     }, [user, page, route]);
 
     const searchByKeywords = (e) => {
