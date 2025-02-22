@@ -2,6 +2,16 @@
 @import "../react/styles/variables.scss";
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
+img {
+    width: 100%;
+    height: auto;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
 .btn-movify {
     color: white;
     background-color: $mainColor;
@@ -10,11 +20,6 @@
         color: #fff !important;
         background-color: $mainColor !important;
     }
-}
-
-img {
-    width: 100%;
-    height: auto;
 }
 
 .wrap-paginator {

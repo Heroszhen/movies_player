@@ -5,6 +5,7 @@ import { getPaginator2Stores } from '../../stores/paginator2Store';
 import parse from 'html-react-parser';
 import moment from "moment";
 import { NavLink } from "react-router-dom";
+import useUserStore from '../../stores/userStore';
 
 const ActorDetail = (props) => {
     const { getVideoByActor, movies } = useMovieStore();
@@ -12,22 +13,25 @@ const ActorDetail = (props) => {
     const usePaginator2Store = getPaginator2Stores('actor_detail');
     const { resetPaginator, page } = usePaginator2Store();
     const [section, setSection] = useState(1)
+    const {user} = useUserStore();
 
     useEffect(() => {
         resetPaginator();
         (async()=>{
-            const response = await getActorById(props.id);
-            setActor(response);
+            if (user !== null) {
+                const response = await getActorById(props.id);
+                setActor(response);
+            }
         })();
-    }, []);
+    }, [user]);
    
     useEffect(() => {
         (async()=>{
-            if (props.id !== null) {
+            if (props.id !== null && user !== null) {
                 getVideoByActor(page, props.id);
             }
         })();
-    }, [page]);
+    }, [user, page]);
 
     return (
         <section id="actor-detail">

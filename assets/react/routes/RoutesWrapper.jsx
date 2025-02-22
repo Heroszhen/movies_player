@@ -7,7 +7,7 @@ import Contact from '../pages/contact/Contact.jsx';
 import Movies from "../pages/movies/Movies.jsx";
 import Movie from "../pages/movie/movie.jsx";
 import Actors from "../pages/actors/Actors.jsx";
-import Actor from "../pages/actor/actor.jsx";
+import Actor from "../pages/actor/Actor.jsx";
 
 import AdminUser from "../pages/admin/user/User.jsx";
 import AdminActor from "../pages/admin/actor/AdminActor.jsx";

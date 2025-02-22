@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import './VideoPlayer.scss';
 import parse from 'html-react-parser';
 import moment from "moment";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 
 const VideoPlayer = (props) => {
@@ -90,7 +90,7 @@ const VideoPlayer = (props) => {
                                                                 <div className="d-flex justify-content-ceter align-items-center hero-width-60 me-2">
                                                                     {actor.currentPhoto && <img src={`${process.env.AWS_FILE_PREFIX}${actor.currentPhoto.imageName}`} alt="" />}
                                                                 </div>
-                                                                <div className="hero-cursor-pointer">{actor.name}</div>
+                                                                <NavLink to={"/acteur/" + actor.id}>{actor.name}</NavLink>
                                                             </div>
                                                         );
                                                     })

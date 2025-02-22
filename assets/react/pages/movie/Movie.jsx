@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import VideoPlayer from "../../components/video_player/VideoPlayer";
 import { getMovie } from "../../stores/movieStore";
 
