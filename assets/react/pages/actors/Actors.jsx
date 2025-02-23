@@ -3,12 +3,23 @@ import { getActorsName } from '../../stores/actorStore';
 import { NavLink } from "react-router-dom";
 import useUserStore from '../../stores/userStore';
 import ActorDetail from '../../components/actor_detail/ActorDetail';
+import { wait } from '../../services/utils';
 
 const Actors = (props) => {
     const [actorId, setActorId] = useState(null);
     const [actors, setActors] = useState([]);
-    const {user} = useUserStore();
+    const { user } = useUserStore();
     const [keywords, setKeywords] = useState('');
+    const [scrollTop, setScrollTop] = useState(0);
+
+    useEffect(() => {
+        const onScroll = () => {
+            if(actorId === null)setScrollTop(window.scrollY);
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        return () => window.removeEventListener('scroll', onScroll);
+    }, [actorId]);
 
     useEffect(() => {
         (async()=>{
@@ -19,9 +30,16 @@ const Actors = (props) => {
         })();
     }, [user]);
 
-    const viewOneActor = (e, id) => {
-        e.preventDefault();
+    const viewOneActor = async (e, id) => {
+        e?.preventDefault();
         setActorId(id);
+        if (id !== null) {
+            await wait(0.1);
+            window.scrollTo(0, 0);
+        } else {
+            await wait(0.1);
+            window.scrollTo(0, scrollTop);
+        }
     }
 
     return (
@@ -29,7 +47,7 @@ const Actors = (props) => {
             <section id="sectors" className="min-vh-100">
                 {actorId !== null &&
                     <div className="text-end pt-2 pe-5 fs-4">
-                        <i className="bi bi-x-circle hero-cursor-pointer" onClick={()=>setActorId(null)}></i>
+                        <i className="bi bi-x-circle hero-cursor-pointer" onClick={()=>viewOneActor(null, null)}></i>
                     </div>
                 }
 

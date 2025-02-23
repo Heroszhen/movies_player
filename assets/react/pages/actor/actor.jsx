@@ -5,7 +5,7 @@ const Actor = (props) => {
     const { id } = useParams();
 
     return (
-        <section id="actor" className="min-vh-100">
+        <section id="actor" className="min-vh-100 pt-5">
             {id !== null &&
                 <section>
                     <ActorDetail id={id} />
