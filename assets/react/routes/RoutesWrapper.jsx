@@ -13,24 +13,29 @@ import AdminUser from "../pages/admin/user/User.jsx";
 import AdminActor from "../pages/admin/actor/AdminActor.jsx";
 import AdminMovie from "../pages/admin/movie/AdminMovie.jsx";
 
-
 const RoutesWrapper = (props) => {
+
     return (
         <>
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route element={<LoginGuard />}>
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/videos" element={<Movies />} />
-                    <Route path="/video/:id" element={<Movie />} />
-                    <Route path="/acteurs" element={<Actors />} />
-                    <Route path="/acteur/:id" element={<Actor />} />
-                </Route>
-                <Route element={<AdminGuard />}>
-                    <Route path="/admin/utilisateurs" element={<AdminUser />} />
-                    <Route path="/admin/acteurs" element={<AdminActor />} />
-                    <Route path="/admin/videos" element={<AdminMovie />} />
-                </Route>
+                {props.canQuery && 
+                    <>
+                        <Route element={<LoginGuard />}>
+                            <Route path="/contact" element={<Contact />} />
+                            <Route path="/videos" element={<Movies />} />
+                            <Route path="/video/:id" element={<Movie />} />
+                            <Route path="/acteurs" element={<Actors />} />
+                            <Route path="/acteur/:id" element={<Actor />} />
+                        </Route>
+                        
+                        <Route element={<AdminGuard />}>
+                            <Route path="/admin/utilisateurs" element={<AdminUser />} />
+                            <Route path="/admin/acteurs" element={<AdminActor />} />
+                            <Route path="/admin/videos" element={<AdminMovie />} />
+                        </Route>
+                    </>
+                }
             </Routes>
         </>
     )

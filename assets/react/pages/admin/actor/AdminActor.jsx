@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import useActorStore from '../../../stores/actorStore';
-import useUserStore from '../../../stores/userStore';
 import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore'; 
 import { useLocation } from "react-router-dom";
 import {
@@ -30,7 +29,6 @@ import Editor from '../../../components/editor/Editor';
 
 const AdminActor = (props) => {
     const {actors, getActors, editActor} = useActorStore();
-    const {user} = useUserStore();
     const reactLocation = useLocation();
     const [formType, setFormType] = useState(null);
     const [open, setOpen] = useState(false);
@@ -52,10 +50,10 @@ const AdminActor = (props) => {
     const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
 
     useEffect(() => {
-        if (user !== null && route === reactLocation.pathname) {
+        if (route === reactLocation.pathname) {
             getActors(page, keywords);
         }
-    }, [user, page, keywords, route]);
+    }, [page, keywords, route]);
 
     const handleChangePage = async (event, newPage) => {
         if(newPage !== page) {

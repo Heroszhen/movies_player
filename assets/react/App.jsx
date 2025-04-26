@@ -42,6 +42,7 @@ function App() {
     const mainRef = useRef(null);
     const adminNavRef = useRef(null);
     const [precRoute, setPrecRoute] = useState(null);
+    const [canQuery, setCanQuery] = useState(false);
 
     useEffect(() => {
         window.fetch = async (...args) => {
@@ -83,6 +84,7 @@ function App() {
             }
             return response;
         };
+        setCanQuery(true);
 
         if (user === null && localStorage.getItem('token') !== null) {
             getUser();
@@ -136,7 +138,7 @@ function App() {
             {reactLocation.pathname.includes('admin') && <AdminHeader mainRef={mainRef} adminNavRef={adminNavRef} />}
             {reactLocation.pathname.includes('admin') && <AdminNav ref={adminNavRef} toggleAdminNav={toggleAdminNav} />}
             <main ref={mainRef}>
-                <RoutesWrapper />
+                <RoutesWrapper canQuery={canQuery} />
             </main>
             {!reactLocation.pathname.includes('admin') && <Footer />}
 

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import useMovieStore, { getVideoTypes } from '../../../stores/movieStore';
 import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore'; 
 import { useLocation } from "react-router-dom";
-import useUserStore from '../../../stores/userStore';
 import {
   Box,
   Button,
@@ -44,7 +43,6 @@ import Editor from '../../../components/editor/Editor';
 
 const AdminMovie = (props) => {
   const reactLocation = useLocation();
-  const {user} = useUserStore();
   const [actors, setActors] = useState([]);
   const [formType, setFormType] = useState(null);
   const [open, setOpen] = useState(false);
@@ -86,10 +84,10 @@ const AdminMovie = (props) => {
   const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
 
   useEffect(() => {
-    if (user !== null && route === reactLocation.pathname) {
+    if (route === reactLocation.pathname) {
       getMovies(page, keywords);
     }
-  }, [user, page, route, keywords]);
+  }, [page, route, keywords]);
 
   const getListActors = async () => {
     const results = await getActorsName();
