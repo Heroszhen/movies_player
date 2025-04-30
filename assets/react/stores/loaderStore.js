@@ -1,7 +1,9 @@
-import {create} from "zustand";
+import { create } from 'zustand';
 
-const useLoaderStore = create((set, get) => ({
-    loader: false,
-    setLoader: (newLoader) => {set((state) => ({loader: newLoader}))},
+const useLoaderStore = create((set) => ({
+  loader: false,
+  setLoader: (newLoader) => {
+    set(() => ({ loader: newLoader }));
+  },
 }));
 export default useLoaderStore;

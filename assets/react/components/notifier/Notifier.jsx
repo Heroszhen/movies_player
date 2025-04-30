@@ -1,14 +1,14 @@
-import {useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import parse from 'html-react-parser';
 
 const Notifier = (props) => {
   const [eventSource, setEventSource] = useState(null);
   const toastRef = useRef(null);
-  const [message, setMessage] = useState(null) 
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     if (!props.pathname.includes('/admin') && null !== props.user && process.env.SSE_ENABLED === '1') {
-      if (null === eventSource)setNewEventSource();
+      if (null === eventSource) setNewEventSource();
     } else {
       removeEventSource();
     }
@@ -22,15 +22,15 @@ const Notifier = (props) => {
 
   const setNewEventSource = () => {
     const newEventSource = new EventSource(`${process.env.SSE_SERVER}/api/sse`);
-    newEventSource?.addEventListener("new_videos", treatSSEEvent, true);
+    newEventSource?.addEventListener('new_videos', treatSSEEvent, true);
     setEventSource(newEventSource);
-  }
+  };
 
   const removeEventSource = () => {
     eventSource?.close();
-    eventSource?.removeEventListener("new_videos", treatSSEEvent, true);
+    eventSource?.removeEventListener('new_videos', treatSSEEvent, true);
     setEventSource(null);
-  }
+  };
 
   const treatSSEEvent = (e) => {
     if (e.data !== '') {
@@ -38,14 +38,14 @@ const Notifier = (props) => {
       let str = data.videos.join('<br>');
       setMessage(str);
     }
-  }
+  };
 
   const showToast = () => {
     toastRef.current?.classList.add('show');
     setTimeout(() => {
       toastRef.current?.classList.remove('show');
     }, 5000);
-  }
+  };
 
   return (
     <>
@@ -56,12 +56,10 @@ const Notifier = (props) => {
             <small></small>
             <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
           </div>
-          <div className="toast-body">
-            {message && parse(message)}
-          </div>
+          <div className="toast-body">{message && parse(message)}</div>
         </div>
       </div>
     </>
   );
-}
+};
 export default Notifier;
