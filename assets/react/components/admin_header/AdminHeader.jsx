@@ -5,6 +5,7 @@ import useUserStore from '../../stores/userStore';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
+import { logout } from '../../services/utils';
 
 const AdminHeader = (props) => {
     const { user } = useUserStore();
@@ -57,7 +58,7 @@ const AdminHeader = (props) => {
                     >
                         <MenuItem onClick={handleClose}>Bonjour {user.email}</MenuItem>
                         <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        <MenuItem onClick={logout}>Logout</MenuItem>
                     </Menu>
                 </Box>
             }

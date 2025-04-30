@@ -3,9 +3,10 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import useUserStore, { setLogin } from "../../stores/userStore";
 import './Nav.scss';
 import { Tooltip } from 'bootstrap';
+import { logout } from '../../services/utils';
 
 const Nav = (props) => {
-    const { user, setUser } = useUserStore();
+    const { user } = useUserStore();
     const collapseRef = useRef(null);
     const navigate = useNavigate();
     const reactLocation = useLocation();
@@ -29,13 +30,6 @@ const Nav = (props) => {
         tooltipTriggerList.forEach((tooltipTriggerEl) => {
             new Tooltip(tooltipTriggerEl);
         });
-    }
-
-    const logout = () => {
-        setUser(null);
-        localStorage.clear();
-        navigate('/');
-        window.location.reload();
     }
 
     const installApp = async () => {

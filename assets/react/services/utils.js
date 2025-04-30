@@ -42,3 +42,9 @@ export const isImageFile = (file) => {
 
     return true;
 }
+
+export const logout = () => {
+    localStorage.clear();
+    window.location.href = '/';
+    window.location.reload();
+}
