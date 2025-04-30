@@ -24,6 +24,17 @@ const VideoPlayer = (props) => {
         }
     }
 
+    const goToOriginalWebsite = (link) => {
+        if (!link.includes('src=')) {
+            window.open(link, '_blank');
+            return;
+        }
+        
+        const regex = /http[^"']*/i;
+        const url = link.match(regex);
+        window.open(url, '_blank');
+    }
+
     return (
         <section id="video-player" className="pb-5">
            <div className="wrap-video hero-bg-color-000000" data-type={props.video?.type.id} ref={wrapVideoRef}>
@@ -50,6 +61,7 @@ const VideoPlayer = (props) => {
                             <div className="d-flex justify-content-end align-items-center">
                                 <i className="bi bi-arrow-return-left hero-cursor-pointer fs-3 me-4" onClick={()=>navigate(-1)}></i>
                                 <i className="bi bi-arrows-fullscreen hero-cursor-pointer fs-3 me-4" onClick={()=>setFullScreen()}></i>
+                                <i className="bi bi-box-arrow-right hero-cursor-pointer fs-3 me-4" onClick={()=>goToOriginalWebsite(props.video.link)}></i>
                             </div>
                         </div>
                         <div className="col-12">

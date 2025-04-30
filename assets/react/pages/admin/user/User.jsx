@@ -154,7 +154,7 @@ const AdminUser = (props) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={getModalStyle()}>
+                <Box sx={getModalStyle(formType===2 ? 500 : 400)}>
                     <Typography id="modal-modal-title" variant="h6" component="h2" sx={{mb: 4}}>
                         {formType===1 && 'Editer un compte'}
                         {formType===2 && 'Editer une photo de profil'}

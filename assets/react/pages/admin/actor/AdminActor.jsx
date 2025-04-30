@@ -178,7 +178,7 @@ const AdminActor = (props) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={getModalStyle(1200)}>
+                <Box sx={getModalStyle(formType===2 ? 500 : 1200)}>
                     <Typography id="modal-modal-title" variant="h6" component="h2" sx={{mb: 4}}>
                         {formType===1 && 'Editer un acteur'}
                         {formType===2 && 'Editer une photo de profil'}
