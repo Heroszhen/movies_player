@@ -31,7 +31,8 @@
         "build": "encore production --progress",
         "format": "prettier --write ./assets/**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json",
         "lint": "eslint ./assets",
-        "lint:fix": "eslint ./assets --fix"
+        "lint:fix": "eslint ./assets --fix",
+        "clean:code": "npm run format && npm run lint:fix"
     },
     "dependencies": {
         "@babel/preset-react": "^7.26.3",
