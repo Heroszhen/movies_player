@@ -56,7 +56,7 @@ class Actor
     private ?\DateTimeInterface $birthday = null;
 
     #[ORM\Column(length: 20, nullable: true)]
-    #[Groups(['actor:write', 'actor:read'])]
+    #[Groups(['actor:write', 'actor:read', 'actor:name'])]
     private ?string $country = null;
 
     #[ORM\ManyToOne]
