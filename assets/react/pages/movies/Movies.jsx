@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import useMovieStore from '../../stores/movieStore';
-import useUserStore from '../../stores/userStore';
 import usePaginatorStore, {
   getPaginator,
   setRoute,
@@ -15,7 +14,6 @@ import 'react-responsive-pagination/themes/classic.css';
 import { wait } from '../../services/utils';
 
 const Movies = () => {
-  const { user } = useUserStore();
   const { movies, getMovies } = useMovieStore();
   const reactLocation = useLocation();
   const navigate = useNavigate();
@@ -39,14 +37,14 @@ const Movies = () => {
 
   useEffect(() => {
     (async () => {
-      if (user !== null && route === reactLocation.pathname) {
+      if (route === reactLocation.pathname) {
         await getMovies(page, keywords, true);
         await wait(0.1);
         window.scrollTo(0, getTop());
         if (!canStockTop) setCanStockTop(true);
       }
     })();
-  }, [user, page, route]);
+  }, [page, route]);
 
   const searchByKeywords = (e) => {
     const oldKeywords = keywords;

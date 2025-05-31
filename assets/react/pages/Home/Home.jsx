@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getCounts, getLastThreeMovies } from '../../services/api';
-import useUserStore from '../../stores/userStore';
 import './Home.scss';
 
 const Home = () => {
-  const { user } = useUserStore();
   const [counts, setCounts] = useState(null);
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    if (user !== null) {
-      getData();
-    }
-  }, [user]);
+    getData();
+  }, []);
 
   const getData = async () => {
     getCounts()

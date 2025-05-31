@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import { getActorsName } from '../../stores/actorStore';
 import { NavLink } from 'react-router-dom';
-import useUserStore from '../../stores/userStore';
 import ActorDetail from '../../components/actor_detail/ActorDetail';
 import { wait } from '../../services/utils';
 
 const Actors = () => {
   const [actorId, setActorId] = useState(null);
   const [actors, setActors] = useState([]);
-  const { user } = useUserStore();
   const [keywords, setKeywords] = useState('');
   const [scrollTop, setScrollTop] = useState(0);
 
@@ -22,13 +20,11 @@ const Actors = () => {
   }, [actorId]);
 
   useEffect(() => {
-    (async () => {
-      if (user !== null) {
-        const response = await getActorsName();
-        setActors(response);
-      }
+    (async () => { 
+      const response = await getActorsName();
+      setActors(response);
     })();
-  }, [user]);
+  }, []);
 
   const viewOneActor = async (e, id) => {
     e?.preventDefault();
