@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getCounts, getLastThreeMovies } from '../../services/api';
 import './Home.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [counts, setCounts] = useState(null);
   const [movies, setMovies] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getData();
@@ -30,7 +32,13 @@ const Home = () => {
         {movies.map((movie, index) => {
           return (
             <article className="wrap-image mb-3" key={index}>
-              {movie.poster && <img src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`} alt="" />}
+              {movie.poster && 
+                <img 
+                  src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`} 
+                  alt="" className="hero-cursor-pointer" 
+                  onClick={()=>navigate(`video/${movie.id}`)}
+                />
+              }
             </article>
           );
         })}
