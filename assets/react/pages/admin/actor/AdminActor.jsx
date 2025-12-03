@@ -26,6 +26,8 @@ import { useForm } from 'react-hook-form';
 import moment from 'moment';
 import FileForm from '../../../components/file_form/FileForm';
 import Editor from '../../../components/editor/Editor';
+import NorthIcon from '@mui/icons-material/North';
+import SouthIcon from '@mui/icons-material/South';
 
 const AdminActor = () => {
   const { actors, getActors, editActor } = useActorStore();
@@ -44,6 +46,7 @@ const AdminActor = () => {
   } = useForm();
   const bc = new BroadcastChannel('admin_movie');
   const editorRef = useRef(null);
+  const [orderBy, setOrderBy] = useState('order[id]=asc');
 
   useEffect(() => {
     getPaginator(reactLocation.pathname);
@@ -57,9 +60,9 @@ const AdminActor = () => {
 
   useEffect(() => {
     if (route === reactLocation.pathname) {
-      getActors(page, keywords);
+      getActors(page, keywords, orderBy);
     }
-  }, [page, keywords, route]);
+  }, [page, keywords, route, orderBy]);
 
   const handleChangePage = async (event, newPage) => {
     if (newPage !== page) {
@@ -131,8 +134,24 @@ const AdminActor = () => {
                 <Table className="striped">
                   <TableHead sx={{ fontWeight: 'bold' }}>
                     <TableRow>
-                      <TableCell>Id</TableCell>
-                      <TableCell>Nom</TableCell>
+                      <TableCell>
+                        <div className="flex">
+                          Id
+                          <div>
+                            <NorthIcon className="hero-cursor-pointer" onClick={()=>setOrderBy('order[id]=asc')}/>
+                            <SouthIcon className="hero-cursor-pointer" onClick={()=>setOrderBy('order[id]=desc')}/>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex">
+                          Nom
+                          <div>
+                            <NorthIcon className="hero-cursor-pointer" onClick={()=>setOrderBy('order[name]=asc')}/>
+                            <SouthIcon className="hero-cursor-pointer" onClick={()=>setOrderBy('order[name]=desc')}/>
+                          </div>
+                        </div>
+                      </TableCell>
                       <TableCell>Naissance</TableCell>
                       <TableCell>Pays</TableCell>
                       <TableCell>Photo</TableCell>

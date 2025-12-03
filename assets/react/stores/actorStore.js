@@ -4,9 +4,11 @@ import { setTotal } from './paginatorStore';
 
 const useActorStore = create((set, get) => ({
   actors: [],
-  getActors: async (page = 1, keywords = '') => {
+  getActors: async (page = 1, keywords = '', order = null) => {
+    let url = `/api/actors?page=${page}&name=${keywords}`;
+    if (order !== null) url += '&' + order;
     try {
-      let response = await fetch(`/api/actors?page=${page}&name=${keywords}`, {
+      let response = await fetch(url, {
         method: 'GET',
         headers: getRequestHeaders(),
       });

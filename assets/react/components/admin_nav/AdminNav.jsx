@@ -7,9 +7,9 @@ import Diversity3Icon from '@mui/icons-material/Diversity3';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
-const AdminNav = (props, ref) => {
+const AdminNav = ({ toggleAdminNav, ...rest }, ref) => {
   return (
-    <nav id="admin-nav" className="position-fixed bottom-0 start-0" ref={ref} {...props}>
+    <nav id="admin-nav" className="position-fixed bottom-0 start-0" ref={ref}>
       <NavLink to="/videos" className={({ isActive }) => (isActive ? 'active' : '')}>
         <HomeIcon />
         <div>Accueil</div>
@@ -30,7 +30,7 @@ const AdminNav = (props, ref) => {
         <MovieCreationIcon />
         <div>Vidéos</div>
       </NavLink>
-      <a className="hero-cursor-pointer" onClick={() => props.toggleAdminNav()}>
+      <a className="hero-cursor-pointer" onClick={() => toggleAdminNav()}>
         <MenuOpenIcon />
         <div>Fermer</div>
       </a>

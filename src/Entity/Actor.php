@@ -17,6 +17,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
 #[UniqueEntity('name')]
@@ -38,6 +39,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial', 'country' => 'ipartial'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'country'])]
 class Actor
 {
     #[ORM\Id]
