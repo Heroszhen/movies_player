@@ -45,3 +45,18 @@ export const deletePhoto = async (id) => {
     return false;
   }
 };
+
+export const getPhotoByActorId = async (actorId) => {
+  try {
+    let response = await fetch(`/api/media_objects?actor=/api/actors/${actorId}`, {
+      method: 'GET',
+      headers: getRequestHeaders(),
+    });
+
+    if (response.ok) {
+      response = await response.json();
+      return response['hydra:member'] ?? [];
+    }
+    return [];
+  } catch {}
+};

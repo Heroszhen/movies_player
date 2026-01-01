@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import useActorStore from '../../../stores/actorStore';
 import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore';
-import { deletePhoto, addFile } from '../../../stores/fileStore';
+import { deletePhoto, addFile, getPhotoByActorId } from '../../../stores/fileStore';
 import { useLocation } from 'react-router-dom';
 import {
   Box,
@@ -52,6 +52,7 @@ const AdminActor = () => {
   const editorRef = useRef(null);
   const [orderBy, setOrderBy] = useState('order[id]=asc');
   const [photosToUpload, setPhotosToUpload] = useState([]);
+  const [actorPhotos, setActorPhotos] = useState([]);
 
   useEffect(() => {
     getPaginator(reactLocation.pathname);
@@ -89,7 +90,9 @@ const AdminActor = () => {
       }
 
       if (type === 3) {
+        setActorPhotos([]);
         setPhotosToUpload([]);
+        setActorPhotos(await getPhotoByActorId(actors[index].id));
       }
       handleOpen();
     }
@@ -133,10 +136,16 @@ const AdminActor = () => {
   const sendNewPhotos = async () => {
     const options = { actorId: actors[actorIndex].id };
     for (let i = 0; i < photosToUpload.length; i++) {
-      await addFile(photosToUpload[i], options);
+      const photo = await addFile(photosToUpload[i], options);
+      setActorPhotos((prev) => [...prev, photo]);
     }
 
     setPhotosToUpload([]);
+  };
+
+  const deleteOldPhoto = async (index) => {
+    await deletePhoto(actorPhotos[index].id);
+    setActorPhotos((prev) => prev.filter((_, prevIndex) => prevIndex !== index));
   };
 
   return (
@@ -159,6 +168,7 @@ const AdminActor = () => {
                   size="small"
                   onChange={(e) => searchByKeywords(e)}
                   onKeyUp={(e) => searchByKeywords(e)}
+                  defaultValue={keywords}
                 />
               </Box>
               <TableContainer component={Paper}>
@@ -316,11 +326,12 @@ const AdminActor = () => {
                 Envoyer
               </Button>
 
-              <Box component="section" className="mb-3 d-flex" sx={{ overflowY: 'auto' }}>
+              <Typography variant="h5">Les nouvelles photos</Typography>
+              <Box component="section" className="mb-5 d-flex" sx={{ overflowY: 'auto' }}>
                 {photosToUpload.map((file, index) => {
                   return (
                     <span className="pe-3" key={index}>
-                      <img src={URL.createObjectURL(file)} alt="" style={{ width: 200 + 'px' }} />
+                      <img src={URL.createObjectURL(file)} alt="" style={{ width: 400 + 'px' }} />
                       <DeleteForeverIcon
                         onClick={() => setPhotosToUpload((prev) => prev.filter((_, prevIndex) => index !== prevIndex))}
                         className="hero-cursor-pointer mb-1 d-block"
@@ -328,6 +339,23 @@ const AdminActor = () => {
                     </span>
                   );
                 })}
+              </Box>
+
+              <Box component="section" className="mb-3">
+                <Typography variant="h5">Les photos</Typography>
+                <Grid container spacing={1}>
+                  {actorPhotos.map((photo, index) => {
+                    return (
+                      <Grid key={index} item xs={6} sm={4} md={3} lg={2} sx={{ mb: 3, ps: 1, pe: 1 }}>
+                        <img src={`${process.env.AWS_FILE_PREFIX}${photo.imageName}`} alt="" />
+                        <DeleteForeverIcon
+                          onClick={() => deleteOldPhoto(index)}
+                          className="hero-cursor-pointer mb-1 d-block"
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
               </Box>
             </section>
           )}

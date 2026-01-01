@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MediaObjectRepository::class)]
@@ -26,6 +28,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         new Delete()
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['actor' => 'exact'])]
 class MediaObject
 {
     use TimestampableTrait;
