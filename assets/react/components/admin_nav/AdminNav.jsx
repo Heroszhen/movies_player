@@ -6,7 +6,6 @@ import MovieCreationIcon from '@mui/icons-material/MovieCreation';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import WebIcon from '@mui/icons-material/Web';
 import { forwardRef } from 'react';
 
 const AdminNav = forwardRef(({ toggleAdminNav }, ref) => {
@@ -31,10 +30,6 @@ const AdminNav = forwardRef(({ toggleAdminNav }, ref) => {
       <NavLink to="/admin/videos" className={({ isActive }) => (isActive ? 'active' : '')}>
         <MovieCreationIcon />
         <div>Vidéos</div>
-      </NavLink>
-      <NavLink to="/admin/websites" className={({ isActive }) => (isActive ? 'active' : '')}>
-        <WebIcon />
-        <div>Sites</div>
       </NavLink>
       <a className="hero-cursor-pointer" onClick={() => toggleAdminNav()}>
         <MenuOpenIcon />
