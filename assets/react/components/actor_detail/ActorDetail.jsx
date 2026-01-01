@@ -6,6 +6,7 @@ import parse from 'html-react-parser';
 import moment from 'moment';
 import { NavLink } from 'react-router-dom';
 import useUserStore from '../../stores/userStore';
+import { getPhotoByActorId } from '../../stores/fileStore';
 
 const ActorDetail = (props) => {
   const { getVideoByActor, movies } = useMovieStore();
@@ -14,13 +15,14 @@ const ActorDetail = (props) => {
   const { resetPaginator, page } = usePaginator2Store();
   const [section, setSection] = useState(1);
   const { user } = useUserStore();
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     resetPaginator();
     (async () => {
       if (user !== null) {
-        const response = await getActorById(props.id);
-        setActor(response);
+        setActor(await getActorById(props.id));
+        setPhotos(await getPhotoByActorId(props.id));
       }
     })();
   }, [user]);
@@ -66,6 +68,14 @@ const ActorDetail = (props) => {
                     onClick={() => setSection(2)}>
                     Filmographie
                   </h5>
+                  <h5
+                    className={
+                      (section === 3 ? 'actived ' : '') +
+                      'hero-cursor-pointer hero-color-d3d3d3 hover:hero-color-000000 actived:hero-color-000000 ms-3'
+                    }
+                    onClick={() => setSection(3)}>
+                    Photographie
+                  </h5>
                 </section>
                 {section === 1 && (
                   <section className="row">
@@ -104,6 +114,17 @@ const ActorDetail = (props) => {
                               </NavLink>
                             </div>
                           </div>
+                        </div>
+                      );
+                    })}
+                  </section>
+                )}
+                {section === 3 && (
+                  <section className="row">
+                    {photos.map((photo, index) => {
+                      return (
+                        <div className="col-6 col-md-4 mb-3" key={index}>
+                          <img src={`${process.env.AWS_FILE_PREFIX}${photo.imageName}`} alt="" />
                         </div>
                       );
                     })}
