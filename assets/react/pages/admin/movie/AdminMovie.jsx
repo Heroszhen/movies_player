@@ -40,6 +40,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CachedIcon from '@mui/icons-material/Cached';
 import FileForm from '../../../components/file_form/FileForm';
 import Editor from '../../../components/editor/Editor';
+import { deletePhoto } from '../../../stores/photoStore';
 
 const AdminMovie = () => {
   const reactLocation = useLocation();
@@ -169,7 +170,12 @@ const AdminMovie = () => {
       await editMovie(data, movieIndex === null ? null : movies[movieIndex].id);
     }
     if (formType === 3) {
-      if (data['@id']) await editMovie({ poster: data['@id'] }, movies[movieIndex].id);
+      if (data['@id']) {
+        const oldPhotoId = movies[movieIndex].poster?.id ?? null;
+        console.log(oldPhotoId);
+        await editMovie({ poster: data['@id'] }, movies[movieIndex].id);
+        if (oldPhotoId) await deletePhoto(oldPhotoId);
+      }
     }
     handleClose();
   };

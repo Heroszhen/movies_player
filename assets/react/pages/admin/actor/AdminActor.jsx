@@ -96,8 +96,9 @@ const AdminActor = () => {
     }
     if (formType === 2) {
       if (data['@id']) {
+        const oldPhotoId = actors[actorIndex].currentPhoto?.id ?? null;
         await editActor({ currentPhoto: data['@id'] }, actors[actorIndex].id);
-        if (actors[actorIndex].currentPhoto) await deletePhoto(actors[actorIndex].currentPhoto.id);
+        if (oldPhotoId) await deletePhoto(oldPhotoId);
       }
     }
     handleClose();
