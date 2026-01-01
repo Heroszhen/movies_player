@@ -6,7 +6,7 @@ export default usePhotoStore;
 
 export const deletePhoto = async (id) => {
   try {
-    let response = await fetch(`/api/edia_objects/${id}`, {
+    let response = await fetch(`/api/media_objects/${id}`, {
       method: 'DELETE',
       headers: getRequestHeaders(),
     });

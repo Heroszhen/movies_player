@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import useActorStore from '../../../stores/actorStore';
 import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore';
+import { deletePhoto } from '../../../stores/photoStore';
 import { useLocation } from 'react-router-dom';
 import {
   Box,
@@ -96,7 +97,7 @@ const AdminActor = () => {
     if (formType === 2) {
       if (data['@id']) {
         await editActor({ currentPhoto: data['@id'] }, actors[actorIndex].id);
-        //if (actors[actorIndex].currentPhoto)
+        if (actors[actorIndex].currentPhoto)await deletePhoto(actors[actorIndex].currentPhoto.id);
       }
     }
     handleClose();
