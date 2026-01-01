@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import useActorStore from '../../../stores/actorStore';
 import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore';
-import { deletePhoto } from '../../../stores/photoStore';
+import { deletePhoto } from '../../../stores/fileStore';
 import { useLocation } from 'react-router-dom';
 import {
   Box,
@@ -19,6 +19,7 @@ import {
   Typography,
   Pagination,
   Grid,
+  Input,
 } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import PhotoIcon from '@mui/icons-material/Photo';
@@ -29,6 +30,8 @@ import FileForm from '../../../components/file_form/FileForm';
 import Editor from '../../../components/editor/Editor';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
+import CollectionsIcon from '@mui/icons-material/Collections';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const AdminActor = () => {
   const { actors, getActors, editActor } = useActorStore();
@@ -48,6 +51,7 @@ const AdminActor = () => {
   const bc = new BroadcastChannel('admin_movie');
   const editorRef = useRef(null);
   const [orderBy, setOrderBy] = useState('order[id]=asc');
+  const [photosToUpload, setPhotosToUpload] = useState([]);
 
   useEffect(() => {
     getPaginator(reactLocation.pathname);
@@ -83,6 +87,10 @@ const AdminActor = () => {
           description: index === null ? null : actors[index].description,
         });
       }
+
+      if (type === 3) {
+        setPhotosToUpload([]);
+      }
       handleOpen();
     }
     setFormType(type);
@@ -111,6 +119,15 @@ const AdminActor = () => {
     } else if (e.type === 'change' && e.target.value === '') {
       setKeywords(e.target.value);
     }
+  };
+
+  const handleActorPhotos = (e) => {
+    const files = e.target.files;
+    const newFiles = [];
+    for (let i = files.length - 1; i >= 0; i--) {
+      newFiles.unshift(files.item(i));
+    }
+    setPhotosToUpload((prev) => [...newFiles, ...prev]);
   };
 
   return (
@@ -181,8 +198,15 @@ const AdminActor = () => {
                             )}
                           </TableCell>
                           <TableCell>
-                            <PhotoIcon className="me-4 mb-3 hero-cursor-pointer" onClick={() => toggleForm(2, index)} />
-                            <ModeEditIcon className="hero-cursor-pointer mb-3" onClick={() => toggleForm(1, index)} />
+                            <PhotoIcon className="me-3 mb-3 hero-cursor-pointer" onClick={() => toggleForm(2, index)} />
+                            <ModeEditIcon
+                              className="hero-cursor-pointer mb-3 me-3"
+                              onClick={() => toggleForm(1, index)}
+                            />
+                            <CollectionsIcon
+                              className="hero-cursor-pointer mb-3"
+                              onClick={() => toggleForm(3, index)}
+                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -208,10 +232,11 @@ const AdminActor = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <Box sx={getModalStyle(formType === 2 ? 500 : 1200)}>
+        <Box sx={getModalStyle(formType === 1 ? 800 : formType === 2 ? 500 : '90%')}>
           <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mb: 4 }}>
             {formType === 1 && 'Editer un acteur'}
             {formType === 2 && 'Editer une photo de profil'}
+            {formType === 3 && 'Ajouter des photos'}
           </Typography>
           {[1].includes(formType) && (
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -263,6 +288,35 @@ const AdminActor = () => {
             </form>
           )}
           {formType === 2 && <FileForm setFile={onSubmit} />}
+          {formType === 3 && (
+            <section>
+              <Input
+                onChange={(e) => handleActorPhotos(e)}
+                type="file"
+                id="upload-photos"
+                inputProps={{ accept: 'image/*', multiple: true }}
+                fullWidth="true"
+                className="mb-2"
+              />
+              <Button variant="contained" type="button" disabled={photosToUpload.length === 0} sx={{ mb: 2 }}>
+                Envoyer
+              </Button>
+
+              <Box component="section" className="mb-3 d-flex" sx={{ overflowY: 'auto' }}>
+                {photosToUpload.map((file, index) => {
+                  return (
+                    <span className="pe-3" key={index}>
+                      <img src={URL.createObjectURL(file)} alt="" style={{ width: 200 + 'px' }} />
+                      <DeleteForeverIcon
+                        onClick={() => setPhotosToUpload((prev) => prev.filter((_, prevIndex) => index !== prevIndex))}
+                        className="hero-cursor-pointer mb-1 d-block"
+                      />
+                    </span>
+                  );
+                })}
+              </Box>
+            </section>
+          )}
         </Box>
       </Modal>
     </>

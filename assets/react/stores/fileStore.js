@@ -18,3 +18,19 @@ export const addFile = async (file) => {
     return response;
   } catch {}
 };
+
+export const deletePhoto = async (id) => {
+  try {
+    let response = await fetch(`/api/media_objects/${id}`, {
+      method: 'DELETE',
+      headers: getRequestHeaders(),
+    });
+
+    if (response.ok) {
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+};

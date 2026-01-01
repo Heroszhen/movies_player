@@ -40,7 +40,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CachedIcon from '@mui/icons-material/Cached';
 import FileForm from '../../../components/file_form/FileForm';
 import Editor from '../../../components/editor/Editor';
-import { deletePhoto } from '../../../stores/photoStore';
+import { deletePhoto } from '../../../stores/fileStore';
 
 const AdminMovie = () => {
   const reactLocation = useLocation();
