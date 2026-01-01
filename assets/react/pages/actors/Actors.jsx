@@ -20,7 +20,7 @@ const Actors = () => {
   }, [actorId]);
 
   useEffect(() => {
-    (async () => { 
+    (async () => {
       const response = await getActorsName();
       setActors(response);
     })();
@@ -55,9 +55,11 @@ const Actors = () => {
               </div>
               <div className="col-12 mb-4">
                 <div className="d-flex justify-content-between align-items-center">
-                  {actors
-                    .filter((item) => item.name.toLowerCase().includes(keywords.toLowerCase()) || item.country.toLowerCase().includes(keywords.toLowerCase()))
-                    .length + ' acteurs'}
+                  {actors.filter(
+                    (item) =>
+                      item.name.toLowerCase().includes(keywords.toLowerCase()) ||
+                      item.country.toLowerCase().includes(keywords.toLowerCase())
+                  ).length + ' acteurs'}
                   <input
                     type="search"
                     className="form-control hero-width-200"
@@ -69,7 +71,11 @@ const Actors = () => {
                 </div>
               </div>
               {actors
-                .filter((item) => item.name.toLowerCase().includes(keywords.toLowerCase()) || item.country.toLowerCase().includes(keywords.toLowerCase()))
+                .filter(
+                  (item) =>
+                    item.name.toLowerCase().includes(keywords.toLowerCase()) ||
+                    item.country.toLowerCase().includes(keywords.toLowerCase())
+                )
                 .map((item, index) => {
                   return (
                     <div className="col-6 col-md-4 col-lg-3 mb-4" key={index}>

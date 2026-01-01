@@ -43,4 +43,5 @@ const AdminNav = forwardRef(({ toggleAdminNav }, ref) => {
     </nav>
   );
 });
+AdminNav.displayName = 'AdminNav';
 export default AdminNav;

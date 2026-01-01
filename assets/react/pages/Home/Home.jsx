@@ -32,13 +32,14 @@ const Home = () => {
         {movies.map((movie, index) => {
           return (
             <article className="wrap-image mb-3" key={index}>
-              {movie.poster && 
-                <img 
-                  src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`} 
-                  alt="" className="hero-cursor-pointer" 
-                  onClick={()=>navigate(`video/${movie.id}`)}
+              {movie.poster && (
+                <img
+                  src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`}
+                  alt=""
+                  className="hero-cursor-pointer"
+                  onClick={() => navigate(`video/${movie.id}`)}
                 />
-              }
+              )}
             </article>
           );
         })}

@@ -94,7 +94,10 @@ const AdminActor = () => {
       await editActor(data, actorIndex === null ? null : actors[actorIndex].id);
     }
     if (formType === 2) {
-      if (data['@id']) await editActor({ currentPhoto: data['@id'] }, actors[actorIndex].id);
+      if (data['@id']) {
+        await editActor({ currentPhoto: data['@id'] }, actors[actorIndex].id);
+        //if (actors[actorIndex].currentPhoto)
+      }
     }
     handleClose();
     bc.postMessage({ data: 'actor' });
@@ -138,8 +141,8 @@ const AdminActor = () => {
                         <div className="flex">
                           Id
                           <div>
-                            <NorthIcon className="hero-cursor-pointer" onClick={()=>setOrderBy('order[id]=asc')}/>
-                            <SouthIcon className="hero-cursor-pointer" onClick={()=>setOrderBy('order[id]=desc')}/>
+                            <NorthIcon className="hero-cursor-pointer" onClick={() => setOrderBy('order[id]=asc')} />
+                            <SouthIcon className="hero-cursor-pointer" onClick={() => setOrderBy('order[id]=desc')} />
                           </div>
                         </div>
                       </TableCell>
@@ -147,8 +150,8 @@ const AdminActor = () => {
                         <div className="flex">
                           Nom
                           <div>
-                            <NorthIcon className="hero-cursor-pointer" onClick={()=>setOrderBy('order[name]=asc')}/>
-                            <SouthIcon className="hero-cursor-pointer" onClick={()=>setOrderBy('order[name]=desc')}/>
+                            <NorthIcon className="hero-cursor-pointer" onClick={() => setOrderBy('order[name]=asc')} />
+                            <SouthIcon className="hero-cursor-pointer" onClick={() => setOrderBy('order[name]=desc')} />
                           </div>
                         </div>
                       </TableCell>
