@@ -54,6 +54,9 @@ class MediaObject
     #[ORM\Column(nullable: true)]
     private ?string $originalName = null;
 
+    #[ORM\ManyToOne(inversedBy: 'photos')]
+    private ?Actor $actor = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,5 +114,17 @@ class MediaObject
     public function getOriginalName(): ?string
     {
         return $this->originalName;
+    }
+
+    public function getActor(): ?Actor
+    {
+        return $this->actor;
+    }
+
+    public function setActor(?Actor $actor): static
+    {
+        $this->actor = $actor;
+
+        return $this;
     }
 }

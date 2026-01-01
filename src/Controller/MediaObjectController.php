@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Actor;
 use App\Entity\MediaObject;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,6 +55,13 @@ class MediaObjectController extends AbstractController
                 'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'violations' => $violations
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if (!empty($request->request->get('actorId'))) {
+            $actor = $this->entityManager->find(Actor::class, $request->request->get('actorId'));
+            if ($actor instanceof Actor) {
+                $mediaObject->setActor($actor);
+            }
         }
 
         $this->entityManager->persist($mediaObject);

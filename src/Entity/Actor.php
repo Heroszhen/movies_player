@@ -76,9 +76,16 @@ class Actor
     #[Groups(['actor:write', 'actor:read', 'movie:read'])]
     private ?string $description = null;
 
+    /**
+     * @var Collection<int, MediaObject>
+     */
+    #[ORM\OneToMany(targetEntity: MediaObject::class, mappedBy: 'actor')]
+    private Collection $photos;
+
     public function __construct()
     {
         $this->movies = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -169,6 +176,36 @@ class Actor
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MediaObject>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(MediaObject $photo): static
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setActor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(MediaObject $photo): static
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getActor() === $this) {
+                $photo->setActor(null);
+            }
+        }
 
         return $this;
     }

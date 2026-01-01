@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import useActorStore from '../../../stores/actorStore';
 import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore';
-import { deletePhoto } from '../../../stores/fileStore';
+import { deletePhoto, addFile } from '../../../stores/fileStore';
 import { useLocation } from 'react-router-dom';
 import {
   Box,
@@ -128,6 +128,15 @@ const AdminActor = () => {
       newFiles.unshift(files.item(i));
     }
     setPhotosToUpload((prev) => [...newFiles, ...prev]);
+  };
+
+  const sendNewPhotos = async () => {
+    const options = { actorId: actors[actorIndex].id };
+    for (let i = 0; i < photosToUpload.length; i++) {
+      await addFile(photosToUpload[i], options);
+    }
+
+    setPhotosToUpload([]);
   };
 
   return (
@@ -298,7 +307,12 @@ const AdminActor = () => {
                 fullWidth="true"
                 className="mb-2"
               />
-              <Button variant="contained" type="button" disabled={photosToUpload.length === 0} sx={{ mb: 2 }}>
+              <Button
+                variant="contained"
+                type="button"
+                disabled={photosToUpload.length === 0}
+                sx={{ mb: 2 }}
+                onClick={() => sendNewPhotos()}>
                 Envoyer
               </Button>
 

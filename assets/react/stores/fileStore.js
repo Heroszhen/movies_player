@@ -4,10 +4,21 @@ import { getRequestHeaders } from '../services/data';
 const useFileStore = create(() => ({}));
 export default useFileStore;
 
-export const addFile = async (file) => {
+/**
+ *
+ * @param {File} file
+ * @param {Object|null} options
+ * @returns {Promise<Array>}
+ */
+export const addFile = async (file, options = null) => {
   try {
     const formData = new FormData();
     formData.append('imageFile', file);
+    if (options !== null) {
+      const keys = Object.keys(options);
+      keys.forEach((key) => formData.append(key, options[keys]));
+    }
+
     let response = await fetch(`/api/media_objects`, {
       method: 'POST',
       headers: getRequestHeaders(true),
