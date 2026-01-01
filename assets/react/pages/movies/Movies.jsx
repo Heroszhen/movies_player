@@ -89,7 +89,7 @@ const Movies = () => {
           {movies.map((movie, index) => {
             return (
               <div
-                className="col-12 col-md-4 col-lg-3 wrap-video mb-5 hero-cursor-pointer"
+                className="col-6 col-md-4 col-lg-3 wrap-video mb-5 hero-cursor-pointer"
                 key={index}
                 onClick={() => navigate(`/video/${movie.id}`)}>
                 <div>

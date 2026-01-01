@@ -72,7 +72,7 @@ const Actors = () => {
                 .filter((item) => item.name.toLowerCase().includes(keywords.toLowerCase()) || item.country.toLowerCase().includes(keywords.toLowerCase()))
                 .map((item, index) => {
                   return (
-                    <div className="col-md-6 col-lg-3 mb-4" key={index}>
+                    <div className="col-6 col-md-4 col-lg-3 mb-4" key={index}>
                       <div className="card border border-0">
                         {item.currentPhoto && (
                           <img
