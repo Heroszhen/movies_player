@@ -123,7 +123,10 @@ function App() {
   const onSubmit = async (data) => {
     localStorage.removeItem('token');
     const response = await getAuth(data);
-    if (response === true) setLogin(false);
+    if (response === true) {
+      setLogin(false);
+      location.reload();
+    }
   };
 
   const handleClose = (event, reason) => {
