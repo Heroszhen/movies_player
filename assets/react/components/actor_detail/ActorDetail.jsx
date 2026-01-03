@@ -51,11 +51,11 @@ const ActorDetail = (props) => {
                 )}
               </div>
               <div className="col-md-8 mb-3 pt-5">
-                <section className="mb-5 d-flex justify-content-center align-items-center">
+                <section className="mb-5 row">
                   <h5
                     className={
                       (section === 1 ? 'actived ' : '') +
-                      'hero-cursor-pointer hero-color-d3d3d3 hover:hero-color-000000 actived:hero-color-000000 me-3'
+                      'hero-cursor-pointer hero-color-d3d3d3 hover:hero-color-000000 actived:hero-color-000000 col-12 col-md-4'
                     }
                     onClick={() => setSection(1)}>
                     Biographie
@@ -63,7 +63,7 @@ const ActorDetail = (props) => {
                   <h5
                     className={
                       (section === 2 ? 'actived ' : '') +
-                      'hero-cursor-pointer hero-color-d3d3d3 hover:hero-color-000000 actived:hero-color-000000 ms-3'
+                      'hero-cursor-pointer hero-color-d3d3d3 hover:hero-color-000000 actived:hero-color-000000 col-12 col-md-4'
                     }
                     onClick={() => setSection(2)}>
                     Filmographie
@@ -71,7 +71,7 @@ const ActorDetail = (props) => {
                   <h5
                     className={
                       (section === 3 ? 'actived ' : '') +
-                      'hero-cursor-pointer hero-color-d3d3d3 hover:hero-color-000000 actived:hero-color-000000 ms-3'
+                      'hero-cursor-pointer hero-color-d3d3d3 hover:hero-color-000000 actived:hero-color-000000 col-12 col-md-4'
                     }
                     onClick={() => setSection(3)}>
                     Photographie
