@@ -10,11 +10,13 @@ import { Alert, Snackbar } from '@mui/material';
 import parse from 'html-react-parser';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useMovieStore from './stores/movieStore';
+import usePhotoModalStore from './stores/photoModalStore';
 
 import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
 import Footer from './components/footer/Footer';
 import Notifier from './components/notifier/Notifier';
+import PhotoModal from './components/photo_modal/PhotoModal';
 
 //admin
 import AdminNav from './components/admin_nav/AdminNav';
@@ -48,6 +50,7 @@ function App() {
   const adminNavRef = useRef(null);
   const [precRoute, setPrecRoute] = useState(null);
   const [canQuery, setCanQuery] = useState(false);
+  const { photos: photosInModal } = usePhotoModalStore();
 
   useEffect(() => {
     window.fetch = async (...args) => {
@@ -237,6 +240,8 @@ function App() {
       </Snackbar>
 
       <Notifier pathname={reactLocation.pathname} user={user} />
+
+      {photosInModal.length > 0 && <PhotoModal />}
     </>
   );
 }
