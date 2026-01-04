@@ -1,32 +1,33 @@
 #video-player {
-    .wrap-video {
-        &:not(:has(.wrap-photo)) {
-            height: calc(100vh - 169px);
-        }
-        video, iframe {
-            width: 100%;
-            height: 100%;
-            background-color: black;
-        }
-        @media (max-width: 767px) {
-            &:not(:has(.wrap-photo)) {
-                height: 45vh;
-            }
-        }
-
-        @media (max-width: 575px) {
-            &:not(:has(.wrap-photo)) {
-                height: 30vh;
-            }
-        }
-        &[data-type="5"] {
-            height: auto !important;
-            iframe {
-                margin: 0 auto;
-                width: 323px !important;
-                min-height: 740px !important;
-                border-radius: 10px;
-            }
-        }
+  .wrap-video {
+    &:not(:has(.wrap-photo)) {
+      height: calc(100vh - 169px);
     }
+    video,
+    iframe {
+      width: 100%;
+      height: 100%;
+      background-color: black;
+    }
+    @media (max-width: 767px) {
+      &:not(:has(.wrap-photo)) {
+        height: 45vh;
+      }
+    }
+
+    @media (max-width: 575px) {
+      &:not(:has(.wrap-photo)) {
+        height: 30vh;
+      }
+    }
+    &[data-type='5'] {
+      height: auto !important;
+      iframe {
+        margin: 0 auto;
+        width: 323px !important;
+        min-height: 740px !important;
+        border-radius: 10px;
+      }
+    }
+  }
 }

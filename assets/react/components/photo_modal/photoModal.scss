@@ -1,0 +1,13 @@
+#photo-modal {
+  img {
+    height: 95%;
+    width: auto;
+  }
+
+  @media (max-width: 767px) {
+    img {
+      width: 95%;
+      height: auto;
+    }
+  }
+}

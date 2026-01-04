@@ -1,16 +1,16 @@
 #client-nav {
-    @media (max-width: 767px) {
-        .navbar-toggler {
-            padding: 1px 4px !important;
-            border-color: white !important;
-            color: white !important;
-        }
-        #navbarSupportedContent {
-            background-color: white !important;
-            .nav-link, .bi {
-                color: black !important;
-            }
-        }
-    } 
+  @media (max-width: 767px) {
+    .navbar-toggler {
+      padding: 1px 4px !important;
+      border-color: white !important;
+      color: white !important;
+    }
+    #navbarSupportedContent {
+      background-color: white !important;
+      .nav-link,
+      .bi {
+        color: black !important;
+      }
+    }
+  }
 }
-

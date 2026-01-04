@@ -29,7 +29,7 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress",
-        "format": "prettier --write ./assets/**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json",
+        "format": "prettier --write ./assets/**/*.{js,jsx,ts,tsx,css,md,json,scss} --config ./.prettierrc.json",
         "lint": "eslint ./assets",
         "lint:fix": "eslint ./assets --fix",
         "clean:code": "npm run format && npm run lint:fix"
@@ -57,6 +57,7 @@
         "react-responsive-pagination": "^2.10.0",
         "react-router-dom": "^6.28.1",
         "sass-loader": "^16.0.4",
+        "swiper": "^12.0.3",
         "unocss": "^0.65.4",
         "zustand": "^5.0.2"
     }

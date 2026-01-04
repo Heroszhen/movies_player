@@ -1,61 +1,63 @@
-@import "~bootstrap/scss/bootstrap";
-@import "../react/styles/variables.scss";
+@import '~bootstrap/scss/bootstrap';
+@import '../react/styles/variables.scss';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
 a {
-    color: black;
-    text-decoration: none;
+  color: black;
+  text-decoration: none;
 }
 
 .btn-movify {
-    color: white;
-    background-color: $mainColor;
-    &:hover, &:active, &:focus {
-        filter: brightness(113%);
-        color: #fff !important;
-        background-color: $mainColor !important;
-    }
+  color: white;
+  background-color: $mainColor;
+  &:hover,
+  &:active,
+  &:focus {
+    filter: brightness(113%);
+    color: #fff !important;
+    background-color: $mainColor !important;
+  }
 }
 
 .wrap-paginator {
-    .page-item {
-        .page-link {
-            color: $mainColor !important;
-        }
-        &.active {
-            .page-link {
-                background-color: $mainColor !important;
-                color: white !important;
-                border-color: $mainColor !important;
-            }
-        }
+  .page-item {
+    .page-link {
+      color: $mainColor !important;
     }
+    &.active {
+      .page-link {
+        background-color: $mainColor !important;
+        color: white !important;
+        border-color: $mainColor !important;
+      }
+    }
+  }
 }
 
 #loader {
-    z-index: 9999;
+  z-index: 9999;
 }
 
 main {
+  .vidoe {
+    padding-top: 50px;
+    padding-left: 230px;
+    padding-bottom: 10px;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #fafafa;
+    @media (max-width: 767px) {
+      padding-left: 0;
+    }
+  }
+  &.admin-nav-close {
     .vidoe {
-        padding-top: 50px;
-        padding-left: 230px;
-        padding-bottom: 10px;
-        width:100%;
-        min-height: 100vh;
-        background-color: #fafafa;
-        @media (max-width: 767px) {
-            padding-left: 0;
-        }
+      padding-left: 0;
     }
-    &.admin-nav-close {
-        .vidoe {
-            padding-left: 0;
-        }
-    }
+  }
 }
