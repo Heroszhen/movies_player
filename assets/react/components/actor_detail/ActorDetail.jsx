@@ -43,6 +43,13 @@ const ActorDetail = (props) => {
           {actor && (
             <>
               <div className="col-md-4 mb-3">
+                {section === 3 && photos.length > 0 && (
+                  <div className="mb-3">
+                    <button type="button" className="btn btn-secondary" onClick={() => setPhotosInModal(photos)}>
+                      Diaporama
+                    </button>
+                  </div>
+                )}
                 {actor.currentPhoto && (
                   <img
                     src={`${process.env.AWS_FILE_PREFIX}${actor.currentPhoto.imageName}`}
