@@ -60,6 +60,9 @@ const ActorDetail = (props) => {
                     src={`${process.env.AWS_FILE_PREFIX}${actor.currentPhoto.imageName}`}
                     alt=""
                     className="hero-shadow-10-10-40-0-rgba(52,58,64,.25)"
+                    onDoubleClick={() =>
+                      setPhotosInModal([`${process.env.AWS_FILE_PREFIX}${actor.currentPhoto.imageName}`])
+                    }
                   />
                 )}
               </div>
