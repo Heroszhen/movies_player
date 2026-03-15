@@ -110,7 +110,7 @@ const AdminUser = () => {
 
   return (
     <>
-      <section id="admin-users" className="vidoe">
+      <section id="admin-users" className="video">
         <div className="container-fluid pt-3">
           <div className="row">
             <div className="col-12 mb-3">

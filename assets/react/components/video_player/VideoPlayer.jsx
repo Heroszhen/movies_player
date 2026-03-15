@@ -72,8 +72,8 @@ const VideoPlayer = (props) => {
       {props.video !== null && (
         <section className="container pt-2">
           <div className="row">
-            <div className="col-12 mb-1">
-              <div className="d-flex justify-content-end align-items-center">
+            <div className="col-12 col-md-3 mb-1">
+              <div className="d-flex align-items-center">
                 <i className="bi bi-arrow-return-left hero-cursor-pointer fs-3 me-4" onClick={() => navigate(-1)}></i>
                 <i
                   className="bi bi-arrows-fullscreen hero-cursor-pointer fs-3 me-4"
@@ -81,6 +81,18 @@ const VideoPlayer = (props) => {
                 <i
                   className="bi bi-box-arrow-right hero-cursor-pointer fs-3 me-4"
                   onClick={() => goToOriginalWebsite(props.video.link)}></i>
+              </div>
+            </div>
+            <div className="col-12 col-md-9 mb-1">
+              <div className="d-flex flex-wrap">
+                {props.video.categories.map((category) => (
+                  <NavLink
+                    to={'/categorie/' + category.id + '?page=1'}
+                    className="category me-2 mb-2"
+                    key={category.id}>
+                    {category.name}
+                  </NavLink>
+                ))}
               </div>
             </div>
             <div className="col-12">

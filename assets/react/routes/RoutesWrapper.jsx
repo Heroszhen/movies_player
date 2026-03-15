@@ -8,10 +8,12 @@ import Movies from '../pages/movies/Movies.jsx';
 import Movie from '../pages/movie/movie.jsx';
 import Actors from '../pages/actors/Actors.jsx';
 import Actor from '../pages/actor/Actor.jsx';
+import Category from '../pages/category/category.jsx';
 
 import AdminUser from '../pages/admin/user/User.jsx';
 import AdminActor from '../pages/admin/actor/AdminActor.jsx';
 import AdminMovie from '../pages/admin/movie/AdminMovie.jsx';
+import { AdminCategory } from '../pages/admin/category/AdminCategory.jsx';
 
 const RoutesWrapper = (props) => {
   return (
@@ -26,12 +28,14 @@ const RoutesWrapper = (props) => {
               <Route path="/video/:id" element={<Movie />} />
               <Route path="/acteurs" element={<Actors />} />
               <Route path="/acteur/:id" element={<Actor />} />
+              <Route path="/categorie/:id" element={<Category />} />
             </Route>
 
             <Route element={<AdminGuard />}>
               <Route path="/admin/utilisateurs" element={<AdminUser />} />
               <Route path="/admin/acteurs" element={<AdminActor />} />
               <Route path="/admin/videos" element={<AdminMovie />} />
+              <Route path="/admin/categories" element={<AdminCategory />} />
             </Route>
           </>
         )}

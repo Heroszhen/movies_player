@@ -1,0 +1,5 @@
+App\Entity\Category:
+  category (template):
+    name: <word()><current()>
+  
+  category_{1..100} (extends category):

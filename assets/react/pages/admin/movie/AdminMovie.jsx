@@ -41,6 +41,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import FileForm from '../../../components/file_form/FileForm';
 import Editor from '../../../components/editor/Editor';
 import { deletePhoto } from '../../../stores/fileStore';
+import { getCategoriesName } from '../../../stores/categoryStore';
 
 const AdminMovie = () => {
   const reactLocation = useLocation();
@@ -74,6 +75,7 @@ const AdminMovie = () => {
   const [alertContent, setAlertContent] = useState(null);
   const bc = new BroadcastChannel('admin_movie');
   const editorRef = useRef(null);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     getPaginator(reactLocation.pathname);
@@ -83,11 +85,15 @@ const AdminMovie = () => {
       (async () => {
         getVideoTypes();
         getListActors();
+        getListCategories();
       })();
 
     bc.onmessage = (event) => {
       if (event.data && event.data.data === 'actor') {
         getListActors();
+      }
+      if (event.data && event.data.data === 'category') {
+        getListCategories();
       }
     };
 
@@ -139,6 +145,7 @@ const AdminMovie = () => {
           type: index === null ? 1 : movies[index].type.id,
           actors: index === null ? [] : movies[index].actors.map((actor) => actor.id),
           description: index === null ? null : movies[index].description,
+          categories: index === null ? [] : movies[index].categories.map((category) => category.id),
         });
       }
       if (type === 3) {
@@ -160,10 +167,12 @@ const AdminMovie = () => {
     if (formType === 2) {
       const newActors = data.actors.map((id) => `/api/actors/${id}`);
       const newTypes = `/api/video_types/${data.type}`;
+      const newCategories = data.categories.map((id) => `/api/categories/${id}`);
       data = {
         ...data,
         actors: newActors,
         type: newTypes,
+        categories: newCategories,
         duration: parseInt(data.duration),
         description: editorRef.current.getValue(),
       };
@@ -191,11 +200,17 @@ const AdminMovie = () => {
     getVideoTypes();
     getMovies(page, keywords);
     getListActors();
+    getListCategories();
+  };
+
+  const getListCategories = async () => {
+    const results = await getCategoriesName();
+    setCategories(results);
   };
 
   return (
     <>
-      <section id="admin-movie" className="vidoe">
+      <section id="admin-movie" className="video">
         <div className="container-fluid pt-3">
           <div className="row">
             <div className="col-12 mb-3">
@@ -390,7 +405,7 @@ const AdminMovie = () => {
                     helperText={errors.title?.message}
                   />
                   <Grid container spacing={1} sx={{ mb: 3 }}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                       <TextField
                         label="Date de sortie"
                         type="date"
@@ -400,7 +415,7 @@ const AdminMovie = () => {
                         {...register('releasedAt')}
                       />
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                       <TextField
                         label="Durée"
                         type="number"
@@ -408,6 +423,30 @@ const AdminMovie = () => {
                         sx={{ mb: 2 }}
                         {...register('duration')}
                       />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <FormControl fullWidth error={!!errors.type} sx={{ mb: 4 }}>
+                        <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                        <Controller
+                          name="type"
+                          control={control}
+                          rules={{ required: 'Le champ est obligatoire' }} // Validation rules
+                          render={({ field }) => (
+                            <Select {...field} labelId="demo-simple-select-label" id="demo-simple-select" label="Type">
+                              {videoTypes.map((type) => (
+                                <MenuItem value={type.id} key={type.id}>
+                                  {type.name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          )}
+                        />
+                        {errors.type && (
+                          <Typography variant="caption" color="error" sx={{ mt: 1, ml: 2, display: 'block' }}>
+                            {errors.type.message}
+                          </Typography>
+                        )}
+                      </FormControl>
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Box sx={{ mb: 4 }}>
@@ -453,28 +492,40 @@ const AdminMovie = () => {
                       </Box>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                      <FormControl fullWidth error={!!errors.type} sx={{ mb: 4 }}>
-                        <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                      <Box sx={{ mb: 4 }}>
                         <Controller
-                          name="type"
                           control={control}
-                          rules={{ required: 'Le champ est obligatoire' }} // Validation rules
+                          name={'categories'}
+                          rules={{
+                            validate: (value) => value.length > 0 || 'Il faut au moins une catégorie',
+                          }}
                           render={({ field }) => (
-                            <Select {...field} labelId="demo-simple-select-label" id="demo-simple-select" label="Type">
-                              {videoTypes.map((type) => (
-                                <MenuItem value={type.id} key={type.id}>
-                                  {type.name}
-                                </MenuItem>
-                              ))}
-                            </Select>
+                            <Autocomplete
+                              multiple
+                              sx={{ mb: 2 }}
+                              options={categories}
+                              getOptionLabel={(option) => option.name}
+                              onChange={(event, newValue) => {
+                                field.onChange(newValue.map((item) => item.id));
+                              }}
+                              value={categories.filter((category) => field.value.includes(category.id))}
+                              renderOption={(props, option) => (
+                                <Box component="li" {...props} display="flex" alignItems="center" key={option.id}>
+                                  <span>{option.name}</span>
+                                </Box>
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label="Categories *"
+                                  error={!!errors.categories}
+                                  helperText={errors.categories?.message}
+                                />
+                              )}
+                            />
                           )}
                         />
-                        {errors.type && (
-                          <Typography variant="caption" color="error" sx={{ mt: 1, ml: 2, display: 'block' }}>
-                            {errors.type.message}
-                          </Typography>
-                        )}
-                      </FormControl>
+                      </Box>
                     </Grid>
                   </Grid>
                   <TextField

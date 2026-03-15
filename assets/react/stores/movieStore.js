@@ -17,11 +17,12 @@ const useMovieStore = create((set, get) => ({
   emptyMovies: () => {
     set(() => ({ movies: [] }));
   },
-  getMovies: async (page = 1, keywords = '', needPoster = false) => {
+  getMovies: async (page = 1, keywords = '', needPoster = false, query = null) => {
     const url = needPoster === true ? '/api/movies/poster' : '/api/movies';
     try {
-      const titleResponse = await fetchMovies(url, page, `&title=${keywords}`);
-      const actorNameResponse = await fetchMovies(url, page, `&actors.name=${keywords}`);
+      const newQuery = query === null ? '' : '&' + query;
+      const titleResponse = await fetchMovies(url, page, `&title=${keywords}${newQuery}`);
+      const actorNameResponse = await fetchMovies(url, page, `&actors.name=${keywords}${newQuery}`);
       const movies = cleanArrayObjects([...titleResponse['hydra:member'], ...actorNameResponse['hydra:member']], 'id');
       set((state) => ({
         ...state,

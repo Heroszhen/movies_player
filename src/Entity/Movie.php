@@ -60,7 +60,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(security: "is_granted('ROLE_ADMIN')")
     ]
 )]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'actors.name' => 'ipartial', 'actors.id' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'title' => 'ipartial', 
+    'actors.name' => 'ipartial', 
+    'actors.id' => 'exact',
+    'categories.id' => 'exact',
+])]
 class Movie
 {
     use TimestampableTrait;
@@ -68,7 +73,7 @@ class Movie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['movie:read', 'movie:poster'])]
+    #[Groups(['movie:read', 'movie:poster', 'category:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -111,9 +116,17 @@ class Movie
     #[ORM\Column(nullable: true)]
     private ?bool $notified = null;
 
+    /**
+     * @var Collection<int, Category>
+     */
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'movies')]
+    #[Groups(['movie:read', 'movie:write'])]
+    private Collection $categories;
+
     public function __construct()
     {
         $this->actors = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -237,6 +250,33 @@ class Movie
     public function setNotified(?bool $notified): static
     {
         $this->notified = $notified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeMovie($this);
+        }
 
         return $this;
     }
