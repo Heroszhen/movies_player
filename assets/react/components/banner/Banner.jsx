@@ -10,7 +10,8 @@ const Banner = () => {
     if (
       !reactLocation.pathname.includes('admin') &&
       !reactLocation.pathname.includes('/video') &&
-      !reactLocation.pathname.includes('/acteur')
+      !reactLocation.pathname.includes('/acteur') &&
+      !reactLocation.pathname.includes('/categorie')
     ) {
       return <img src="/build/static/ad.png" alt="" className="w-100 hero-minh-60" />;
     }
