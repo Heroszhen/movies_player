@@ -31,7 +31,6 @@ export const AdminCategory = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    getValues,
   } = useForm();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -113,8 +112,9 @@ export const AdminCategory = () => {
   };
 
   const validateFormByKeydown = async (e) => {
-    if (e.key === 'Enter' && getValues('name') !== '') {
-      await onSubmit({ name: getValues('name') });
+    const value = e.target.value;
+    if (e.key === 'Enter' && value !== '') {
+      await onSubmit({ name: value });
       setCategoryIndex(null);
     }
   };
