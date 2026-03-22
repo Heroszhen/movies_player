@@ -62,7 +62,7 @@ const Category = () => {
       setMovies(response['hydra:member']);
       setTotal(response['hydra:totalItems']);
       if (scrollTop !== null) {
-        await wait(1);
+        await wait(0.5);
         window.scrollTo({top: scrollTop});
         setScrollTop(null);
       }
