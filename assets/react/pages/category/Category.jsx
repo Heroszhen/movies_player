@@ -80,7 +80,7 @@ const Category = () => {
       id: id ?? -1
     }
 
-    localStorage.setItem('category_page', JSON.stringify(Object.assign(newStore, store)));
+    localStorage.setItem('category_page', JSON.stringify(Object.assign(store, newStore)));
   }
 
   const setChoicesFromStore = (index = null) => {
