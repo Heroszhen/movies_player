@@ -1,6 +1,7 @@
 import './bootstrap.js';
 
 import 'uno.css';
+import 'react-responsive-pagination/themes/classic.css';
 
 import { createRoot } from 'react-dom/client';
 import App from './react/App.jsx';

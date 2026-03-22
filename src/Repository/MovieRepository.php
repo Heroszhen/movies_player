@@ -40,4 +40,40 @@ class MovieRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function getMoviesByCategories(array $categories, ?string $keywords, int $page)
+    {
+        $qb = $this->createQueryBuilder('movie');
+
+        $qb
+            ->distinct()
+            ->setFirstResult(($page - 1) * 20)
+            ->setMaxResults(20)
+            ->orderBy('movie.id', 'DESC')
+        ;
+
+        if (count($categories) > 0) {
+            $qb
+                ->innerJoin('movie.categories', 'categories')
+                ->andWhere('categories.id IN (:categories)')
+                ->setParameter('categories', $categories)
+            ;
+        }
+
+        if (!empty($keywords)) {
+            $qb
+                ->innerJoin('movie.actors', 'actors')
+                ->andWhere(
+                    $qb->expr()->orX(
+                        'movie.title LIKE :search',
+                        'actors.name LIKE :search',
+                        'actors.country LIKE :search'
+                    )
+                )
+                ->setParameter('search', "%{$keywords}%");
+            ;
+        }
+
+        return $qb;
+    }
 }

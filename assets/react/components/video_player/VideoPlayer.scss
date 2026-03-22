@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 #video-player {
   .wrap-video {
     &:not(:has(.wrap-photo)) {
@@ -28,6 +30,14 @@
         min-height: 740px !important;
         border-radius: 10px;
       }
+    }
+  }
+  .category {
+    background-color: $mainColor;
+    color: white;
+    padding: 2px 5px;
+    &:hover {
+      background-color: #b25e51;
     }
   }
 }

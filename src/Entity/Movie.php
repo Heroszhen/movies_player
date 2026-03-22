@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
+use App\State\GetMoviesByCategoryState;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
@@ -25,6 +26,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['movie:read']],
     denormalizationContext: ['groups' => ['movie:write']],
     operations: [
+        new GetCollection(
+            paginationEnabled: true, 
+            name: 'get_movies_by_categories', 
+            uriTemplate: '/movies/by-categories', 
+            provider: GetMoviesByCategoryState::class,
+            normalizationContext: ['groups' => 'movie:poster']
+        ),
         new GetCollection(
             paginationEnabled: true, 
             paginationItemsPerPage: 4,

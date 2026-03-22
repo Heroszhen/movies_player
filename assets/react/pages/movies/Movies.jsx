@@ -10,7 +10,6 @@ import usePaginatorStore, {
 } from '../../stores/paginatorStore';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ResponsivePagination from 'react-responsive-pagination';
-import 'react-responsive-pagination/themes/classic.css';
 import { wait } from '../../services/utils';
 
 const Movies = () => {

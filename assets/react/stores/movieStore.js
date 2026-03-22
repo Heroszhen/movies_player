@@ -137,3 +137,30 @@ export const getVideoTypes = async () => {
     return jsonResponse['hydra:member'];
   } catch {}
 };
+
+/**
+ *
+ * @param {Array} categories
+ * @param {string} keywords
+ * @param {number} page
+ * @returns {Object|null}
+ */
+export const getMoviesByCategories = async (categoryIds, keywords = null, page = null) => {
+  const url = new URL('/api/movies/by-categories', window.location.origin);
+  categoryIds.forEach((id) => url.searchParams.append('categories[]', id));
+  url.searchParams.set('page', page ?? 1);
+  url.searchParams.set('keywords', keywords);
+
+  try {
+    let response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: getRequestHeaders(),
+    });
+    if (response.ok) {
+      const jsonResponse = await response.json();
+      return jsonResponse['hydra:member'] ? jsonResponse : null;
+    }
+
+    return null;
+  } catch {}
+};

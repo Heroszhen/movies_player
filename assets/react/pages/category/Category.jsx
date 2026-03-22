@@ -1,25 +1,178 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import useMovieStore from '../../stores/movieStore';
+import { getCategoriesName } from '../../stores/categoryStore';
+import { getMoviesByCategories } from '../../stores/movieStore';
+import Poster from '../../components/poster/poster';
+import ResponsivePagination from 'react-responsive-pagination';
 
 const Category = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
-  const page = searchParams.get('page') || 1;
-  const { movies, getMovies } = useMovieStore();
+  const [page, setPage] = useState(searchParams.get('page') === null ? 1 : parseInt(searchParams.get('page')));
+  const [total, setTotal] = useState(0);
+  const itemsPerPage = 20;
+  const [categories, setCategories] = useState([]);
+  const [indexes, setIndexes] = useState([]); //category index
+  const [movies, setMovies] = useState([]);
+  const [btnShow, setBtnShow] = useState('');
+  const [keywords, setKeywords] = useState('');
+  const searchRef = useRef(null);
 
   useEffect(() => {
-    (async () => {
-      if (id) {
-        await getMovies(page, '', true, `categories.id=${id}`);
-        console.log(movies);
-      }
-    })();
-  }, [id, page]);
+    getCategories();
+  }, []);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      searchMovies();
+    }
+  }, [indexes, page, keywords]);
+
+  const getCategories = async () => {
+    const result = await getCategoriesName();
+    setCategories(result);
+    const index = result.findIndex((category) => category.id === parseInt(id));
+    setChoicesFromStore(index === -1 ? null : index);
+  };
+
+  const changeCategory = (index) => {
+    if (indexes.includes(index)) {
+      setIndexes(indexes.filter((oldIndex) => oldIndex !== index));
+    } else {
+      setIndexes([...indexes, index]);
+    }
+    setPage(1);
+  };
+
+  const searchMovies = async () => {
+    storeChoices();
+    const categoryIds = indexes.map((index) => categories[index]['id']);
+    const response = await getMoviesByCategories(categoryIds, keywords, page);
+    if (response !== null) {
+      setMovies(response['hydra:member']);
+      setTotal(response['hydra:totalItems']);
+    }
+  };
+
+  const storeChoices = () => {
+    const store = {
+      indexes: indexes,
+      keywords: keywords,
+      page: page,
+      id: id ?? -1
+    }
+
+    localStorage.setItem('category_page', JSON.stringify(store));
+  }
+
+  const setChoicesFromStore = (index = null) => {
+    let newIndexes = [];
+    let newPage = page;
+
+    let store = localStorage.getItem('category_page');
+    if (store) {
+      store = JSON.parse(store);
+      if (store.id === (id ?? -1)) {
+        if (store.indexes) newIndexes = [...newIndexes, ...store.indexes];
+        if (store.keywords) setKeywords(keywords);
+        if (store.page) newPage = store.page;
+      }   
+    }
+    if(index !== null && !newIndexes.includes(index))newIndexes.push(index);
+    setIndexes(newIndexes);
+    setPage(newPage);
+  }
+
+  const searchByKeywords = (e, toSend = false) => {
+    const oldKeywords = keywords;
+    if (
+      (e.type === 'keyup' && e.keyCode === 13) ||
+      (e.type === 'change' && !e.nativeEvent.data) ||
+      toSend === true
+    ) {
+      const newKeywords = searchRef.current.value;
+      setKeywords(newKeywords);
+      if (oldKeywords !== newKeywords)setPage(1);
+    }
+  };
 
   return (
-    <section id="category" className="min-vh-100">
-      {movies.length}
+    <section id="category" className="min-vh-100 p-2">
+      <div className="container-fluid">
+        <div className="row mb-4">
+          <h1 className="col-12 mb-4">
+            Vidéos avec Catégories
+          </h1>
+          <div className="col-6">
+            <div className="dropdown">
+              <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onClick={() => setBtnShow(btnShow === '' ? 'show' : '')}>
+                Catégories
+              </button>
+              <ul className={"dropdown-menu h-[calc(100vh-200px)] overflow-auto " + btnShow}>
+                {categories.map((category, index) => (
+                  <li className="ps-1 pe-1" key={index} >
+                    <div className="category form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id={'checkCategory_' + index}
+                        checked={indexes.includes(index)}
+                        onChange={() => changeCategory(index)}
+                      />
+                      <label className="form-check-label" htmlFor={'checkCategory_' + index}>
+                        {category.name}
+                      </label>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="col-6">
+            <div className="d-flex justify-content-end">
+              <div className="input-group input-group-sm md:hero-width-300">
+                <input
+                  type="search"
+                  className="form-control"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm"
+                  id="search"
+                  name="name"
+                  defaultValue={keywords}
+                  ref={searchRef}
+                  onChange={(e) => searchByKeywords(e)}
+                  onKeyUp={(e) => searchByKeywords(e)}
+                />
+                <span className="input-group-text hero-cursor-pointer" 
+                  onClick={(e) => searchByKeywords(e, true)}
+                >
+                  <i className="bi bi-search"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          {movies.map((movie, index) => (
+            <div key={index} className="col-6 col-md-4 col-lg-3 col-xl-2 mb-5">
+              <Poster movie={movie} />
+            </div>
+          ))}
+
+          {movies.length > 0 && (
+            <div className="col-12 mt-3">
+              <div className="wrap-paginator">
+                <ResponsivePagination
+                  current={page}
+                  total={Math.ceil(total / itemsPerPage)}
+                  onPageChange={setPage}
+                  maxWidth={400}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </section>
   );
 };

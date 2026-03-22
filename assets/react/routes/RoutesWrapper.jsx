@@ -29,6 +29,7 @@ const RoutesWrapper = (props) => {
               <Route path="/acteurs" element={<Actors />} />
               <Route path="/acteur/:id" element={<Actor />} />
               <Route path="/categorie/:id" element={<Category />} />
+              <Route path="/categories" element={<Category />} />
             </Route>
 
             <Route element={<AdminGuard />}>
