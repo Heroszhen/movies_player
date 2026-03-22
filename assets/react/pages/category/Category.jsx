@@ -4,6 +4,7 @@ import { getCategoriesName } from '../../stores/categoryStore';
 import { getMoviesByCategories } from '../../stores/movieStore';
 import Poster from '../../components/poster/poster';
 import ResponsivePagination from 'react-responsive-pagination';
+import { wait } from '../../services/utils';
 
 const Category = () => {
   const { id } = useParams();
@@ -17,9 +18,18 @@ const Category = () => {
   const [btnShow, setBtnShow] = useState('');
   const [keywords, setKeywords] = useState('');
   const searchRef = useRef(null);
+  const [scrollTop, setScrollTop] = useState(null);
 
   useEffect(() => {
     getCategories();
+
+    (async () => {
+      await wait(2);
+      window.addEventListener('scroll', storeScrollTop);
+    })();
+    return () => {
+      window.removeEventListener('scroll', storeScrollTop);
+    };
   }, []);
 
   useEffect(() => {
@@ -51,18 +61,26 @@ const Category = () => {
     if (response !== null) {
       setMovies(response['hydra:member']);
       setTotal(response['hydra:totalItems']);
+      if (scrollTop !== null) {
+        await wait(1);
+        window.scrollTo({top: scrollTop});
+        setScrollTop(null);
+      }
     }
   };
 
   const storeChoices = () => {
-    const store = {
+    let store = localStorage.getItem('category_page');
+    if (store) store = JSON.parse(store);
+    else store = {};
+    const newStore = {
       indexes: indexes,
       keywords: keywords,
       page: page,
       id: id ?? -1
     }
 
-    localStorage.setItem('category_page', JSON.stringify(store));
+    localStorage.setItem('category_page', JSON.stringify(Object.assign(newStore, store)));
   }
 
   const setChoicesFromStore = (index = null) => {
@@ -76,6 +94,7 @@ const Category = () => {
         if (store.indexes) newIndexes = [...newIndexes, ...store.indexes];
         if (store.keywords) setKeywords(keywords);
         if (store.page) newPage = store.page;
+        setScrollTop(store.scrollTop ?? 0);
       }   
     }
     if(index !== null && !newIndexes.includes(index))newIndexes.push(index);
@@ -95,6 +114,15 @@ const Category = () => {
       if (oldKeywords !== newKeywords)setPage(1);
     }
   };
+
+  const storeScrollTop = () => {
+    
+    let store = localStorage.getItem('category_page');
+    if (store) store = JSON.parse(store);
+    else store = {};
+    store.scrollTop = window.scrollY;
+    localStorage.setItem('category_page', JSON.stringify(store));
+  }
 
   return (
     <section id="category" className="min-vh-100 p-2">
