@@ -11,6 +11,7 @@ import usePaginatorStore, {
 import { useLocation, useNavigate } from 'react-router-dom';
 import ResponsivePagination from 'react-responsive-pagination';
 import { wait } from '../../services/utils';
+import PaginatorInput from '../../components/paginator_input/PaginatorInput';
 
 const Movies = () => {
   const { movies, getMovies } = useMovieStore();
@@ -101,16 +102,23 @@ const Movies = () => {
             );
           })}
           {movies.length > 0 && (
-            <div className="col-12">
-              <div className="wrap-paginator">
-                <ResponsivePagination
-                  current={page}
-                  total={Math.ceil(total / itemsPerPage)}
-                  onPageChange={setPage}
-                  maxWidth={400}
-                />
+            <>
+              <div className="col-12 mb-2">
+                <div className="wrap-paginator">
+                  <ResponsivePagination
+                    current={page}
+                    total={Math.ceil(total / itemsPerPage)}
+                    onPageChange={setPage}
+                    maxWidth={400}
+                  />
+                </div>
               </div>
-            </div>
+              <div className="col-12">
+                <div className="d-flex justify-content-center">
+                  <PaginatorInput page={page} setPage={setPage} />
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>

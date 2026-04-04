@@ -42,6 +42,7 @@ import FileForm from '../../../components/file_form/FileForm';
 import Editor from '../../../components/editor/Editor';
 import { deletePhoto } from '../../../stores/fileStore';
 import { getCategoriesName } from '../../../stores/categoryStore';
+import PaginatorInput from '../../../components/paginator_input/PaginatorInput';
 
 const AdminMovie = () => {
   const reactLocation = useLocation();
@@ -351,13 +352,16 @@ const AdminMovie = () => {
               </TableContainer>
             </div>
 
-            <div className="col-12">
+            <div className="col-12 mb-2">
               <Pagination
                 count={Math.ceil(total / itemsPerPage)}
                 page={page}
                 color="secondary"
                 onChange={handleChangePage}
               />
+            </div>
+            <div className="col-12">
+              <PaginatorInput page={page} setPage={setPage} />
             </div>
           </div>
         </div>
