@@ -84,6 +84,7 @@ export const AdminCategory = () => {
     } else if (e.type === 'change' && e.target.value === '') {
       setKeywords(e.target.value);
     }
+    setPage(1);
   };
 
   const onSubmit = async (data) => {

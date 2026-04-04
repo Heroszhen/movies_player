@@ -8,7 +8,7 @@ const Movie = () => {
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
-    window.scrollTo({top: 0});
+    window.scrollTo({ top: 0 });
     (async () => {
       const result = await getMovie(id);
       if (result.id) setMovie(result);

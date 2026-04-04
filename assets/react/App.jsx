@@ -86,7 +86,7 @@ function App() {
           if (clonedResponse.status === 401 && reactLocation.pathname !== '/') navigate('/');
         }
       } else if (reactLocation.pathname.includes('admin')) {
-        setAlertDuration(1000);
+        setAlertDuration(500);
         setAlertSeverity('success');
         setAlertMessages('Envoyé');
         setOpenAlert(true);

@@ -121,6 +121,7 @@ const AdminMovie = () => {
     } else if (e.type === 'change' && e.target.value === '') {
       setKeywords(e.target.value);
     }
+    setPage(1);
   };
 
   const handleChangePage = async (event, newPage) => {
@@ -137,12 +138,16 @@ const AdminMovie = () => {
         });
       }
       if (type === 2) {
+        let releasedAt = null;
+        if (index === null || !movies[index].releasedAt) releasedAt = moment(new Date()).format('YYYY-MM-DD');
+        else releasedAt = movies[index].releasedAt.split('T')[0];
+
         reset({
           title: index === null ? '' : movies[index].title,
-          releasedAt: index === null || !movies[index].releasedAt ? null : movies[index].releasedAt.split('T')[0],
+          releasedAt: releasedAt,
           duration: index === null ? 1 : movies[index].duration,
           link: index === null ? '' : movies[index].link,
-          type: index === null ? 1 : movies[index].type.id,
+          type: index === null ? 4 : movies[index].type.id,
           actors: index === null ? [] : movies[index].actors.map((actor) => actor.id),
           description: index === null ? null : movies[index].description,
           categories: index === null ? [] : movies[index].categories.map((category) => category.id),
@@ -289,11 +294,8 @@ const AdminMovie = () => {
                       <TableCell>Titre</TableCell>
                       <TableCell>Photo</TableCell>
                       <TableCell>Actors</TableCell>
-                      <TableCell>Durée</TableCell>
                       <TableCell>Date de sortie</TableCell>
-                      <TableCell>Type</TableCell>
-                      <TableCell>Date d&apos;ajout</TableCell>
-                      <TableCell>Action</TableCell>
+                      <TableCell>Actions</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -327,13 +329,8 @@ const AdminMovie = () => {
                               </>
                             )}
                           </TableCell>
-                          <TableCell>{movie.duration}</TableCell>
                           <TableCell>
                             {movie.releasedAt !== null && moment(movie.releasedAt).format('DD/MM/YYYY')}
-                          </TableCell>
-                          <TableCell>{movie.type?.name}</TableCell>
-                          <TableCell>
-                            {movie.createdAt !== null && moment(movie.createdAt).format('DD/MM/YYYY')}
                           </TableCell>
                           <TableCell>
                             <PhotoIcon className="me-4 mb-4 hero-cursor-pointer" onClick={() => toggleForm(3, index)} />
