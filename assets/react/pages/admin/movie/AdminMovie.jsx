@@ -368,7 +368,7 @@ const AdminMovie = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <Box sx={getModalStyle(formType === 3 ? 500 : 800)} onClick={(e) => e.stopPropagation()}>
+        <Box sx={getModalStyle(formType === 3 ? 500 : 900)} onClick={(e) => e.stopPropagation()}>
           <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mb: 4 }}>
             {formType === 1 && `Editer un type`}
             {formType === 2 && `${movieIndex === null ? 'Ajouter' : 'Modifier'} une video`}
