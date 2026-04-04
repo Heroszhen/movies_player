@@ -113,13 +113,13 @@ const Movies = () => {
                   />
                 </div>
               </div>
-              <div className="col-12">
-                <div className="d-flex justify-content-center">
-                  <PaginatorInput page={page} setPage={setPage} />
-                </div>
-              </div>
             </>
           )}
+          <div className="col-12">
+            <div className="d-flex justify-content-center">
+              <PaginatorInput page={page} setPage={setPage} />
+            </div>
+          </div>
         </div>
       </div>
     </section>
