@@ -27,28 +27,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['movie:write']],
     operations: [
         new GetCollection(
-            paginationEnabled: true, 
-            name: 'get_movies_by_categories', 
-            uriTemplate: '/movies/by-categories', 
+            paginationEnabled: true,
+            name: 'get_movies_by_categories',
+            uriTemplate: '/movies/by-categories',
             provider: GetMoviesByCategoryState::class,
             normalizationContext: ['groups' => 'movie:poster']
         ),
         new GetCollection(
-            paginationEnabled: true, 
+            paginationEnabled: true,
             paginationItemsPerPage: 4,
-            name: 'get_last_three_movies', 
-            uriTemplate: '/movies/last-three-movies', 
+            name: 'get_last_three_movies',
+            uriTemplate: '/movies/last-three-movies',
             order: ['id' => 'DESC']
         ),
         new GetCollection(
-            name: 'get_movies_poster', 
-            uriTemplate: '/movies/poster', 
+            name: 'get_movies_poster',
+            uriTemplate: '/movies/poster',
             order: ['id' => 'DESC'],
             normalizationContext: ['groups' => 'movie:poster']
         ),
         new GetCollection(
-            name: 'get_movies_by_actor', 
-            uriTemplate: '/movies/actor', 
+            name: 'get_movies_by_actor',
+            uriTemplate: '/movies/actor',
             order: ['createdAt' => 'DESC'],
             parameters: [
                 'actors.id' => new QueryParameter(
@@ -69,8 +69,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
-    'title' => 'ipartial', 
-    'actors.name' => 'ipartial', 
+    'title' => 'ipartial',
+    'actors.name' => 'ipartial',
     'actors.id' => 'exact',
     'categories.id' => 'exact',
 ])]
@@ -130,6 +130,10 @@ class Movie
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'movies')]
     #[Groups(['movie:read', 'movie:write'])]
     private Collection $categories;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['movie:read', 'movie:write'])]
+    private ?string $url = null;
 
     public function __construct()
     {
@@ -285,6 +289,18 @@ class Movie
         if ($this->categories->removeElement($category)) {
             $category->removeMovie($this);
         }
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): static
+    {
+        $this->url = $url;
 
         return $this;
     }

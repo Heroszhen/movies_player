@@ -152,6 +152,7 @@ const AdminMovie = () => {
           actors: index === null ? [] : movies[index].actors.map((actor) => actor.id),
           description: index === null ? null : movies[index].description,
           categories: index === null ? [] : movies[index].categories.map((category) => category.id),
+          url: index === null ? null : movies[index].url,
         });
       }
       if (type === 3) {
@@ -532,7 +533,7 @@ const AdminMovie = () => {
                   <TextField
                     label="Lien *"
                     multiline
-                    rows={3}
+                    rows={4}
                     variant="outlined"
                     fullWidth
                     sx={{ mb: 4 }}
@@ -540,6 +541,18 @@ const AdminMovie = () => {
                     {...register('link', { required: 'Le champs est obligatoire' })}
                     error={!!errors.link}
                     helperText={errors.link?.message}
+                  />
+                  <TextField
+                    label="Url de la page *"
+                    multiline
+                    rows={2}
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 4 }}
+                    size="small"
+                    {...register('url')}
+                    error={!!errors.url}
+                    helperText={errors.url?.message}
                   />
                   <Box sx={{ mb: 2 }}>
                     <Editor ref={editorRef} label="Description" value={getValues('description')} />

@@ -26,7 +26,14 @@ const VideoPlayer = (props) => {
     }
   };
 
-  const goToOriginalWebsite = (link) => {
+  const goToOriginalWebsite = () => {
+    if (props.video.url && props.video.url !== '') {
+      window.open(props.video.url, '_blank');
+      return;
+    }
+
+    const link = props.video.link;
+
     if (!link.includes('src=')) {
       window.open(link, '_blank');
       return;
@@ -80,7 +87,7 @@ const VideoPlayer = (props) => {
                   onClick={() => setFullScreen()}></i>
                 <i
                   className="bi bi-box-arrow-right hero-cursor-pointer fs-3 me-4"
-                  onClick={() => goToOriginalWebsite(props.video.link)}></i>
+                  onClick={() => goToOriginalWebsite()}></i>
               </div>
             </div>
             <div className="col-12 col-md-9 mb-1">
