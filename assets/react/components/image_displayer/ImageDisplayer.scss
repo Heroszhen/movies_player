@@ -1,0 +1,10 @@
+#image-displayer {
+  img {
+    height: 100%;
+    width: auto;
+    @media (max-width: 767px) {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
