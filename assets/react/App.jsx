@@ -10,14 +10,13 @@ import { Alert, Snackbar } from '@mui/material';
 import parse from 'html-react-parser';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useMovieStore from './stores/movieStore';
-import usePhotoModalStore from './stores/photoModalStore';
+import usePhotoModalStore, { setPhotosInModal } from './stores/photoModalStore';
 
 import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
 import Footer from './components/footer/Footer';
 import Notifier from './components/notifier/Notifier';
 import PhotoModal from './components/photo_modal/PhotoModal';
-import ImageDisplayer from './components/image_displayer/ImageDisplayer';
 
 //admin
 import AdminNav from './components/admin_nav/AdminNav';
@@ -52,7 +51,6 @@ function App() {
   const [precRoute, setPrecRoute] = useState(null);
   const [canQuery, setCanQuery] = useState(false);
   const { photos: photosInModal } = usePhotoModalStore();
-  const [photoUrl, setPhotoUrl] = useState(null);
 
   useEffect(() => {
     window.fetch = async (...args) => {
@@ -118,6 +116,21 @@ function App() {
     setPrecRoute(reactLocation.pathname);
   }, [reactLocation]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 767) {
+        if (!adminNavRef.current.classList.contains('d-none')) {
+          document.getElementById('admin-header').querySelector('#admin-header-btn').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        }
+      }
+    };
+  
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const resetLoginForm = () => {
     reset({
       email: null,
@@ -149,8 +162,7 @@ function App() {
   const clickOnPage = (e) => {
     if (e) {
       if (e.target instanceof HTMLImageElement) {
-        console.log(e.target.src);
-        setPhotoUrl(e.target.src);
+        setPhotosInModal([e.target.src]);
       }
     }
   };
@@ -253,8 +265,6 @@ function App() {
       <Notifier pathname={reactLocation.pathname} user={user} />
 
       {photosInModal.length > 0 && <PhotoModal />}
-
-      {photoUrl !== null && <ImageDisplayer photoUrl={photoUrl} setPhotoUrl={setPhotoUrl} />}
     </>
   );
 }

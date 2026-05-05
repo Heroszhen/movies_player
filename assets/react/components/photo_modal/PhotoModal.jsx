@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import usePhotoModalStore, { setPhotosInModal } from '../../stores/photoModalStore';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Zoom } from 'swiper/modules';
@@ -7,6 +8,14 @@ import './photoModal.scss';
 
 const PhotoModal = () => {
   const { photos } = usePhotoModalStore();
+
+  useEffect(() => {
+    document.body.classList.add('overflow-hidden');
+
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, []);
 
   return (
     <section id="photo-modal" className="position-fixed w-100 vh-100 bg-dark top-0 start-0 z-5 pt-1 pb-1">

@@ -23,6 +23,7 @@ const AdminHeader = (props) => {
       id="admin-header"
       className="w-100 hero-height-50 position-fixed top-0 start-0 d-flex justify-content-between align-items-center ps-5 pe-4 hero-zindex-50 bg-white">
       <DehazeIcon
+        id="admin-header-btn"
         className="hero-cursor-pointer"
         onClick={() => {
           props.mainRef.current.classList.toggle('admin-nav-close'),
