@@ -8,7 +8,7 @@ import './photoModal.scss';
 
 const PhotoModal = () => {
   const { photos } = usePhotoModalStore();
-
+  console.log(photos);
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
 
@@ -18,7 +18,7 @@ const PhotoModal = () => {
   }, []);
 
   return (
-    <section id="photo-modal" className="position-fixed w-100 vh-100 bg-dark top-0 start-0 z-5 pt-1 pb-1">
+    <section id="photo-modal" className="position-fixed w-100 vh-100 bg-dark top-0 start-0 z-5 pt-1 pb-1 z-9999">
       <div className="position-fixed w-100 top-0 start-0 ps-3 pe-3 z-3 h-[60px] d-flex justify-content-end align-items-center text-white">
         <i className="bi bi-x-lg cursor-pointer fs-3" onClick={() => setPhotosInModal([])}></i>
       </div>

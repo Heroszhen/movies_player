@@ -338,7 +338,7 @@ const AdminActor = () => {
                   <Box sx={{ mt: 2 }}>
                     <Box sx={{ minWidth: 35 }}>
                       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        {progress}
+                        {progress}%
                       </Typography>
                     </Box>
                     <Box sx={{ width: '100%', mb: 3 }}>

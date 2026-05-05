@@ -137,11 +137,7 @@ const ActorDetail = (props) => {
                     {photos.map((photo, index) => {
                       return (
                         <div className="col-md-6 col-lg-4 mb-3" key={index}>
-                          <img
-                            src={`${process.env.AWS_FILE_PREFIX}${photo.imageName}`}
-                            alt=""
-                            onDoubleClick={() => setPhotosInModal([`${process.env.AWS_FILE_PREFIX}${photo.imageName}`])}
-                          />
+                          <img src={`${process.env.AWS_FILE_PREFIX}${photo.imageName}`} alt="" />
                         </div>
                       );
                     })}
