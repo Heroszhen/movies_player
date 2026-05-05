@@ -61,3 +61,20 @@ main {
     }
   }
 }
+
+@media (max-width: 767px) {
+  table.responsive {
+    thead {
+      display: none;
+    }
+    tbody {
+      tr {
+        border-bottom: 5px solid $mainColor;
+      }
+      tr, td {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}

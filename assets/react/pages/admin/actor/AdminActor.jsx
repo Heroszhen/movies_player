@@ -178,7 +178,7 @@ const AdminActor = () => {
                 />
               </Box>
               <TableContainer component={Paper}>
-                <Table className="striped">
+                <Table className="striped responsive">
                   <TableHead sx={{ fontWeight: 'bold' }}>
                     <TableRow>
                       <TableCell>
