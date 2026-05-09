@@ -188,7 +188,6 @@ const AdminMovie = () => {
     if (formType === 3) {
       if (data['@id']) {
         const oldPhotoId = movies[movieIndex].poster?.id ?? null;
-        console.log(oldPhotoId);
         await editMovie({ poster: data['@id'] }, movies[movieIndex].id);
         if (oldPhotoId) await deletePhoto(oldPhotoId);
       }

@@ -8,6 +8,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { forwardRef } from 'react';
 import CategoryIcon from '@mui/icons-material/Category';
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 
 const AdminNav = forwardRef(({ toggleAdminNav }, ref) => {
   return (
@@ -35,6 +36,10 @@ const AdminNav = forwardRef(({ toggleAdminNav }, ref) => {
       <NavLink to="/admin/categories" className={({ isActive }) => (isActive ? 'active' : '')}>
         <CategoryIcon />
         <div>Catégories</div>
+      </NavLink>
+      <NavLink to="/admin/configuration" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <MiscellaneousServicesIcon />
+        <div>Configuration</div>
       </NavLink>
       <a className="hero-cursor-pointer" onClick={() => toggleAdminNav()}>
         <MenuOpenIcon />

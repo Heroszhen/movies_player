@@ -31,6 +31,8 @@ export const addFile = async (file, options = null) => {
 };
 
 export const deletePhoto = async (id) => {
+  if (id == null) return true;
+
   try {
     let response = await fetch(`/api/media_objects/${id}`, {
       method: 'DELETE',

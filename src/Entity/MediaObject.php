@@ -19,8 +19,8 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MediaObjectRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['media_object:read']], 
-    denormalizationContext: ['groups' => ['media_object:write']], 
+    normalizationContext: ['groups' => ['media_object:read']],
+    denormalizationContext: ['groups' => ['media_object:write']],
     outputFormats: ['jsonld' => ['application/ld+json']],
     operations: [
         new Get(),
@@ -36,7 +36,7 @@ class MediaObject
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['media_object:read', 'user:read', 'movie:read', 'actor:read', 'actor:name'])]
+    #[Groups(['media_object:read', 'user:read', 'movie:read', 'actor:read', 'actor:name', 'config:read'])]
     private ?int $id = null;
 
     #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'imageName', size: 'imageSize', originalName: 'originalName')]
@@ -48,7 +48,7 @@ class MediaObject
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['media_object:read', 'user:read', 'movie:read', 'movie:poster', 'actor:read', 'actor:name'])]
+    #[Groups(['media_object:read', 'user:read', 'movie:read', 'movie:poster', 'actor:read', 'actor:name', 'config:read'])]
     private ?string $imageName = null;
 
     #[ORM\Column(nullable: true)]

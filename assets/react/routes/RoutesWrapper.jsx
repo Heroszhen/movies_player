@@ -14,6 +14,7 @@ import AdminUser from '../pages/admin/user/User.jsx';
 import AdminActor from '../pages/admin/actor/AdminActor.jsx';
 import AdminMovie from '../pages/admin/movie/AdminMovie.jsx';
 import { AdminCategory } from '../pages/admin/category/AdminCategory.jsx';
+import AdminConfig from '../pages/admin/config/AdminConfig.jsx';
 
 const RoutesWrapper = (props) => {
   return (
@@ -37,6 +38,7 @@ const RoutesWrapper = (props) => {
               <Route path="/admin/acteurs" element={<AdminActor />} />
               <Route path="/admin/videos" element={<AdminMovie />} />
               <Route path="/admin/categories" element={<AdminCategory />} />
+              <Route path="/admin/configuration" element={<AdminConfig />} />
             </Route>
           </>
         )}
