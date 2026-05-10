@@ -52,7 +52,7 @@ function App() {
   const [precRoute, setPrecRoute] = useState(null);
   const [canQuery, setCanQuery] = useState(false);
   const { photos: photosInModal } = usePhotoModalStore();
-  const { getConfig } = useConfigStore();
+  const { config, getConfig } = useConfigStore();
 
   useEffect(() => {
     window.fetch = async (...args) => {
@@ -105,6 +105,12 @@ function App() {
 
     setLoginModal(new Modal('#loginModal', { keyboard: false }));
   }, []);
+
+  useEffect(() => {
+    if (config && !config.needLogin) {
+      
+    }
+  }, [config]);
 
   useEffect(() => {
     if (login === true) {

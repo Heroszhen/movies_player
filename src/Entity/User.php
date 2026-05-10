@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Patch(
             name: 'editUserPassword',
             uriTemplate: '/users/{id}/password',
-            requirements: ['id' => '\d+'], 
+            requirements: ['id' => '\d+'],
             controller: EditUserPassword::class,
             security: "is_granted('ROLE_ADMIN') or object.owner == user",
             denormalizationContext: ['groups' => 'user:password:write'],
@@ -80,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[Assert\Regex(
-        pattern: '/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}/', 
+        pattern: '/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}/',
         message: 'It must contain at least eight characters, one digit, one lowercase letter, and one uppercase letter.',
         groups: ['user:password:write']
     )]
@@ -91,6 +91,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne]
     #[Groups(['user:write', 'user:read'])]
     private ?MediaObject $photo = null;
+
+    #[ORM\Column(options: ["default" => false])]
+    #[Groups(['user:write', 'user:read'])]
+    private bool $isPublic = false;
 
     public function getId(): ?int
     {
@@ -187,6 +191,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword(?string $plainPassword): static
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setPublic(bool $isPublic): static
+    {
+        $this->isPublic = $isPublic;
 
         return $this;
     }
