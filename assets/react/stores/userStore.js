@@ -99,3 +99,20 @@ export const getUser = () => {
       if (response?.id) useUserStore.setState((state) => ({ ...state, user: response }));
     });
 };
+
+export const getPublicAuth = async () => {
+  try {
+    let response = await fetch(`/api/public-auth`, {
+      method: 'GET',
+    });
+
+    response = await response.json();
+    if (response.token) {
+      localStorage.setItem('token', JSON.stringify({ token: response.token }));
+      getUser();
+
+      return true;
+    }
+  } catch {}
+  return false;
+};

@@ -142,6 +142,16 @@ const AdminUser = () => {
                           <Box component="section">{account.roles.join(', ')}</Box>
                           <Box component="section">{account.createdAt}</Box>
                         </Typography>
+                        <Typography component="div">
+                          <Checkbox
+                            id={'public-checkbox_' + account.id}
+                            checked={account.isPublic}
+                            onChange={async () => await editUser({ isPublic: !account.isPublic }, account.id)}
+                          />
+                          <label htmlFor="public-checkbox" style={{ cursor: 'pointer' }}>
+                            Compte public
+                          </label>
+                        </Typography>
                       </CardContent>
                     </CardActionArea>
                     <CardActions className="d-flex justify-content-between">

@@ -40,7 +40,7 @@ class Config
         return $this->id;
     }
 
-    public function isNeedLogin(): ?bool
+    public function getNeedLogin(): ?bool
     {
         return $this->needLogin;
     }
