@@ -7,7 +7,6 @@ const useConfigStore = create((set) => ({
     try {
       const response = await fetch(`/api/configs/1`, {
         method: 'GET',
-        headers: getRequestHeaders(),
       });
 
       if (response.ok) {

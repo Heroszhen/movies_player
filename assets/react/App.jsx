@@ -11,6 +11,7 @@ import parse from 'html-react-parser';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useMovieStore from './stores/movieStore';
 import usePhotoModalStore, { setPhotosInModal } from './stores/photoModalStore';
+import useConfigStore from './stores/configStore';
 
 import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
@@ -51,6 +52,7 @@ function App() {
   const [precRoute, setPrecRoute] = useState(null);
   const [canQuery, setCanQuery] = useState(false);
   const { photos: photosInModal } = usePhotoModalStore();
+  const { getConfig } = useConfigStore();
 
   useEffect(() => {
     window.fetch = async (...args) => {
@@ -94,6 +96,8 @@ function App() {
       return response;
     };
     setCanQuery(true);
+
+    getConfig();
 
     if (user === null && localStorage.getItem('token') !== null) {
       getUser();
