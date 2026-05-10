@@ -119,19 +119,17 @@ function App() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 767) {
-        if (!adminNavRef.current.classList.contains('d-none')) {
+        if (!adminNavRef.current?.classList.contains('d-none')) {
           document
             .getElementById('admin-header')
-            .querySelector('#admin-header-btn')
-            .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            ?.querySelector('#admin-header-btn')
+            ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         }
       }
     };
 
     handleResize();
     window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const resetLoginForm = () => {
