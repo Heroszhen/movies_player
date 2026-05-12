@@ -37,6 +37,7 @@ security:
     - { path: ^/api/auth, roles: PUBLIC_ACCESS }
     - { path: ^/api/public-auth, roles: PUBLIC_ACCESS }
     - { path: ^/api/sse, roles: PUBLIC_ACCESS }
+    - { path: ^/api/counts, roles: PUBLIC_ACCESS }
     - { path: ^/api/configs/\d+$, methods: [GET], roles: PUBLIC_ACCESS }
     - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
     # - { path: ^/admin, roles: ROLE_ADMIN }

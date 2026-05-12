@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [counts, setCounts] = useState(null);
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,22 +27,9 @@ const Home = () => {
   };
 
   return (
-    <section id="home" className="min-vh-100">
-      <section className="hero-p-top-100 hero-p-bottom-100 d-flex justify-content-center" id="wrap-movies">
-        {movies.map((movie, index) => {
-          return (
-            <article className="wrap-image mb-3" key={index}>
-              {movie.poster && (
-                <img
-                  src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`}
-                  alt=""
-                  className="hero-cursor-pointer"
-                  onClick={() => navigate(`video/${movie.id}`)}
-                />
-              )}
-            </article>
-          );
-        })}
+    <section id="home">
+      <section className="bg-[#edf5f7] pt-5 pb-5 text-center">
+        <h2>Bienvenue à {process.env.NAV_TITLE}</h2>
       </section>
 
       {counts !== null && (
@@ -69,8 +56,33 @@ const Home = () => {
         </section>
       )}
 
-      <section className="hero-bg-color-e7edef pt-5 pb-5 text-center">
-        <h2>Bienvenue à {process.env.NAV_TITLE}</h2>
+      {movies && (
+        <section className="hero-p-top-100 hero-p-bottom-100 d-flex justify-content-center" id="wrap-movies">
+          {movies.map((movie, index) => {
+            return (
+              <article className="wrap-image mb-3" key={index}>
+                {movie.poster && (
+                  <img
+                    src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`}
+                    alt=""
+                    className="hero-cursor-pointer"
+                    onClick={() => navigate(`video/${movie.id}`)}
+                  />
+                )}
+              </article>
+            );
+          })}
+        </section>
+      )}
+
+      <section className="hero-bg-color-e7edef p-5 text-center">
+        <h2>Inscris-toi!</h2>
+        <div className="input-group mt-5 max-w-[600px] mx-auto">
+          <input type="text" className="form-control" placeholder="Ton mail" />
+          <button type="button" className="btn btn-movify input-group-text" id="basic-addon2">
+            Mail
+          </button>
+        </div>
       </section>
     </section>
   );

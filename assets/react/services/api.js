@@ -6,7 +6,6 @@ import { getRequestHeaders } from './data';
 export const getCounts = () => {
   return fetch(`/api/counts`, {
     method: 'GET',
-    headers: getRequestHeaders(),
   });
 };
 
