@@ -54,6 +54,17 @@ function App() {
   const { photos: photosInModal } = usePhotoModalStore();
   const { getConfig } = useConfigStore();
 
+  const handleResize = () => {
+    if (window.innerWidth < 767) {
+      if (!adminNavRef.current?.classList.contains('d-none')) {
+        document
+          .getElementById('admin-header')
+          ?.querySelector('#admin-header-btn')
+          ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      }
+    }
+  };
+
   useEffect(() => {
     (async () => {
       window.fetch = async (...args) => {
@@ -110,17 +121,6 @@ function App() {
   useEffect(() => {
     setLoginModal(new Modal('#loginModal', { keyboard: false }));
 
-    const handleResize = () => {
-      if (window.innerWidth < 767) {
-        if (!adminNavRef.current?.classList.contains('d-none')) {
-          document
-            .getElementById('admin-header')
-            ?.querySelector('#admin-header-btn')
-            ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        }
-      }
-    };
-
     handleResize();
     window.addEventListener('resize', handleResize);
   }, []);
@@ -135,6 +135,8 @@ function App() {
   }, [login]);
 
   useEffect(() => {
+    handleResize();
+
     if (reactLocation.pathname !== precRoute) emptyMovies();
     setPrecRoute(reactLocation.pathname);
   }, [reactLocation]);
