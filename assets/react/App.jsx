@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.scss';
 import RoutesWrapper from './routes/RoutesWrapper';
-import useUserStore from './stores/userStore';
-import { setLogin, getAuth, getUser } from './stores/userStore';
+import useUserStore, { setLogin, getAuth, getUser, getPublicAuth } from './stores/userStore';
 import { Modal } from 'bootstrap';
 import { useForm } from 'react-hook-form';
 import useLoaderStore from './stores/loaderStore';
@@ -52,7 +51,7 @@ function App() {
   const [precRoute, setPrecRoute] = useState(null);
   const [canQuery, setCanQuery] = useState(false);
   const { photos: photosInModal } = usePhotoModalStore();
-  const { getConfig } = useConfigStore();
+  const { config, getConfig } = useConfigStore();
 
   const handleResize = () => {
     if (window.innerWidth < 767) {
@@ -177,12 +176,22 @@ function App() {
     }
   };
 
+  const publicAuthBtnAction = async () => {
+    if (config && !config.needLogin) {
+      const response = await getPublicAuth();
+      if (response === true) {
+        setLogin(false);
+        location.reload();
+      }
+    }
+  };
+
   return (
     <>
       {!reactLocation.pathname.includes('admin') && <Banner />}
       {reactLocation.pathname.includes('admin') && <AdminHeader mainRef={mainRef} adminNavRef={adminNavRef} />}
       {reactLocation.pathname.includes('admin') && <AdminNav ref={adminNavRef} toggleAdminNav={toggleAdminNav} />}
-      <main ref={mainRef} onDoubleClick={(e) => clickOnPage(e)}>
+      <main ref={mainRef} onDoubleClick={(e) => clickOnPage(e)} className="min-vh-100">
         <RoutesWrapper canQuery={canQuery} />
       </main>
       {!reactLocation.pathname.includes('admin') && <Footer />}
@@ -252,11 +261,18 @@ function App() {
                       <div className="alert alert-danger mt-1">{errors.password.message}</div>
                     )}
                   </div>
-                  <div className="col-12">
+                  <div className="col-6">
                     <button type="submit" className="btn btn-movify">
                       Envoyer
                     </button>
                   </div>
+                  {config && !config.needLogin && (
+                    <div className="col-6 text-end">
+                      <button type="button" className="btn btn-outline-dark" onClick={() => publicAuthBtnAction()}>
+                        Public
+                      </button>
+                    </div>
+                  )}
                 </form>
               </div>
             </div>

@@ -4,14 +4,11 @@ import useUserStore, { setLogin } from '../../stores/userStore';
 import './Nav.scss';
 import { Tooltip } from 'bootstrap';
 import { logout } from '../../services/utils';
-import useConfigStore from '../../stores/configStore';
-import { getPublicAuth } from '../../stores/userStore';
 
 const Nav = () => {
   const { user } = useUserStore();
   const collapseRef = useRef(null);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const { config } = useConfigStore();
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -46,18 +43,6 @@ const Nav = () => {
 
   const getRouteClassNames = (isActive) => {
     return `nav-link hero-color-d5d5d5 hover:text-white ${isActive ? 'text-white fw-bold active' : ''}`;
-  };
-
-  const loginBtnAction = async () => {
-    if (config && !config.needLogin) {
-      const response = await getPublicAuth();
-      if (response === true) {
-        setLogin(false);
-        location.reload();
-      }
-    } else {
-      setLogin(true);
-    }
   };
 
   return (
@@ -128,7 +113,7 @@ const Nav = () => {
                 onClick={() => installApp()}></i>
             )}
             {user === null && (
-              <button type="button" className="btn btn-movify btn-sm ms-3" onClick={() => loginBtnAction()}>
+              <button type="button" className="btn btn-movify btn-sm ms-3" onClick={() => setLogin(true)}>
                 Connexion
               </button>
             )}
