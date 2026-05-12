@@ -82,19 +82,19 @@ const AdminMovie = () => {
     getPaginator(reactLocation.pathname);
     setRoute(reactLocation.pathname);
 
-    emptyMovies(),
-      (async () => {
-        getVideoTypes();
-        getListActors();
-        getListCategories();
-      })();
+    emptyMovies();
+    (async () => {
+      await getVideoTypes();
+      await getListActors();
+      await getListCategories();
+    })();
 
-    bc.onmessage = (event) => {
+    bc.onmessage = async (event) => {
       if (event.data && event.data.data === 'actor') {
-        getListActors();
+        await getListActors();
       }
       if (event.data && event.data.data === 'category') {
-        getListCategories();
+        await getListCategories();
       }
     };
 
@@ -106,9 +106,11 @@ const AdminMovie = () => {
   const { page, itemsPerPage, total, keywords, route } = usePaginatorStore();
 
   useEffect(() => {
-    if (route === reactLocation.pathname) {
-      getMovies(page, keywords);
-    }
+    (async () => {
+      if (route === reactLocation.pathname) {
+        await getMovies(page, keywords);
+      }
+    })();
   }, [page, route, keywords]);
 
   const getListActors = async () => {
@@ -203,10 +205,10 @@ const AdminMovie = () => {
   };
 
   const reloadAll = async () => {
-    getVideoTypes();
-    getMovies(page, keywords);
-    getListActors();
-    getListCategories();
+    await getVideoTypes();
+    await getMovies(page, keywords);
+    await getListActors();
+    await getListCategories();
   };
 
   const getListCategories = async () => {

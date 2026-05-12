@@ -20,9 +20,9 @@ const RoutesWrapper = (props) => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
         {props.canQuery && (
           <>
+            <Route path="/" element={<Home />} />
             <Route element={<LoginGuard />}>
               <Route path="/contact" element={<Contact />} />
               <Route path="/videos" element={<Movies />} />
