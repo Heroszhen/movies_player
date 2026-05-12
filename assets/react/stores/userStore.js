@@ -81,7 +81,7 @@ export const getAuth = async (data) => {
     response = await response.json();
     if (response.token) {
       localStorage.setItem('token', JSON.stringify({ token: response.token, email: data.email }));
-      getUser();
+      await getUser();
 
       return true;
     }
@@ -89,7 +89,8 @@ export const getAuth = async (data) => {
   return false;
 };
 
-export const getUser = () => {
+export const getUser = async () => {
+  /*
   fetch(`/api/users/profile`, {
     method: 'GET',
     headers: getRequestHeaders(),
@@ -97,7 +98,17 @@ export const getUser = () => {
     .then((response) => response.json())
     .then((response) => {
       if (response?.id) useUserStore.setState((state) => ({ ...state, user: response }));
+    });*/
+
+  try {
+    let response = await fetch(`/api/users/profile`, {
+      method: 'GET',
+      headers: getRequestHeaders(),
     });
+
+    response = await response.json();
+    if (response?.id) useUserStore.setState((state) => ({ ...state, user: response }));
+  } catch {}
 };
 
 export const getPublicAuth = async () => {
@@ -109,7 +120,7 @@ export const getPublicAuth = async () => {
     response = await response.json();
     if (response.token) {
       localStorage.setItem('token', JSON.stringify({ token: response.token }));
-      getUser();
+      await getUser();
 
       return true;
     }

@@ -55,55 +55,74 @@ function App() {
   const { getConfig } = useConfigStore();
 
   useEffect(() => {
-    window.fetch = async (...args) => {
-      setLoader(true);
+    (async () => {
+      window.fetch = async (...args) => {
+        setLoader(true);
 
-      const [url, options = {}] = args;
-      if (options.method.toLowerCase() === 'patch') {
-        options.headers['Content-Type'] = 'application/merge-patch+json';
-      }
-      const response = await originalFetch.apply(this, [url, options]);
-
-      setLoader(false);
-
-      const clonedResponse = response.clone();
-      if (clonedResponse.ok === false) {
-        setAlertDuration(5000);
-        setAlertSeverity('error');
-        try {
-          const jsonResponse = await clonedResponse.json();
-          let msg = '';
-          if (jsonResponse.message) msg += jsonResponse.message + '<br>';
-          if (jsonResponse.violations) {
-            for (let entry of jsonResponse.violations) {
-              msg += `${entry['propertyPath']} : ${entry['message']}<br>`;
-            }
-          }
-          if (jsonResponse['hydra:description']) msg += jsonResponse['hydra:description'] + '<br>';
-          setAlertMessages(msg);
-          setOpenAlert(true);
-        } catch (e) {
-          console.error('Error occurred:', e); // Log the error
-        } finally {
-          if (clonedResponse.status === 401 && reactLocation.pathname !== '/') navigate('/');
+        const [url, options = {}] = args;
+        if (options.method.toLowerCase() === 'patch') {
+          options.headers['Content-Type'] = 'application/merge-patch+json';
         }
-      } else if (reactLocation.pathname.includes('admin')) {
-        setAlertDuration(500);
-        setAlertSeverity('success');
-        setAlertMessages('Envoyé');
-        setOpenAlert(true);
+        const response = await originalFetch.apply(this, [url, options]);
+
+        setLoader(false);
+
+        const clonedResponse = response.clone();
+        if (clonedResponse.ok === false) {
+          setAlertDuration(5000);
+          setAlertSeverity('error');
+          try {
+            const jsonResponse = await clonedResponse.json();
+            let msg = '';
+            if (jsonResponse.message) msg += jsonResponse.message + '<br>';
+            if (jsonResponse.violations) {
+              for (let entry of jsonResponse.violations) {
+                msg += `${entry['propertyPath']} : ${entry['message']}<br>`;
+              }
+            }
+            if (jsonResponse['hydra:description']) msg += jsonResponse['hydra:description'] + '<br>';
+            setAlertMessages(msg);
+            setOpenAlert(true);
+          } catch (e) {
+            console.error('Error occurred:', e); // Log the error
+          } finally {
+            if (clonedResponse.status === 401 && reactLocation.pathname !== '/') navigate('/');
+          }
+        } else if (reactLocation.pathname.includes('admin')) {
+          setAlertDuration(500);
+          setAlertSeverity('success');
+          setAlertMessages('Envoyé');
+          setOpenAlert(true);
+        }
+        return response;
+      };
+
+      await getConfig();
+
+      if (user === null && localStorage.getItem('token') !== null) {
+        await getUser();
       }
-      return response;
-    };
-    setCanQuery(true);
 
-    getConfig();
+      setCanQuery(true);
+    })();
+  }, []);
 
-    if (user === null && localStorage.getItem('token') !== null) {
-      getUser();
-    }
-
+  useEffect(() => {
     setLoginModal(new Modal('#loginModal', { keyboard: false }));
+
+    const handleResize = () => {
+      if (window.innerWidth < 767) {
+        if (!adminNavRef.current?.classList.contains('d-none')) {
+          document
+            .getElementById('admin-header')
+            ?.querySelector('#admin-header-btn')
+            ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        }
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -119,22 +138,6 @@ function App() {
     if (reactLocation.pathname !== precRoute) emptyMovies();
     setPrecRoute(reactLocation.pathname);
   }, [reactLocation]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 767) {
-        if (!adminNavRef.current?.classList.contains('d-none')) {
-          document
-            .getElementById('admin-header')
-            ?.querySelector('#admin-header-btn')
-            ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        }
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-  }, []);
 
   const resetLoginForm = () => {
     reset({
