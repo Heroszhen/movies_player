@@ -225,12 +225,13 @@ const AdminUser = () => {
                       }
                     },
                   }}
-                  render={({ field: { value, onChange, ...field } }) => {
+                  render={({ field: { onChange, ...field } }) => {
                     return (
                       <Input
                         {...field}
-                        onChange={() => {
-                          onChange(value);
+                        onChange={async (event) => {
+                          const file = event.target.files[0];
+                          onChange(file);
                         }}
                         type="file"
                         id="imageFile"
