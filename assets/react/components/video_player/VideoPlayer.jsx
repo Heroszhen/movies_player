@@ -44,38 +44,85 @@ const VideoPlayer = (props) => {
     window.open(url, '_blank');
   };
 
+  const getDouyinVideoUrl = () => {
+    if (!props.video) return '';
+
+    const regex = /\d*$/;
+    const found = props.video.link.match(regex);
+    if (found !== null) {
+      return `https://open.douyin.com/player/video?vid=${found[0]}&autoplay=0`;
+    }
+
+    return '';
+  };
+
+  const getTiktokVideoUrl = () => {
+    if (!props.video) return '';
+
+    const regex = /video\/(.*)$/;
+    const found = props.video.link.match(regex);
+    if (found !== null) {
+      return `https://www.tiktok.com/player/v1/${found[1]}?autoplay=0`;
+    }
+
+    return '';
+  };
+
   return (
     <section id="video-player" className="pb-5">
-      <div className="wrap-video hero-bg-color-000000" data-type={props.video?.type.id} ref={wrapVideoRef}>
-        {props.video !== null && [1, 5].includes(props.video.type.id) && parse(props.video.link)}
-        {props.video !== null && props.video.type.id === 2 && (
-          <iframe
-            src={props.video.link}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="unsafe-url"
-            webkitallowfullscreen
-            mozallowfullscreen
-            allowFullScreen></iframe>
-        )}
-        {props.video !== null && props.video.type.id === 3 && (
-          <video controls>
-            <source src={props.video.link} type="video/mp4" />
-          </video>
-        )}
-        {props.video !== null && props.video.type.id === 4 && (
-          <div className="wrap-photo text-center hero-cursor-pointer" onClick={() => window.open(props.video.link)}>
-            {props.video.poster && (
-              <img
-                src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`}
-                alt=""
-                className="hero-width-700 mw-100"
-              />
-            )}
-            {!props.video.poster && <img src="/build/static/poster_not_found.png" alt="" className="hero-width-400" />}
-          </div>
-        )}
-      </div>
+      {props.video !== null && (
+        <div className="wrap-video hero-bg-color-000000" data-type={props.video?.type.id} ref={wrapVideoRef}>
+          {[1].includes(props.video.type.id) && parse(props.video.link)}
+          {props.video !== null && props.video.type.id === 2 && (
+            <iframe
+              src={props.video.link}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="unsafe-url"
+              webkitallowfullscreen
+              mozallowfullscreen
+              allowFullScreen></iframe>
+          )}
+          {props.video.type.id === 3 && (
+            <video controls>
+              <source src={props.video.link} type="video/mp4" />
+            </video>
+          )}
+          {props.video.type.id === 4 && (
+            <div className="wrap-photo text-center hero-cursor-pointer" onClick={() => window.open(props.video.link)}>
+              {props.video.poster && (
+                <img
+                  src={`${process.env.AWS_FILE_PREFIX}${props.video.poster.imageName}`}
+                  alt=""
+                  className="hero-width-700 mw-100"
+                />
+              )}
+              {!props.video.poster && (
+                <img src="/build/static/poster_not_found.png" alt="" className="hero-width-400" />
+              )}
+            </div>
+          )}
+          {props.video.type.id === 5 && (
+            <div className="text-center">
+              <iframe
+                src={getDouyinVideoUrl()}
+                frameBorder="0"
+                scrolling="no"
+                referrerPolicy="unsafe-url"
+                allowFullScreen></iframe>
+            </div>
+          )}
+          {props.video.type.id === 6 && (
+            <iframe
+              src={getTiktokVideoUrl()}
+              frameBorder="0"
+              scrolling="no"
+              allowFullScreen
+              className="h-full"></iframe>
+          )}
+        </div>
+      )}
+
       {props.video !== null && (
         <section className="container pt-2">
           <div className="row">
@@ -91,7 +138,7 @@ const VideoPlayer = (props) => {
               </div>
             </div>
             <div className="col-12 col-md-9 mb-1">
-              <div className="d-flex flex-wrap">
+              <div className="d-flex flex-wrap justify-content-end">
                 {props.video.categories.map((category) => (
                   <NavLink
                     to={'/categorie/' + category.id + '?page=1'}
