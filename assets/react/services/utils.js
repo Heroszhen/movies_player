@@ -50,7 +50,7 @@ export const logout = () => {
 };
 
 export const isEmpty = (elm) => {
-  if (elm === null && elm === undefined) return true;
+  if (elm === null || elm === undefined) return true;
 
   if (Array.isArray(elm) && elm.length === 0) return true;
 
