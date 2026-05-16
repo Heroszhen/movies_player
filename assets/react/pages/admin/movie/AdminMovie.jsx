@@ -544,7 +544,7 @@ const AdminMovie = () => {
                     helperText={errors.link?.message}
                   />
                   <TextField
-                    label="Url de la page *"
+                    label="Url de la page"
                     multiline
                     rows={2}
                     variant="outlined"
