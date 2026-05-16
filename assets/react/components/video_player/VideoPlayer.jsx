@@ -113,12 +113,14 @@ const VideoPlayer = (props) => {
             </div>
           )}
           {props.video.type.id === 6 && (
-            <iframe
-              src={getTiktokVideoUrl()}
-              frameBorder="0"
-              scrolling="no"
-              allowFullScreen
-              className="h-full"></iframe>
+            <div className="text-center">
+              <iframe
+                src={getTiktokVideoUrl()}
+                frameBorder="0"
+                scrolling="no"
+                allowFullScreen
+                className="max-w-[420px] h-full aspect-[420/745]"></iframe>
+            </div>
           )}
         </div>
       )}

@@ -31,11 +31,14 @@
         border-radius: 10px;
       }
     }
+    &[data-type='6'] {
+      height: auto !important;
+    }
   }
   .category {
     background-color: $mainColor;
     color: white;
-    padding: 2px 5px;
+    padding: 2px 8px;
     &:hover {
       background-color: #b25e51;
     }
