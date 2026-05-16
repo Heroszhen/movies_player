@@ -43,7 +43,7 @@ class MediaObject
     #[Groups(['media_object:write'])]
     #[Assert\File(
         maxSize: '5M',
-        mimeTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+        mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'],
     )]
     private ?File $imageFile = null;
 

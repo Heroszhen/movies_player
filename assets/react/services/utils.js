@@ -33,7 +33,7 @@ export const cleanArrayObjects = (tab, field) => {
  * @returns {boolean}
  */
 export const isImageFile = (file) => {
-  const extensions = ['jpg', 'jpeg', 'png', 'avif'];
+  const extensions = ['jpg', 'jpeg', 'png', 'avif', 'gif', 'webp'];
 
   if (!file.type.includes('image')) return false;
 
