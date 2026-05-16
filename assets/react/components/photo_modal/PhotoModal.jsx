@@ -8,7 +8,7 @@ import './photoModal.scss';
 
 const PhotoModal = () => {
   const { photos } = usePhotoModalStore();
-  console.log(photos);
+
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
 
