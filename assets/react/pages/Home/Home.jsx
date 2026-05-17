@@ -60,7 +60,7 @@ const Home = () => {
               <div className="col-md-4 text-center text-center mb-3">
                 {counts.movies}
                 <br />
-                Films
+                Vidéos
               </div>
               <div className="col-md-4 text-center text-center mb-3">
                 {counts.actors}
@@ -78,21 +78,26 @@ const Home = () => {
       )}
 
       {movies && (
-        <section className="hero-p-top-100 hero-p-bottom-100 d-flex justify-content-center" id="wrap-movies">
-          {movies.map((movie, index) => {
-            return (
-              <article className="wrap-image mb-3" key={index}>
-                {movie.poster && (
-                  <img
-                    src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`}
-                    alt=""
-                    className="hero-cursor-pointer"
-                    onClick={() => navigate(`video/${movie.id}`)}
-                  />
-                )}
-              </article>
-            );
-          })}
+        <section className="hero-p-top-100 hero-p-bottom-100" id="wrap-movies">
+          <h3 className="mb-3 text-center">Les nouvelles vidéos</h3>
+          <div className="container">
+            <div className="row">
+              {movies.map((movie, index) => {
+                return (
+                  <article className="col-12 col-md-6 col-lg-3 wrap-image mb-3" key={index}>
+                    {movie.poster && (
+                      <img
+                        src={`${process.env.AWS_FILE_PREFIX}${movie.poster.imageName}`}
+                        alt=""
+                        className="hero-cursor-pointer"
+                        onClick={() => navigate(`video/${movie.id}`)}
+                      />
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </div>
         </section>
       )}
 
