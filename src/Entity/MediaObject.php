@@ -42,7 +42,7 @@ class MediaObject
     #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'imageName', size: 'imageSize', originalName: 'originalName')]
     #[Groups(['media_object:write'])]
     #[Assert\File(
-        maxSize: '5M',
+        maxSize: '10M',
         mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'],
     )]
     private ?File $imageFile = null;

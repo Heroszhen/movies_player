@@ -71,6 +71,10 @@ class Config
     #[Groups(['config:read', 'config:write'])]
     private ?MediaObject $news3Photo = null;
 
+    #[ORM\ManyToOne]
+    #[Groups(['config:read', 'config:write'])]
+    private ?MediaObject $loginGuidePhoto = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -204,6 +208,18 @@ class Config
     public function setNews3Photo(?MediaObject $news3Photo): static
     {
         $this->news3Photo = $news3Photo;
+
+        return $this;
+    }
+
+    public function getLoginGuidePhoto(): ?MediaObject
+    {
+        return $this->loginGuidePhoto;
+    }
+
+    public function setLoginGuidePhoto(?MediaObject $loginGuidePhoto): static
+    {
+        $this->loginGuidePhoto = $loginGuidePhoto;
 
         return $this;
     }

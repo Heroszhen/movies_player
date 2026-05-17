@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import useMovieStore from './stores/movieStore';
 import usePhotoModalStore, { setPhotosInModal } from './stores/photoModalStore';
 import useConfigStore from './stores/configStore';
+import { isEmpty } from './services/utils';
 
 import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
@@ -132,6 +133,15 @@ function App() {
       loginModal?.hide();
     }
   }, [login]);
+
+  useEffect(() => {
+    if (config !== null && !config.needLogin && !isEmpty(config.loginGuidePhoto)) {
+      if (isEmpty(localStorage.getItem('loginGuide_is_shown'))) {
+        localStorage.setItem('loginGuide_is_shown', '1');
+        setPhotosInModal([`${process.env.AWS_FILE_PREFIX}${config.loginGuidePhoto.imageName}`]);
+      }
+    }
+  }, [config]);
 
   useEffect(() => {
     handleResize();

@@ -72,10 +72,6 @@ const AdminConfig = () => {
 
   const handleNewsPhoto = async (data) => {
     if (data['@id']) {
-      /*
-      const oldPhotoId = config.bannerPhoto?.id ?? null;
-      await updateConfig({ bannerPhoto: data['@id'] });
-      await deletePhoto(oldPhotoId);*/
       const oldPhotoId =
         formType === 3 ? config.news1Photo?.id : formType === 5 ? config.news2Photo?.id : config.news3Photo?.id;
       if (formType === 3) await updateConfig({ news1Photo: data['@id'] });
@@ -83,6 +79,20 @@ const AdminConfig = () => {
       if (formType === 7) await updateConfig({ news3Photo: data['@id'] });
       await deletePhoto(oldPhotoId);
     }
+  };
+
+  const editLoginGuidePhoto = async (data) => {
+    let canDelete = data === null ? true : false;
+    const oldPhotoId = config.loginGuidePhoto?.id;
+
+    if (data === null) {
+      await updateConfig({ loginGuidePhoto: null });
+    } else if (data && data['@id']) {
+      canDelete = true;
+      await updateConfig({ loginGuidePhoto: data['@id'] });
+    }
+
+    if (canDelete) await deletePhoto(oldPhotoId);
   };
 
   return (
@@ -141,6 +151,35 @@ const AdminConfig = () => {
                         Modifer
                       </Button>
                       <Button size="small" color="error" onClick={() => editBannerPhoto()}>
+                        Supprimer
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </div>
+                <div className="col-12 col-md-6 col-lg-3 text-center mb-4">
+                  <Card sx={{ width: '100%', margin: 'auto' }}>
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        height="140"
+                        image={
+                          config.loginGuidePhoto
+                            ? `${process.env.AWS_FILE_PREFIX}${config.loginGuidePhoto.imageName}`
+                            : '/build/static/poster_not_found.png'
+                        }
+                        alt=""
+                      />
+                      <CardContent>
+                        <Typography variant="h5" component="div" className="mb-3">
+                          Guide de connexion
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                    <CardActions className="d-flex justify-content-between">
+                      <Button size="small" color="primary" onClick={() => setFormType(8)}>
+                        Modifer
+                      </Button>
+                      <Button size="small" color="error" onClick={() => editLoginGuidePhoto(null)}>
                         Supprimer
                       </Button>
                     </CardActions>
@@ -270,6 +309,7 @@ const AdminConfig = () => {
             {formType === 5 && `Editer l'image de l'actualité 2`}
             {formType === 6 && `Editer l'actualité 3`}
             {formType === 7 && `Editer l'image de l'actualité 3`}
+            {formType === 8 && `Editer l'image du guide de connexion`}
           </Typography>
           {formType === 1 && <FileForm setFile={sendBannerPhoto} />}
 
@@ -348,6 +388,8 @@ const AdminConfig = () => {
             </form>
           )}
           {[3, 5, 7].includes(formType) && <FileForm setFile={handleNewsPhoto} />}
+
+          {formType === 8 && <FileForm setFile={editLoginGuidePhoto} />}
         </Box>
       </Modal>
     </>
