@@ -79,7 +79,7 @@ const Home = () => {
 
       {movies && (
         <section className="hero-p-top-100 hero-p-bottom-100" id="wrap-movies">
-          <h3 className="mb-3 text-center">Les nouvelles vidéos</h3>
+          <h2 className="mb-5 text-center">Les nouvelles vidéos</h2>
           <div className="container">
             <div className="row">
               {movies.map((movie, index) => {
