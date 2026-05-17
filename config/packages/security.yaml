@@ -39,6 +39,7 @@ security:
     - { path: ^/api/sse, roles: PUBLIC_ACCESS }
     - { path: ^/api/counts, roles: PUBLIC_ACCESS }
     - { path: ^/api/configs/\d+$, methods: [GET], roles: PUBLIC_ACCESS }
+    - { path: ^/api/security/get-gmail-login-token, roles: PUBLIC_ACCESS }
     - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }

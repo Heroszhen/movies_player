@@ -90,16 +90,6 @@ export const getAuth = async (data) => {
 };
 
 export const getUser = async () => {
-  /*
-  fetch(`/api/users/profile`, {
-    method: 'GET',
-    headers: getRequestHeaders(),
-  })
-    .then((response) => response.json())
-    .then((response) => {
-      if (response?.id) useUserStore.setState((state) => ({ ...state, user: response }));
-    });*/
-
   try {
     let response = await fetch(`/api/users/profile`, {
       method: 'GET',
@@ -126,4 +116,19 @@ export const getPublicAuth = async () => {
     }
   } catch {}
   return false;
+};
+
+export const getGmailLoginToken = async (data) => {
+  try {
+    let response = await fetch(`/api/security/get-gmail-login-token`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      response = await response.json();
+      localStorage.setItem('token', JSON.stringify({ token: response.token }));
+      await getUser();
+    }
+  } catch {}
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.scss';
 import RoutesWrapper from './routes/RoutesWrapper';
-import useUserStore, { setLogin, getAuth, getUser, getPublicAuth } from './stores/userStore';
+import useUserStore, { setLogin, getAuth, getUser, getPublicAuth, getGmailLoginToken } from './stores/userStore';
 import { Modal } from 'bootstrap';
 import { useForm } from 'react-hook-form';
 import useLoaderStore from './stores/loaderStore';
@@ -12,6 +12,7 @@ import useMovieStore from './stores/movieStore';
 import usePhotoModalStore, { setPhotosInModal } from './stores/photoModalStore';
 import useConfigStore from './stores/configStore';
 import { isEmpty } from './services/utils';
+import { useGoogleLogin } from '@react-oauth/google';
 
 import Banner from './components/banner/Banner';
 import Loader from './components/loader/loader';
@@ -196,6 +197,13 @@ function App() {
     }
   };
 
+  const doLoginWithGmail = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setLogin(false);
+      await getGmailLoginToken(tokenResponse);
+    },
+  });
+
   return (
     <>
       {!reactLocation.pathname.includes('admin') && <Banner />}
@@ -271,15 +279,22 @@ function App() {
                       <div className="alert alert-danger mt-1">{errors.password.message}</div>
                     )}
                   </div>
-                  <div className="col-6">
+                  <div className="col-12 d-grid gap-2 mb-3">
                     <button type="submit" className="btn btn-movify">
                       Envoyer
                     </button>
                   </div>
                   {config && !config.needLogin && (
-                    <div className="col-6 text-end">
+                    <div className="col-12 d-grid gap-2 mb-3">
                       <button type="button" className="btn btn-outline-dark" onClick={() => publicAuthBtnAction()}>
                         Public
+                      </button>
+                    </div>
+                  )}
+                  {!isEmpty(process.env.GOOGLE_CLIENT_ID) && (
+                    <div className="col-12 d-grid gap-2 mb-3">
+                      <button type="button" className="btn btn-outline-danger" onClick={() => doLoginWithGmail()}>
+                        Se connecter avec gmail
                       </button>
                     </div>
                   )}

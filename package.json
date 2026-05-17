@@ -41,6 +41,7 @@
         "@hotwired/stimulus": "^3.2.2",
         "@mui/icons-material": "^6.4.0",
         "@mui/material": "^6.3.1",
+        "@react-oauth/google": "^0.13.5",
         "@symfony/stimulus-bridge": "^3.2.2",
         "@unocss/runtime": "^0.65.3",
         "axios": "^1.7.9",

@@ -8,11 +8,14 @@ import App from './react/App.jsx';
 import { BrowserRouter } from 'react-router-dom';
 // Bootstrap Bundle JS
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </GoogleOAuthProvider>
 );
 
 if ('serviceWorker' in navigator && process.env.APP_ENV === 'prod') {
