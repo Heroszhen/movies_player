@@ -129,6 +129,9 @@ export const getGmailLoginToken = async (data) => {
       response = await response.json();
       localStorage.setItem('token', JSON.stringify({ token: response.token }));
       await getUser();
+
+      return true;
     }
   } catch {}
+  return false;
 };

@@ -199,8 +199,11 @@ function App() {
 
   const doLoginWithGmail = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      setLogin(false);
-      await getGmailLoginToken(tokenResponse);
+      const response = await getGmailLoginToken(tokenResponse);
+      if (response === true) {
+        setLogin(false);
+        location.reload();
+      }
     },
   });
 
