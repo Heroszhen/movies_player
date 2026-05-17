@@ -107,7 +107,7 @@ const Home = () => {
       </section>
 
       <section className="bg-[#edf5f7] pt-[100px] pb-[100px] text-center">
-        <div className="container">
+        <div className="container-fluid">
           <div className="row justify-content-evenly">
             {canShowNews(1) && (
               <div className="mb-2 col-12 col-md-4 col-lg-3">
