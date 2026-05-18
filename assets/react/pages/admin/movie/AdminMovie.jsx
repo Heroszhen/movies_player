@@ -556,13 +556,15 @@ const AdminMovie = () => {
                     helperText={errors.url?.message}
                   />
                   <Box sx={{ mb: 2 }}>
-                    <Editor ref={editorRef} label="Description" value={getValues('description')} />
+                    <Editor ref={editorRef} label="Description" value={getValues('description')} height={500} />
                   </Box>
                 </>
               )}
-              <Button variant="contained" type="submit">
-                Envoyer
-              </Button>
+              <Box className="sticky bottom-[-20px]">
+                <Button variant="contained" type="submit">
+                  Envoyer
+                </Button>
+              </Box>
             </form>
           )}
           {formType === 3 && <FileForm setFile={onSubmit} />}

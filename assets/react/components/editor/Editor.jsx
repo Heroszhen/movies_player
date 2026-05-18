@@ -1,8 +1,11 @@
-import { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useRef, useEffect, forwardRef, useImperativeHandle, useState } from 'react';
 import { wait } from '../../services/utils';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Editor = forwardRef((props, ref) => {
   const iframeRef = useRef(null);
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -24,9 +27,18 @@ const Editor = forwardRef((props, ref) => {
   return (
     <section className="editor" ref={ref}>
       <div>
-        <label>{props.label}</label>
+        <label>
+          {props.label}
+          {!shown && <KeyboardArrowUpIcon className="cursor-pointer" onClick={() => setShown(true)} />}
+          {shown && <KeyboardArrowDownIcon className="cursor-pointer" onClick={() => setShown(false)} />}
+        </label>
       </div>
-      <iframe src="/extra/textarea.html" className="w-100 hero-minh-453" ref={iframeRef}></iframe>
+      <iframe 
+        src="/extra/textarea.html" 
+        className={`w-100 ${shown ? '' : 'hidden'}`}
+        style={{ minHeight: `${props.height ?? 400}px` }} 
+        ref={iframeRef}
+      ></iframe>
     </section>
   );
 });
