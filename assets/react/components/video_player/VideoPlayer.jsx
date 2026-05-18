@@ -3,6 +3,7 @@ import './VideoPlayer.scss';
 import parse from 'html-react-parser';
 import moment from 'moment';
 import { useNavigate, NavLink } from 'react-router-dom';
+import RedditVideoPlayer from '../reddit_video_player/redditVideoPlayer';
 
 const VideoPlayer = (props) => {
   const navigate = useNavigate();
@@ -121,6 +122,9 @@ const VideoPlayer = (props) => {
                 allowFullScreen
                 className="max-w-[420px] h-full aspect-[420/745]"></iframe>
             </div>
+          )}
+          {props.video.type.id === 7 && (
+            <RedditVideoPlayer url={props.video.link} />
           )}
         </div>
       )}

@@ -33,12 +33,11 @@ const Editor = forwardRef((props, ref) => {
           {shown && <KeyboardArrowDownIcon className="cursor-pointer" onClick={() => setShown(false)} />}
         </label>
       </div>
-      <iframe 
-        src="/extra/textarea.html" 
+      <iframe
+        src="/extra/textarea.html"
         className={`w-100 ${shown ? '' : 'hidden'}`}
-        style={{ minHeight: `${props.height ?? 400}px` }} 
-        ref={iframeRef}
-      ></iframe>
+        style={{ minHeight: `${props.height ?? 400}px` }}
+        ref={iframeRef}></iframe>
     </section>
   );
 });
