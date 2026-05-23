@@ -225,7 +225,7 @@ const AdminUser = () => {
                       }
                     },
                   }}
-                  render={({ field: { onChange, ...field } }) => {
+                  render={({ field: { onChange, value, ...field } }) => {
                     return (
                       <Input
                         {...field}
