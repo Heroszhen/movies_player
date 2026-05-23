@@ -24,27 +24,31 @@ class S3Service
         ]);
     }
 
-    public function sendFile(string $fileName, string $filePath): Result
+    public function sendFile(string $fileName, string $filePath): ?Result
     {
         try {
             return $this->s3Client->putObject([
                 'Bucket' => $_ENV['AWS_BUCKET'],
-                'Key' => $_ENV['AWS_ROOT'] . '/' . $fileName,
+                'Key' => $_ENV['AWS_ROOT'].'/'.$fileName,
                 'Body' => fopen($filePath, 'r'),
                 'ACL' => 'public-read',
             ]);
         } catch (S3Exception $e) {
         }
+
+        return null;
     }
 
-    public function deleteFile(string $fileName): Result
+    public function deleteFile(string $fileName): ?Result
     {
         try {
             return $this->s3Client->deleteObject([
                 'Bucket' => $_ENV['AWS_BUCKET'],
-                'Key' => $_ENV['AWS_ROOT'] . '/' . $fileName,
+                'Key' => $_ENV['AWS_ROOT'].'/'.$fileName,
             ]);
         } catch (S3Exception $e) {
         }
+
+        return null;
     }
 }

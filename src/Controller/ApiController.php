@@ -87,10 +87,11 @@ class ApiController extends AbstractController
         $response->setCallback(function () use ($em) {
             $callback = function () use ($em) {
                 set_time_limit(0);
+                /*
                 $shouldStop = false; // Stop if something happens or to clear connection, browser will retry
                 if ($shouldStop) {
                     throw new StopSSEException();
-                }
+                }*/
 
                 $movies = $em->getRepository(Movie::class)->findBy(['notified' => null]);
                 foreach ($movies as $movie) {
@@ -101,7 +102,7 @@ class ApiController extends AbstractController
                 $em->flush();
 
                 if (0 < count($movies)) {
-                    return json_encode(['videos' => array_map(fn ($movie): string => $movie->getTitle(), $movies)]);
+                    return json_encode(['videos' => array_map(fn (Movie $movie): string => $movie->getTitle() ?? '', $movies)]);
                 } else {
                     flush();
                     ob_flush();

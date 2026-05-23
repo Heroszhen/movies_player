@@ -14,7 +14,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/api/media_objects')]
 class MediaObjectController extends AbstractController
@@ -23,7 +22,6 @@ class MediaObjectController extends AbstractController
         private readonly EntityManagerInterface $entityManager,
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly HttpClientInterface $httpClient,
     ) {
     }
 

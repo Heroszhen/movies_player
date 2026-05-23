@@ -48,7 +48,7 @@ class Actor
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['actor:write', 'actor:read', 'movie:read', 'actor:name'])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255, nullable: true, unique: true)]
     #[Assert\NotBlank]
@@ -90,7 +90,7 @@ class Actor
         $this->photos = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

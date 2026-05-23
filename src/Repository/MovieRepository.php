@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Movie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -43,7 +44,7 @@ class MovieRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function getMoviesByCategories(array $categories, ?string $keywords, int $page)
+    public function getMoviesByCategories(array $categories, ?string $keywords, int $page): QueryBuilder
     {
         $qb = $this->createQueryBuilder('movie');
 

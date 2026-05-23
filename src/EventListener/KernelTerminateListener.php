@@ -33,9 +33,15 @@ final class KernelTerminateListener
             && '/api/media_objects' === $request->getPathInfo()
             && Response::HTTP_CREATED === $response->getStatusCode()
         ) {
+            if (false === $response->getContent()) {
+                $this->logger->error('KernelTerminateListener onKernelTerminate');
+
+                return;
+            }
+
             $content = json_decode($response->getContent(), true);
             if (isset($content['imageName'])) {
-                $filePath = $this->parameterBag->get('public_dir') . '/upload/' . $content['imageName'];
+                $filePath = $this->parameterBag->get('public_dir').'/upload/'.$content['imageName'];
                 if ($this->filesystem->exists($filePath)) {
                     $this->filesystem->remove($filePath);
                 }

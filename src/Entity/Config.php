@@ -26,7 +26,7 @@ class Config
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['config:read'])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['config:read', 'config:write'])]
@@ -76,7 +76,7 @@ class Config
     #[Groups(['config:read', 'config:write'])]
     private ?MediaObject $loginGuidePhoto = null;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

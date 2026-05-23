@@ -12,15 +12,13 @@ use Doctrine\ORM\Event\PostRemoveEventArgs;
 use Doctrine\ORM\Events;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 class MediaObjectSubscriber implements EventSubscriber
 {
     public function __construct(
-        private readonly LoggerInterface $logger,
         private readonly ParameterBagInterface $parameterBag,
-        private readonly Filesystem $filesystem,
         private readonly S3Service $s3Service,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -39,7 +37,13 @@ class MediaObjectSubscriber implements EventSubscriber
             return;
         }
 
-        $filePath = $this->parameterBag->get('public_dir') . "/upload/{$entity->getImageName()}";
+        if (null === $entity->getImageName()) {
+            $this->logger->error('MediaObjectSubscriber postPersist', [$entity]);
+
+            return;
+        }
+
+        $filePath = $this->parameterBag->get('public_dir')."/upload/{$entity->getImageName()}";
         $this->s3Service->sendFile(
             $entity->getImageName(),
             $filePath
@@ -50,6 +54,12 @@ class MediaObjectSubscriber implements EventSubscriber
     {
         $entity = $args->getObject();
         if (!$entity instanceof MediaObject) {
+            return;
+        }
+
+        if (null === $entity->getImageName()) {
+            $this->logger->error('MediaObjectSubscriber postRemove', [$entity]);
+
             return;
         }
 

@@ -39,7 +39,7 @@ class MediaObject
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['media_object:read', 'user:read', 'movie:read', 'actor:read', 'actor:name', 'config:read'])]
-    private ?int $id = null;
+    private int $id;
 
     #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'imageName', size: 'imageSize', originalName: 'originalName')]
     #[Groups(['media_object:write'])]
@@ -62,7 +62,7 @@ class MediaObject
     #[ORM\ManyToOne(inversedBy: 'photos')]
     private ?Actor $actor = null;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

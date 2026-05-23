@@ -47,7 +47,7 @@ class Category
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['category:read', 'category:name', 'movie:read'])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
     #[Groups(['category:read', 'category:write', 'movie:read', 'category:name'])]
@@ -65,7 +65,7 @@ class Category
         $this->movies = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

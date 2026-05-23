@@ -36,14 +36,14 @@ class VideoType
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['video_type:read', 'movie:read'])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Groups(['video_type:read', 'video_type:write', 'movie:read'])]
     private ?string $name = null;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

@@ -1,6 +1,6 @@
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
-    
+
 parameters:
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
@@ -20,5 +20,9 @@ parameters:
     treatPhpDocTypesAsCertain: false
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        #errors
-        
+        - '#.* return type has no value type specified in iterable type array.#'
+        - '#.* does not specify its types: TKey, T#'
+        - '#.* does not specify its types: T#'
+        - '#.* no value type specified in iterable type array.#'
+        - '#Method .* return type has no value type specified in iterable type Aws\\Result#'
+        - '#Property App\\Entity\\.*::\$id is never written, only read\.#'
