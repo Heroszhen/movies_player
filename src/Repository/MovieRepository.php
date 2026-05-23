@@ -71,7 +71,6 @@ class MovieRepository extends ServiceEntityRepository
                     )
                 )
                 ->setParameter('search', "%{$keywords}%");
-            ;
         }
 
         return $qb;

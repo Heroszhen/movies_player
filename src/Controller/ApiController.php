@@ -9,17 +9,16 @@ use App\Entity\User;
 use App\Repository\ConfigRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+use Hhxsv5\SSE\Event;
+use Hhxsv5\SSE\SSE;
+use Hhxsv5\SSE\StopSSEException;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Hhxsv5\SSE\SSE;
-use Hhxsv5\SSE\Event;
-use Hhxsv5\SSE\StopSSEException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 #[Route('/api')]
 class ApiController extends AbstractController
@@ -43,8 +42,8 @@ class ApiController extends AbstractController
             'data' => [
                 'movies' => count($movies),
                 'actors' => count($actors),
-                'users' => count($users)
-            ]
+                'users' => count($users),
+            ],
         ], Response::HTTP_OK);
     }
 
@@ -53,7 +52,7 @@ class ApiController extends AbstractController
     {
         $config = $this->configRepository->find(1);
         if (!$config instanceof Config) {
-            throw new Exception('Error');
+            throw new \Exception('Error');
         }
 
         if ($config->getNeedLogin()) {
@@ -62,14 +61,14 @@ class ApiController extends AbstractController
 
         $user = $this->userRepository->findOneBy(['isPublic' => true]);
         if (!$user instanceof User) {
-            throw new Exception('Error');
+            throw new \Exception('Error');
         }
 
         $token = $jwtManager->create($user);
 
         return $this->json([
             'status' => Response::HTTP_OK,
-            'token' => $token
+            'token' => $token,
         ], Response::HTTP_OK);
     }
 
@@ -93,7 +92,7 @@ class ApiController extends AbstractController
 
                 $movies = $em->getRepository(Movie::class)->findBy(['notified' => null]);
                 foreach ($movies as $movie) {
-                    /** @var Movie $movie */
+                    /* @var Movie $movie */
                     $movie->setNotified(true);
                 }
 

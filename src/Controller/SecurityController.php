@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Exception;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,11 +51,11 @@ final class SecurityController extends AbstractController
             ]);
 
             if (200 !== $response->getStatusCode()) {
-                throw new Exception('app_get_login_token: ' . $response->getContent(false));
+                throw new \Exception('app_get_login_token: '.$response->getContent(false));
             }
 
             $result = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-            if ($result['email_verified'] !== true || empty($result['email'])) {
+            if (true !== $result['email_verified'] || empty($result['email'])) {
                 throw new AccessDeniedHttpException('Access denied');
             }
 

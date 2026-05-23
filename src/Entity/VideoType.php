@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\VideoTypeRepository;
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Repository\VideoTypeRepository;
 use App\Traits\TimestampableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VideoTypeRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'This name is already in use.')]
@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Get(),
         new GetCollection(),
         new Post(security: "is_granted('ROLE_ADMIN')"),
-        new Patch(security: "is_granted('ROLE_ADMIN')")
+        new Patch(security: "is_granted('ROLE_ADMIN')"),
     ]
 )]
 class VideoType

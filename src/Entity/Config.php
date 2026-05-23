@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ConfigRepository;
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
-use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
+use App\Repository\ConfigRepository;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ConfigRepository::class)]
 #[ApiResource(
@@ -16,7 +15,7 @@ use ApiPlatform\Metadata\Post;
     denormalizationContext: ['groups' => ['config:write']],
     operations: [
         new Get(),
-        new Patch(security: "is_granted('ROLE_ADMIN')")
+        new Patch(security: "is_granted('ROLE_ADMIN')"),
     ]
 )]
 class Config

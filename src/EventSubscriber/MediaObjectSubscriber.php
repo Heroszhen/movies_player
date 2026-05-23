@@ -2,13 +2,13 @@
 
 namespace App\EventSubscriber;
 
-use Doctrine\ORM\Events;
-use Psr\Log\LoggerInterface;
-use Doctrine\Common\EventSubscriber;
 use App\Entity\MediaObject;
 use App\Service\S3Service;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Event\PostRemoveEventArgs;
+use Doctrine\ORM\Events;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -18,15 +18,15 @@ class MediaObjectSubscriber implements EventSubscriber
         private readonly LoggerInterface $logger,
         private readonly ParameterBagInterface $parameterBag,
         private readonly Filesystem $filesystem,
-        private readonly S3Service $s3Service
-    )
-    {}
+        private readonly S3Service $s3Service,
+    ) {
+    }
 
     public function getSubscribedEvents(): array
     {
         return [
             Events::postPersist,
-            Events::postRemove
+            Events::postRemove,
         ];
     }
 
@@ -37,7 +37,7 @@ class MediaObjectSubscriber implements EventSubscriber
             return;
         }
 
-        $filePath = $this->parameterBag->get('public_dir') . "/upload/{$entity->getImageName()}";
+        $filePath = $this->parameterBag->get('public_dir')."/upload/{$entity->getImageName()}";
         $this->s3Service->sendFile(
             $entity->getImageName(),
             $filePath
@@ -50,7 +50,7 @@ class MediaObjectSubscriber implements EventSubscriber
         if (!$entity instanceof MediaObject) {
             return;
         }
-        
+
         $this->s3Service->deleteFile($entity->getImageName());
     }
 }

@@ -2,19 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\MediaObjectRepository;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Repository\MediaObjectRepository;
 use App\Traits\TimestampableTrait;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MediaObjectRepository::class)]
@@ -25,7 +25,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
     operations: [
         new Get(),
         new GetCollection(),
-        new Delete()
+        new Delete(),
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['actor' => 'exact'])]

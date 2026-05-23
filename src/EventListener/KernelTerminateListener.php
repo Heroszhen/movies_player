@@ -16,9 +16,9 @@ final class KernelTerminateListener
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly ParameterBagInterface $parameterBag,
-        private readonly Filesystem $filesystem
-    )
-    {}
+        private readonly Filesystem $filesystem,
+    ) {
+    }
 
     #[AsEventListener(event: KernelEvents::TERMINATE)]
     public function onKernelTerminate(TerminateEvent $event): void
@@ -26,13 +26,13 @@ final class KernelTerminateListener
         $request = $event->getRequest();
         $response = $event->getResponse();
 
-        if (Request::METHOD_POST === $request->getMethod() && 
-            '/api/media_objects' === $request->getPathInfo() && 
-            Response::HTTP_CREATED === $response->getStatusCode()
+        if (Request::METHOD_POST === $request->getMethod()
+            && '/api/media_objects' === $request->getPathInfo()
+            && Response::HTTP_CREATED === $response->getStatusCode()
         ) {
             $content = json_decode($response->getContent(), true);
             if (isset($content['imageName'])) {
-                $filePath = $this->parameterBag->get('public_dir') . '/upload/' . $content['imageName']; 
+                $filePath = $this->parameterBag->get('public_dir').'/upload/'.$content['imageName'];
                 if ($this->filesystem->exists($filePath)) {
                     $this->filesystem->remove($filePath);
                 }

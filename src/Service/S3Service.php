@@ -2,9 +2,9 @@
 
 namespace App\Service;
 
-use Aws\S3\S3Client;
-use Aws\S3\Exception\S3Exception;
 use Aws\Result;
+use Aws\S3\Exception\S3Exception;
+use Aws\S3\S3Client;
 
 class S3Service
 {
@@ -15,10 +15,10 @@ class S3Service
         $this->s3Client = new S3Client([
             'region' => 'eu-west-3',
             'version' => 'latest',
-            'credentials' => array(
+            'credentials' => [
                 'key' => $_ENV['AWS_KEY'],
-                'secret'  => $_ENV['AWS_SECRET_KEY']
-            )
+                'secret' => $_ENV['AWS_SECRET_KEY'],
+            ],
         ]);
     }
 
@@ -27,11 +27,12 @@ class S3Service
         try {
             return $this->s3Client->putObject([
                 'Bucket' => $_ENV['AWS_BUCKET'],
-                'Key'    => $_ENV['AWS_ROOT'] . '/' . $fileName,
-                'Body'   => fopen($filePath, 'r'),
-                'ACL'    => 'public-read',
+                'Key' => $_ENV['AWS_ROOT'].'/'.$fileName,
+                'Body' => fopen($filePath, 'r'),
+                'ACL' => 'public-read',
             ]);
-        } catch (S3Exception $e) {}
+        } catch (S3Exception $e) {
+        }
     }
 
     public function deleteFile(string $fileName): Result
@@ -39,8 +40,9 @@ class S3Service
         try {
             return $this->s3Client->deleteObject([
                 'Bucket' => $_ENV['AWS_BUCKET'],
-                'Key'    => $_ENV['AWS_ROOT'] . '/' . $fileName
+                'Key' => $_ENV['AWS_ROOT'].'/'.$fileName,
             ]);
-        } catch (S3Exception $e) {}
+        } catch (S3Exception $e) {
+        }
     }
 }

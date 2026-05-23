@@ -11,3 +11,23 @@ videoType
 
 
 401, expiration token Invalid JWT Token
+
+---grumphp
+C'est un outil qui va intercepter tes commits Git (via ce qu'on appelle des hooks Git) et analyser ton code avant qu'il ne soit validé et envoyé sur le dépôt distant.
+
+composer require --dev phpro/grumphp
+
+vendor/bin/grumphp run
+ou 
+winpty php vendor/bin/grumphp run (sur windows)
+
+-phpstan/phpstan
+composer require --dev phpstan/phpstan
+composer require --dev phpstan/phpstan-symfony
+
+vendor/bin/grumphp run --tasks=phpstan
+or
+vendor/bin/phpstan analyse -c phpstan.neon.dist
+
+-php-cs-fixer
+vendor/bin/php-cs-fixer fix
