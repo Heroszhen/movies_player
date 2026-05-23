@@ -3,6 +3,20 @@ grumphp:
   ignore_unstaged_changes: false
   process_timeout: 60
   tasks:
+    phpparser:
+      visitors:
+        no_exit_statements: ~
+        declare_strict_types: ~
+        forbidden_function_calls:
+          blacklist:
+            - 'extract'
+            - 'var_dump'
+            - 'dump'
+            - 'dd'
+            - 'VarDumper'
+      ignore_patterns:
+        - /^public\/libs\/.*/
+      triggered_by: [php]
     phpstan:
       configuration: 'phpstan.neon'
       level: 8
