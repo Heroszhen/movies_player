@@ -38,7 +38,7 @@ const Movies = () => {
   useEffect(() => {
     (async () => {
       if (route === reactLocation.pathname) {
-        await getMovies(page, keywords, true);
+        await getMovies(page, keywords, true, null, true);
         await wait(0.1);
         window.scrollTo(0, getTop());
         if (!canStockTop) setCanStockTop(true);

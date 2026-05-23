@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { getRequestHeaders } from '../services/data';
-import { cleanArrayObjects } from '../services/utils';
+import { cleanArrayObjects, compareObjects } from '../services/utils';
 import { setTotal } from './paginatorStore';
 
 const fetchMovies = async (url, page, query) => {
@@ -14,10 +14,27 @@ const fetchMovies = async (url, page, query) => {
 const useMovieStore = create((set, get) => ({
   movies: [],
   videoTypes: [],
+  videoQuery: {},
   emptyMovies: () => {
     set(() => ({ movies: [] }));
   },
-  getMovies: async (page = 1, keywords = '', needPoster = false, query = null) => {
+  getMovies: async (page = 1, keywords = '', needPoster = false, query = null, checkQuery = false) => {
+    const newVideoQuery = {
+      page: page,
+      keywords: keywords,
+      needPoster: needPoster,
+      query: query,
+    };
+
+    if (checkQuery && compareObjects(newVideoQuery, get().videoQuery) && get().movies.length > 0) {
+      return;
+    }
+
+    set((state) => ({
+      ...state,
+      videoQuery: newVideoQuery,
+    }));
+
     const url = needPoster === true ? '/api/movies/poster' : '/api/movies';
     try {
       const newQuery = query === null ? '' : '&' + query;
@@ -46,11 +63,11 @@ const useMovieStore = create((set, get) => ({
       const jsonResponse = await response.json();
       if (response.ok && jsonResponse['id']) {
         if (id === null) {
-          useMovieStore.setState(() => ({
+          set(() => ({
             videoTypes: [...get().videoTypes, jsonResponse],
           }));
         } else {
-          useMovieStore.setState((state) => ({
+          set((state) => ({
             videoTypes: state.videoTypes.map((type) => {
               if (type.id === id) return jsonResponse;
               return type;
@@ -71,11 +88,11 @@ const useMovieStore = create((set, get) => ({
       const jsonResponse = await response.json();
       if (response.ok && jsonResponse['id']) {
         if (id === null) {
-          useMovieStore.setState((state) => ({
+          set((state) => ({
             movies: [jsonResponse, ...state.movies],
           }));
         } else {
-          useMovieStore.setState((state) => ({
+          set((state) => ({
             movies: state.movies.map((movie) => {
               if (movie.id === id) return jsonResponse;
               return movie;
@@ -93,7 +110,7 @@ const useMovieStore = create((set, get) => ({
       });
 
       if (response.ok) {
-        useMovieStore.setState((state) => ({ movies: state.movies.filter((movie) => movie.id !== id) }));
+        set((state) => ({ movies: state.movies.filter((movie) => movie.id !== id) }));
       }
     } catch {}
   },
@@ -105,7 +122,7 @@ const useMovieStore = create((set, get) => ({
       });
       const jsonResponse = await response.json();
       if (response.ok && jsonResponse['hydra:member']) {
-        useMovieStore.setState(() => ({ movies: jsonResponse['hydra:member'] }));
+        set(() => ({ movies: jsonResponse['hydra:member'] }));
         setTotal(jsonResponse['hydra:totalItems']);
       }
 
@@ -145,7 +162,26 @@ export const getVideoTypes = async () => {
  * @param {number} page
  * @returns {Object|null}
  */
-export const getMoviesByCategories = async (categoryIds, keywords = null, page = null) => {
+export const getMoviesByCategories = async (categoryIds, keywords = null, page = null, checkQuery = false) => {
+  const newVideoQuery = {
+    categoryIds: categoryIds,
+    keywords: keywords,
+    page: page,
+  };
+
+  if (
+    checkQuery &&
+    compareObjects(newVideoQuery, useMovieStore.getState().videoQuery) &&
+    useMovieStore.getState().movies.length > 0
+  ) {
+    return;
+  }
+
+  useMovieStore.setState((state) => ({
+    ...state,
+    videoQuery: newVideoQuery,
+  }));
+
   const url = new URL('/api/movies/by-categories', window.location.origin);
   categoryIds.forEach((id) => url.searchParams.append('categories[]', id));
   url.searchParams.set('page', page ?? 1);
@@ -158,6 +194,14 @@ export const getMoviesByCategories = async (categoryIds, keywords = null, page =
     });
     if (response.ok) {
       const jsonResponse = await response.json();
+
+      useMovieStore.setState((state) => ({
+        ...state,
+        movies: jsonResponse['hydra:member'],
+      }));
+
+      setTotal(jsonResponse['hydra:totalItems']);
+
       return jsonResponse['hydra:member'] ? jsonResponse : null;
     }
 

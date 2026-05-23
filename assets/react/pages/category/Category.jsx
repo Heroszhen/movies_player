@@ -1,24 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { getCategoriesName } from '../../stores/categoryStore';
-import { getMoviesByCategories } from '../../stores/movieStore';
+import useMovieStore, { getMoviesByCategories } from '../../stores/movieStore';
 import Poster from '../../components/poster/poster';
 import ResponsivePagination from 'react-responsive-pagination';
 import { wait } from '../../services/utils';
+import usePaginatorStore from '../../stores/paginatorStore';
 
 const Category = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const [page, setPage] = useState(searchParams.get('page') === null ? 1 : parseInt(searchParams.get('page')));
-  const [total, setTotal] = useState(0);
   const itemsPerPage = 20;
+  const { total } = usePaginatorStore();
   const [categories, setCategories] = useState([]);
   const [indexes, setIndexes] = useState([]); //category index
-  const [movies, setMovies] = useState([]);
   const [btnShow, setBtnShow] = useState('');
   const [keywords, setKeywords] = useState('');
   const searchRef = useRef(null);
   const [scrollTop, setScrollTop] = useState(null);
+  const { movies } = useMovieStore();
 
   useEffect(() => {
     getCategories();
@@ -57,15 +58,11 @@ const Category = () => {
   const searchMovies = async () => {
     storeChoices();
     const categoryIds = indexes.map((index) => categories[index]['id']);
-    const response = await getMoviesByCategories(categoryIds, keywords, page);
-    if (response !== null) {
-      setMovies(response['hydra:member']);
-      setTotal(response['hydra:totalItems']);
-      if (scrollTop !== null) {
-        await wait(0.5);
-        window.scrollTo({ top: scrollTop });
-        setScrollTop(null);
-      }
+    await getMoviesByCategories(categoryIds, keywords, page, true);
+    if (scrollTop !== null) {
+      await wait(0.5);
+      window.scrollTo({ top: scrollTop });
+      setScrollTop(null);
     }
   };
 

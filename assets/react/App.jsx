@@ -8,7 +8,6 @@ import useLoaderStore from './stores/loaderStore';
 import { Alert, Snackbar } from '@mui/material';
 import parse from 'html-react-parser';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useMovieStore from './stores/movieStore';
 import usePhotoModalStore, { setPhotosInModal } from './stores/photoModalStore';
 import useConfigStore from './stores/configStore';
 import { isEmpty } from './services/utils';
@@ -25,7 +24,6 @@ import AdminNav from './components/admin_nav/AdminNav';
 import AdminHeader from './components/admin_header/AdminHeader';
 
 function App() {
-  const { emptyMovies } = useMovieStore();
   const { user, login } = useUserStore();
   const [loginModal, setLoginModal] = useState(null);
   const {
@@ -147,7 +145,9 @@ function App() {
   useEffect(() => {
     handleResize();
 
-    if (reactLocation.pathname !== precRoute) emptyMovies();
+    if (reactLocation.pathname !== precRoute) {
+      //emptyMovies();
+    }
     setPrecRoute(reactLocation.pathname);
   }, [reactLocation]);
 

@@ -123,9 +123,7 @@ const VideoPlayer = (props) => {
                 className="max-w-[420px] h-full aspect-[420/745]"></iframe>
             </div>
           )}
-          {props.video.type.id === 7 && (
-            <RedditVideoPlayer url={props.video.link} />
-          )}
+          {props.video.type.id === 7 && <RedditVideoPlayer url={props.video.link} />}
         </div>
       )}
 
