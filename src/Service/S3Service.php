@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use Aws\Result;
@@ -27,7 +29,7 @@ class S3Service
         try {
             return $this->s3Client->putObject([
                 'Bucket' => $_ENV['AWS_BUCKET'],
-                'Key' => $_ENV['AWS_ROOT'].'/'.$fileName,
+                'Key' => $_ENV['AWS_ROOT'] . '/' . $fileName,
                 'Body' => fopen($filePath, 'r'),
                 'ACL' => 'public-read',
             ]);
@@ -40,7 +42,7 @@ class S3Service
         try {
             return $this->s3Client->deleteObject([
                 'Bucket' => $_ENV['AWS_BUCKET'],
-                'Key' => $_ENV['AWS_ROOT'].'/'.$fileName,
+                'Key' => $_ENV['AWS_ROOT'] . '/' . $fileName,
             ]);
         } catch (S3Exception $e) {
         }

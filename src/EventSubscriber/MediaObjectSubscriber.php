@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventSubscriber;
 
 use App\Entity\MediaObject;
@@ -37,7 +39,7 @@ class MediaObjectSubscriber implements EventSubscriber
             return;
         }
 
-        $filePath = $this->parameterBag->get('public_dir')."/upload/{$entity->getImageName()}";
+        $filePath = $this->parameterBag->get('public_dir') . "/upload/{$entity->getImageName()}";
         $this->s3Service->sendFile(
             $entity->getImageName(),
             $filePath

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Actor;
@@ -71,11 +73,13 @@ class MediaObjectController extends AbstractController
         $serialized = json_decode($serialized, true);
         unset($serialized['imageFile']);
 
-        return $this->json(array_merge([
-            '@context' => '/api/contexts/MediaObject',
-            '@id' => "/api/media_objects/{$mediaObject->getId()}",
-            '@type' => 'MediaObject',
-        ], $serialized),
-            Response::HTTP_CREATED);
+        return $this->json(
+            array_merge([
+                '@context' => '/api/contexts/MediaObject',
+                '@id' => "/api/media_objects/{$mediaObject->getId()}",
+                '@type' => 'MediaObject',
+            ], $serialized),
+            Response::HTTP_CREATED
+        );
     }
 }

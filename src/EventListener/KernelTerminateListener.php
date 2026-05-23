@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventListener;
 
 use Psr\Log\LoggerInterface;
@@ -26,13 +28,14 @@ final class KernelTerminateListener
         $request = $event->getRequest();
         $response = $event->getResponse();
 
-        if (Request::METHOD_POST === $request->getMethod()
+        if (
+            Request::METHOD_POST === $request->getMethod()
             && '/api/media_objects' === $request->getPathInfo()
             && Response::HTTP_CREATED === $response->getStatusCode()
         ) {
             $content = json_decode($response->getContent(), true);
             if (isset($content['imageName'])) {
-                $filePath = $this->parameterBag->get('public_dir').'/upload/'.$content['imageName'];
+                $filePath = $this->parameterBag->get('public_dir') . '/upload/' . $content['imageName'];
                 if ($this->filesystem->exists($filePath)) {
                     $this->filesystem->remove($filePath);
                 }

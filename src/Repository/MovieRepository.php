@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Movie;
@@ -49,15 +51,13 @@ class MovieRepository extends ServiceEntityRepository
             ->distinct()
             ->setFirstResult(($page - 1) * 20)
             ->setMaxResults(20)
-            ->orderBy('movie.id', 'DESC')
-        ;
+            ->orderBy('movie.id', 'DESC');
 
         if (count($categories) > 0) {
             $qb
                 ->innerJoin('movie.categories', 'categories')
                 ->andWhere('categories.id IN (:categories)')
-                ->setParameter('categories', $categories)
-            ;
+                ->setParameter('categories', $categories);
         }
 
         if (!empty($keywords)) {
