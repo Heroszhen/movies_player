@@ -3,15 +3,15 @@ grumphp:
   ignore_unstaged_changes: false
   process_timeout: 60
   tasks:
-    # phpstan:
-    #   configuration: 'phpstan.neon'
-    #   level: 8
-    #   triggered_by: ['php']
-    #   memory_limit: '-1'
-    # phpcsfixer:
-    #   config: '.php-cs-fixer.php'
-    #   using_cache: false
-    #   triggered_by: ['php']
+    phpstan:
+      configuration: 'phpstan.neon'
+      level: 8
+      triggered_by: ['php']
+      memory_limit: '-1'
+    phpcsfixer:
+      config: '.php-cs-fixer.php'
+      using_cache: false
+      triggered_by: ['php']
     securitychecker_symfony:
       lockfile: ./composer.lock
       format: ~
