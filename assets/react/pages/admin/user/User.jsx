@@ -230,7 +230,7 @@ const AdminUser = () => {
                       <Input
                         {...field}
                         onChange={async (event) => {
-                          const file = event.target.files[0];
+                          const file = value ?? event.target.files[0];
                           onChange(file);
                         }}
                         type="file"
