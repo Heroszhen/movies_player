@@ -4,16 +4,18 @@ import './Home.scss';
 import { useNavigate } from 'react-router-dom';
 import { isEmpty } from '../../services/utils';
 import useConfigStore from '../../stores/configStore';
+import useUserStore from '../../stores/userStore';
 
 const Home = () => {
   const [counts, setCounts] = useState(null);
   const [movies, setMovies] = useState(null);
   const navigate = useNavigate();
   const { config } = useConfigStore();
+  const { user } = useUserStore();
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (null !== user) getData();
+  }, [user]);
 
   const getData = async () => {
     getCounts()

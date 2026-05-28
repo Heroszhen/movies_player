@@ -163,7 +163,7 @@ function App() {
     const response = await getAuth(data);
     if (response === true) {
       setLogin(false);
-      location.reload();
+      //location.reload();
     }
   };
 
@@ -192,7 +192,7 @@ function App() {
       const response = await getPublicAuth();
       if (response === true) {
         setLogin(false);
-        location.reload();
+        //location.reload();
       }
     }
   };
@@ -202,7 +202,7 @@ function App() {
       const response = await getGmailLoginToken(tokenResponse);
       if (response === true) {
         setLogin(false);
-        location.reload();
+        //location.reload();
       }
     },
   });
