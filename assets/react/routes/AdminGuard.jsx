@@ -3,8 +3,8 @@ import useUserStore from '../stores/userStore';
 
 const AdminGuard = () => {
   const { user } = useUserStore();
-  return (user === null || !user.roles.includes('USER_ADMIN')) && [null, ''].includes(localStorage.getItem('token')) ? (
-    <Navigate to="/" />
+  return user === null || !user.roles.includes('USER_ADMIN') || [null, ''].includes(localStorage.getItem('token')) ? (
+    <Navigate to="/404" replace />
   ) : (
     <Outlet />
   );

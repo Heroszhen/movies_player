@@ -15,11 +15,13 @@ import AdminActor from '../pages/admin/actor/AdminActor.jsx';
 import AdminMovie from '../pages/admin/movie/AdminMovie.jsx';
 import { AdminCategory } from '../pages/admin/category/AdminCategory.jsx';
 import AdminConfig from '../pages/admin/config/AdminConfig.jsx';
+import NotFound from '../pages/notfound/NotFound.jsx';
 
 const RoutesWrapper = (props) => {
   return (
     <>
       <Routes>
+        <Route path="/404" element={<NotFound />} />
         {props.canQuery && (
           <>
             <Route path="/" element={<Home />} />
