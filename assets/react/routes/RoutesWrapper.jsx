@@ -44,6 +44,7 @@ const RoutesWrapper = (props) => {
             </Route>
           </>
         )}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
