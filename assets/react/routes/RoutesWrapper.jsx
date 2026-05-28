@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginGuard from './LoginGuard.jsx';
 import AdminGuard from './AdminGuard.jsx';
 
@@ -44,7 +44,7 @@ const RoutesWrapper = (props) => {
             </Route>
           </>
         )}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </>
   );
