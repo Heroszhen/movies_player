@@ -207,11 +207,20 @@ function App() {
     },
   });
 
+  const isAdmin = () => {
+    if (user && user.roles.includes('ROLE_ADMIN')) return true;
+    return false;
+  };
+
   return (
     <>
       {!reactLocation.pathname.includes('admin') && <Banner />}
-      {reactLocation.pathname.includes('admin') && <AdminHeader mainRef={mainRef} adminNavRef={adminNavRef} />}
-      {reactLocation.pathname.includes('admin') && <AdminNav ref={adminNavRef} toggleAdminNav={toggleAdminNav} />}
+      {reactLocation.pathname.includes('admin') && isAdmin() && (
+        <AdminHeader mainRef={mainRef} adminNavRef={adminNavRef} />
+      )}
+      {reactLocation.pathname.includes('admin') && isAdmin() && (
+        <AdminNav ref={adminNavRef} toggleAdminNav={toggleAdminNav} />
+      )}
       <main ref={mainRef} onDoubleClick={(e) => clickOnPage(e)} className="min-vh-100">
         <RoutesWrapper canQuery={canQuery} />
       </main>

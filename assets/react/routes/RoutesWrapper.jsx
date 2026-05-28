@@ -42,9 +42,10 @@ const RoutesWrapper = (props) => {
               <Route path="/admin/categories" element={<AdminCategory />} />
               <Route path="/admin/configuration" element={<AdminConfig />} />
             </Route>
+
+            <Route path="*" element={<Navigate to="/404" replace />} />
           </>
         )}
-        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </>
   );
