@@ -135,3 +135,19 @@ export const getGmailLoginToken = async (data) => {
   } catch {}
   return false;
 };
+
+export const registerByEmail = async (data) => {
+  try {
+    let response = await fetch(`/api/users/registration-by-email`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/ld+json',
+      },
+    });
+
+    if (response.ok) {
+      response = await response.json();
+    }
+  } catch {}
+};

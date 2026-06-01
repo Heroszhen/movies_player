@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useRef} from 'react';
 import { getCounts, getLastThreeMovies } from '../../services/api';
 import './Home.scss';
 import { useNavigate } from 'react-router-dom';
 import { isEmpty } from '../../services/utils';
 import useConfigStore from '../../stores/configStore';
-import useUserStore from '../../stores/userStore';
+import useUserStore, { registerByEmail } from '../../stores/userStore';
 
 const Home = () => {
   const [counts, setCounts] = useState(null);
@@ -12,6 +12,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { config } = useConfigStore();
   const { user } = useUserStore();
+  const emailRef = useRef(null);
 
   useEffect(() => {
     if (null !== user) getData();
@@ -48,6 +49,13 @@ const Home = () => {
 
     return false;
   };
+
+  const register = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(emailRef.current.value)) {
+      await registerByEmail({email: emailRef.current.value});
+    }
+  }
 
   return (
     <section id="home">
@@ -106,8 +114,8 @@ const Home = () => {
       <section className="hero-bg-color-e7edef p-5 text-center">
         <h2>Inscris-toi!</h2>
         <div className="input-group mt-5 max-w-[600px] mx-auto">
-          <input type="text" className="form-control" placeholder="Ton mail" />
-          <button type="button" className="btn btn-movify input-group-text" id="basic-addon2">
+          <input type="text" className="form-control" placeholder="Ton mail" ref={emailRef} />
+          <button type="button" className="btn btn-movify input-group-text" id="basic-addon2" onClick={() => register()}>
             Mail
           </button>
         </div>

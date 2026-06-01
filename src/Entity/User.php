@@ -12,6 +12,8 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\Action\EditUserPassword;
 use App\Controller\Action\GetUserByToken;
+use App\Dto\RegistrationInput;
+use App\Processor\RegistrationByEmailProcessor;
 use App\Repository\UserRepository;
 use App\Traits\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,6 +41,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Get(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
         new Post(security: "is_granted('ROLE_ADMIN')"),
+        new Post(
+            name: 'registrationByEmail',
+            uriTemplate: '/users/registration-by-email',
+            input: RegistrationInput::class,
+            processor: RegistrationByEmailProcessor::class,
+            security: "is_granted('PUBLIC_ACCESS')",
+            denormalizationContext: ['groups' => ['registration:i']],
+        ),
         new Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
         new Patch(
             name: 'editUserPassword',
