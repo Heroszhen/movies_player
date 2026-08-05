@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import useMovieStore, { getVideoTypes } from '../../../stores/movieStore';
 import usePaginatorStore, { setRoute, setPage, setKeywords, getPaginator } from '../../../stores/paginatorStore';
-import { useLocation } from 'react-router-dom';
+import { useLocation, NavLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -23,6 +23,7 @@ import {
   Select,
   Autocomplete,
 } from '@mui/material';
+import PreviewIcon from '@mui/icons-material/Preview';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -336,15 +337,23 @@ const AdminMovie = () => {
                             {movie.releasedAt !== null && moment(movie.releasedAt).format('DD/MM/YYYY')}
                           </TableCell>
                           <TableCell>
-                            <PhotoIcon className="me-4 mb-4 hero-cursor-pointer" onClick={() => toggleForm(3, index)} />
-                            <ModeEditIcon
-                              className="hero-cursor-pointer me-4 mb-4"
-                              onClick={() => toggleForm(2, index)}
-                            />
-                            <DeleteForeverIcon
-                              className="hero-cursor-pointer hover:hero-color-ff0000 mb-4"
-                              onClick={() => alertDeleteMovie(index)}
-                            />
+                            <Box component="div" style={{ display: 'flex' }}>
+                              <NavLink to={`/video/${movie.id}`} className="me-4 mb-4" target="_blank">
+                                <PreviewIcon />
+                              </NavLink>
+                              <PhotoIcon
+                                className="me-4 mb-4 hero-cursor-pointer"
+                                onClick={() => toggleForm(3, index)}
+                              />
+                              <ModeEditIcon
+                                className="hero-cursor-pointer me-4 mb-4"
+                                onClick={() => toggleForm(2, index)}
+                              />
+                              <DeleteForeverIcon
+                                className="hero-cursor-pointer hover:hero-color-ff0000 mb-4"
+                                onClick={() => alertDeleteMovie(index)}
+                              />
+                            </Box>
                           </TableCell>
                         </TableRow>
                       );

@@ -37,15 +37,15 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: "is_granted('ROLE_ADMIN')",
             order: ['id' => 'DESC']
         ),
-        new Get(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
+        new Get(security: "is_granted('ROLE_ADMIN') or object == user"),
         new Post(security: "is_granted('ROLE_ADMIN')"),
-        new Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
+        new Patch(security: "is_granted('ROLE_ADMIN') or object == user"),
         new Patch(
             name: 'editUserPassword',
             uriTemplate: '/users/{id}/password',
             requirements: ['id' => '\d+'],
             controller: EditUserPassword::class,
-            security: "is_granted('ROLE_ADMIN') or object.owner == user",
+            security: "is_granted('ROLE_ADMIN') or object == user",
             denormalizationContext: ['groups' => 'user:password:write'],
             validationContext: ['groups' => ['user:password:write']]
         ),
