@@ -44,6 +44,7 @@ import Editor from '../../../components/editor/Editor';
 import { deletePhoto } from '../../../stores/fileStore';
 import { getCategoriesName } from '../../../stores/categoryStore';
 import PaginatorInput from '../../../components/paginator_input/PaginatorInput';
+import Tooltip from '@mui/material/Tooltip';
 
 const AdminMovie = () => {
   const reactLocation = useLocation();
@@ -338,21 +339,29 @@ const AdminMovie = () => {
                           </TableCell>
                           <TableCell>
                             <Box component="div" style={{ display: 'flex' }}>
-                              <NavLink to={`/video/${movie.id}`} className="me-4 mb-4" target="_blank">
-                                <PreviewIcon />
-                              </NavLink>
-                              <PhotoIcon
-                                className="me-4 mb-4 hero-cursor-pointer"
-                                onClick={() => toggleForm(3, index)}
-                              />
-                              <ModeEditIcon
-                                className="hero-cursor-pointer me-4 mb-4"
-                                onClick={() => toggleForm(2, index)}
-                              />
-                              <DeleteForeverIcon
-                                className="hero-cursor-pointer hover:hero-color-ff0000 mb-4"
-                                onClick={() => alertDeleteMovie(index)}
-                              />
+                              <Tooltip describeChild title="Visualiser">
+                                <NavLink to={`/video/${movie.id}`} className="me-4 mb-4" target="_blank">
+                                  <PreviewIcon />
+                                </NavLink>
+                              </Tooltip>
+                              <Tooltip describeChild title="Photo">
+                                <PhotoIcon
+                                  className="me-4 mb-4 hero-cursor-pointer"
+                                  onClick={() => toggleForm(3, index)}
+                                />
+                              </Tooltip>
+                              <Tooltip describeChild title="Modifier">
+                                <ModeEditIcon
+                                  className="hero-cursor-pointer me-4 mb-4"
+                                  onClick={() => toggleForm(2, index)}
+                                />
+                              </Tooltip>
+                              <Tooltip describeChild title="Supprimer">
+                                <DeleteForeverIcon
+                                  className="hero-cursor-pointer hover:hero-color-ff0000 mb-4"
+                                  onClick={() => alertDeleteMovie(index)}
+                                />
+                              </Tooltip>
                             </Box>
                           </TableCell>
                         </TableRow>
