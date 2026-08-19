@@ -17,6 +17,8 @@ import { AdminCategory } from '../pages/admin/category/AdminCategory.jsx';
 import AdminConfig from '../pages/admin/config/AdminConfig.jsx';
 import NotFound from '../pages/notfound/NotFound.jsx';
 
+import AdminApp from '../pages/admin_v2/AdminApp.jsx';
+
 const RoutesWrapper = (props) => {
   return (
     <>
@@ -41,6 +43,7 @@ const RoutesWrapper = (props) => {
               <Route path="/admin/videos" element={<AdminMovie />} />
               <Route path="/admin/categories" element={<AdminCategory />} />
               <Route path="/admin/configuration" element={<AdminConfig />} />
+              <Route path="/admin_v2/*" element={<AdminApp />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/404" replace />} />

@@ -116,6 +116,14 @@ const unoCSSPlugin = () =>
 
 module.exports = async () => {
     Encore.addPlugin(await unoCSSPlugin());
-    return Encore.getWebpackConfig();
+
+    const config = Encore.getWebpackConfig();
+
+    config.module.rules.push({
+        test: /\.m?js$/,
+        resolve: { fullySpecified: false },
+    });
+
+    return config;
 };
 

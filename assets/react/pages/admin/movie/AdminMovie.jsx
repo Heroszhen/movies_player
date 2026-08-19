@@ -53,7 +53,7 @@ const AdminMovie = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setOpen(false), toggleForm();
+    (setOpen(false), toggleForm());
   };
   const [sectionTypes, setSectionTypes] = useState(false);
   const [movieIndex, setMovieIndex] = useState(null);

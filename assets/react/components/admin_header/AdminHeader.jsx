@@ -26,8 +26,8 @@ const AdminHeader = (props) => {
         id="admin-header-btn"
         className="hero-cursor-pointer"
         onClick={() => {
-          props.mainRef.current.classList.toggle('admin-nav-close'),
-            props.adminNavRef.current.classList.toggle('d-none');
+          (props.mainRef.current.classList.toggle('admin-nav-close'),
+            props.adminNavRef.current.classList.toggle('d-none'));
         }}
       />
       {user !== null && (
