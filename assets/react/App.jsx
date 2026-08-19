@@ -70,7 +70,7 @@ function App() {
         setLoader(true);
 
         const [url, options = {}] = args;
-        if (options.method.toLowerCase() === 'patch') {
+        if (options.method?.toLowerCase() === 'patch') {
           options.headers['Content-Type'] = 'application/merge-patch+json';
         }
         const response = await originalFetch.apply(this, [url, options]);

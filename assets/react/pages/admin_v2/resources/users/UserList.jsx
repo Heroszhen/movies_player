@@ -1,9 +1,11 @@
-import { List, Datagrid, TextField, EmailField, DateField, FunctionField } from 'react-admin';
+import { List, Datagrid, TextField, EmailField, DateField, FunctionField, BulkDeleteButton } from 'react-admin';
 import { PublicToggleBtn } from './PublicToggleBtn';
 
+const UserBulkActionButtons = () => <BulkDeleteButton mutationMode="pessimistic" />;
+
 export const UserList = () => (
-  <List pagination={false} disableSyncWithLocation>
-    <Datagrid>
+  <List pagination={false}>
+    <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
       <TextField source="id" />
       <EmailField source="email" label="Mail" />
       <FunctionField
