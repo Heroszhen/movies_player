@@ -1,10 +1,12 @@
-export const getRequestHeaders = (isFormData = false) => {
+export const getRequestHeaders = (isFormData = false, isPatch = false) => {
   let headers = {
     'X-Requested-With': 'XMLHttpRequest',
     'Content-Type': 'application/json',
   };
 
   if (isFormData) delete headers['Content-Type'];
+
+  if (isPatch) headers['Content-Type'] = 'application/merge-patch+json';
 
   if (localStorage.getItem('token')) {
     headers['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('token')).token}`;

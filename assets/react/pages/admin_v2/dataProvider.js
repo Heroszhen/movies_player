@@ -68,7 +68,7 @@ const dataProvider = {
   update: async (resource, params) => {
     const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: 'PATCH',
-      headers: getRequestHeaders(),
+      headers: new Headers(getRequestHeaders(false, true)),
       body: JSON.stringify(params.data),
     });
 
