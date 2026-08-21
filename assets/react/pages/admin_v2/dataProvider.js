@@ -28,6 +28,13 @@ const dataProvider = {
     const { field, order } = params.sort;
     query.set(`order[${field}]`, order);
 
+    const filters = params.filter;
+    if (Object.keys(filters).length > 0) {
+      for (let key in filters) {
+        query.set(key, filters[key]);
+      }
+    }
+
     if (query.size !== 0) url += `?${query}`;
 
     const { json } = await httpClient(url, {

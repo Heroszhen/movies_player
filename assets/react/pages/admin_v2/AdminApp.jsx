@@ -7,6 +7,9 @@ import { UserCreate } from './resources/users/UserCreate';
 import { UserEdit } from './resources/users/UserEdit';
 import { Route } from 'react-router-dom';
 import { PasswordEdit } from './resources/users/PasswordEdit';
+import { CategoryList } from './resources/categories/CategoryList';
+import { CategoryEdit } from './resources/categories/CategoryEdit';
+import { CategoryCreate } from './resources/categories/CategoryCreate';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +27,7 @@ const AdminApp = () => (
     <CustomRoutes>
       <Route path="/users/:id/password" element={<PasswordEdit />} />
     </CustomRoutes>
+    <Resource name="categories" list={CategoryList} create={CategoryCreate} edit={CategoryEdit} />
   </Admin>
 );
 

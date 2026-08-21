@@ -2,6 +2,7 @@ import { Edit, SimpleForm } from 'react-admin';
 import { UserFormFields } from './UserFormFields';
 
 const transform = (data) => {
+  // eslint-disable-next-line no-unused-vars
   const { photo, ...rest } = data;
   return rest;
 };
