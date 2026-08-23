@@ -12,7 +12,7 @@ export const ActorForm = ({ isCreate, editorRef }) => {
   return (
     <SimpleForm toolbar={<CustomToolbar />}>
       <Typography variant="h5" gutterBottom>
-        {isCreate ? 'Ajouter un auteur' : `Modifier l'auteur ${record.name}`}
+        {isCreate ? 'Ajouter un acteur' : `Modifier l'acteur ${record.name}`}
       </Typography>
       <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={3} width="100%">
         <TextInput source="name" type="text" label="Nom" validate={[required()]} />
