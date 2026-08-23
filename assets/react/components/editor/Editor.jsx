@@ -10,12 +10,12 @@ const Editor = forwardRef((props, ref) => {
   useEffect(() => {
     (async () => {
       await wait(0.5);
-      iframeRef.current.contentWindow.setValue(props.value);
+      iframeRef?.current?.contentWindow.setValue(props.value);
     })();
   }, []);
 
   const getValue = () => {
-    return iframeRef.current.contentWindow.getValue();
+    return iframeRef?.current?.contentWindow.getValue();
   };
 
   useImperativeHandle(ref, () => {

@@ -10,6 +10,9 @@ import { PasswordEdit } from './resources/users/PasswordEdit';
 import { CategoryList } from './resources/categories/CategoryList';
 import { CategoryEdit } from './resources/categories/CategoryEdit';
 import { CategoryCreate } from './resources/categories/CategoryCreate';
+import { ActorList } from './resources/actors/ActorList';
+import { ActorCreate } from './resources/actors/ActorCreate';
+import { ActorEdit } from './resources/actors/ActorEdit';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +31,7 @@ const AdminApp = () => (
       <Route path="/users/:id/password" element={<PasswordEdit />} />
     </CustomRoutes>
     <Resource name="categories" list={CategoryList} create={CategoryCreate} edit={CategoryEdit} />
+    <Resource name="actors" list={ActorList} create={ActorCreate} edit={ActorEdit} />
   </Admin>
 );
 
