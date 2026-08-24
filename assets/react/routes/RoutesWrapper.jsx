@@ -38,12 +38,12 @@ const RoutesWrapper = (props) => {
             </Route>
 
             <Route element={<AdminGuard />}>
-              <Route path="/admin/utilisateurs" element={<AdminUser />} />
-              <Route path="/admin/acteurs" element={<AdminActor />} />
-              <Route path="/admin/videos" element={<AdminMovie />} />
-              <Route path="/admin/categories" element={<AdminCategory />} />
-              <Route path="/admin/configuration" element={<AdminConfig />} />
-              <Route path="/admin_v2/*" element={<AdminApp />} />
+              <Route path="/admin_v1/utilisateurs" element={<AdminUser />} />
+              <Route path="/admin_v1/acteurs" element={<AdminActor />} />
+              <Route path="/admin_v1/videos" element={<AdminMovie />} />
+              <Route path="/admin_v1/categories" element={<AdminCategory />} />
+              <Route path="/admin_v1/configuration" element={<AdminConfig />} />
+              <Route path="/admin/*" element={<AdminApp />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/404" replace />} />

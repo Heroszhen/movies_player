@@ -25,13 +25,14 @@ const queryClient = new QueryClient({
 const CustomLayout = (props) => <Layout {...props} menu={CustomMenu} />;
 
 const AdminApp = () => (
-  <Admin basename="/admin_v2" dataProvider={dataProvider} queryClient={queryClient} layout={CustomLayout}>
+  <Admin basename="/admin" dataProvider={dataProvider} queryClient={queryClient} layout={CustomLayout}>
     <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit} options={{ label: 'Utilisateurs' }} />
     <CustomRoutes>
       <Route path="/users/:id/password" element={<PasswordEdit />} />
     </CustomRoutes>
     <Resource name="categories" list={CategoryList} create={CategoryCreate} edit={CategoryEdit} />
     <Resource name="actors" list={ActorList} create={ActorCreate} edit={ActorEdit} />
+    <Resource name="video_types" list={ActorList} create={ActorCreate} edit={ActorEdit} />
   </Admin>
 );
 
