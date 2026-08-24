@@ -15,6 +15,7 @@ import { ActorCreate } from './resources/actors/ActorCreate';
 import { ActorEdit } from './resources/actors/ActorEdit';
 import { VideoTypeList } from './resources/videoType/VideoTypeList';
 import { VideoTypeCreate, VideoTypeEdit } from './resources/videoType/VideoTypeEdit';
+import { VideoList } from './resources/videos/VideoList';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ const AdminApp = () => (
     <Resource name="categories" list={CategoryList} create={CategoryCreate} edit={CategoryEdit} />
     <Resource name="actors" list={ActorList} create={ActorCreate} edit={ActorEdit} />
     <Resource name="video_types" list={VideoTypeList} create={VideoTypeCreate} edit={VideoTypeEdit} />
+    <Resource name="movies" list={VideoList} create={VideoTypeCreate} edit={VideoTypeEdit} />
   </Admin>
 );
 

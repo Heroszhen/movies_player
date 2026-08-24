@@ -31,7 +31,13 @@ const dataProvider = {
     const filters = params.filter;
     if (Object.keys(filters).length > 0) {
       for (let key in filters) {
-        query.set(key, filters[key]);
+        if (typeof filters[key] === 'object') {
+          for (let key2 in filters[key]) {
+            query.set(`${key}.${key2}`, filters[key][key2]);
+          }
+        } else {
+          query.set(key, filters[key]);
+        }
       }
     }
 
