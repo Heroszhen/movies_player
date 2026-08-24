@@ -13,7 +13,7 @@ export const ActorEdit = () => {
   };
 
   return (
-    <Edit transform={transform}>
+    <Edit mutationMode="pessimistic" transform={transform}>
       <ActorForm editorRef={editorRef} />
     </Edit>
   );

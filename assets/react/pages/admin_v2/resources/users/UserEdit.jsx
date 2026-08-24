@@ -3,7 +3,7 @@ import { UserFormFields } from './UserFormFields';
 
 const transform = (data) => {
   // eslint-disable-next-line no-unused-vars
-  const { photo, ...rest } = data;
+  const { photo, updatedAt, ...rest } = data;
   return rest;
 };
 

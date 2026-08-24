@@ -13,6 +13,8 @@ import { CategoryCreate } from './resources/categories/CategoryCreate';
 import { ActorList } from './resources/actors/ActorList';
 import { ActorCreate } from './resources/actors/ActorCreate';
 import { ActorEdit } from './resources/actors/ActorEdit';
+import { VideoTypeList } from './resources/videoType/VideoTypeList';
+import { VideoTypeCreate, VideoTypeEdit } from './resources/videoType/VideoTypeEdit';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +34,7 @@ const AdminApp = () => (
     </CustomRoutes>
     <Resource name="categories" list={CategoryList} create={CategoryCreate} edit={CategoryEdit} />
     <Resource name="actors" list={ActorList} create={ActorCreate} edit={ActorEdit} />
-    <Resource name="video_types" list={ActorList} create={ActorCreate} edit={ActorEdit} />
+    <Resource name="video_types" list={VideoTypeList} create={VideoTypeCreate} edit={VideoTypeEdit} />
   </Admin>
 );
 

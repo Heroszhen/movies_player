@@ -17,27 +17,27 @@ const AdminNav = forwardRef(({ toggleAdminNav }, ref) => {
         <HomeIcon />
         <div>Accueil</div>
       </NavLink>
-      <NavLink to="/admin/utilisateurs" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <NavLink to="/admin_v1/utilisateurs" className={({ isActive }) => (isActive ? 'active' : '')}>
         <PeopleIcon />
         <div>Utilisateurs</div>
       </NavLink>
-      <NavLink to="/admin/photos" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <NavLink to="/admin_v1/photos" className={({ isActive }) => (isActive ? 'active' : '')}>
         <AddPhotoAlternateIcon />
         <div>Photos</div>
       </NavLink>
-      <NavLink to="/admin/acteurs" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <NavLink to="/admin_v1/acteurs" className={({ isActive }) => (isActive ? 'active' : '')}>
         <Diversity3Icon />
         <div>Acteurs</div>
       </NavLink>
-      <NavLink to="/admin/videos" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <NavLink to="/admin_v1/videos" className={({ isActive }) => (isActive ? 'active' : '')}>
         <MovieCreationIcon />
         <div>Vidéos</div>
       </NavLink>
-      <NavLink to="/admin/categories" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <NavLink to="/admin_v1/categories" className={({ isActive }) => (isActive ? 'active' : '')}>
         <CategoryIcon />
         <div>Catégories</div>
       </NavLink>
-      <NavLink to="/admin/configuration" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <NavLink to="/admin_v1/configuration" className={({ isActive }) => (isActive ? 'active' : '')}>
         <MiscellaneousServicesIcon />
         <div>Configuration</div>
       </NavLink>
