@@ -215,10 +215,10 @@ function App() {
   return (
     <>
       {!reactLocation.pathname.includes('admin') && <Banner />}
-      {reactLocation.pathname.includes('admin/') && isAdmin() && (
+      {reactLocation.pathname.includes('admin_v1/') && isAdmin() && (
         <AdminHeader mainRef={mainRef} adminNavRef={adminNavRef} />
       )}
-      {reactLocation.pathname.includes('admin/') && isAdmin() && (
+      {reactLocation.pathname.includes('admin_v1/') && isAdmin() && (
         <AdminNav ref={adminNavRef} toggleAdminNav={toggleAdminNav} />
       )}
       <main ref={mainRef} onDoubleClick={(e) => clickOnPage(e)} className="min-vh-100">
