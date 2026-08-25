@@ -22,6 +22,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import FilterNoneIcon from '@mui/icons-material/FilterNone';
 import MovieCreationIcon from '@mui/icons-material/MovieCreation';
+import { ConfigPage } from './resources/configs/ConfigPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,7 @@ const AdminApp = () => (
     />
     <CustomRoutes>
       <Route path="/users/:id/password" element={<PasswordEdit />} />
+      <Route path="/configs" element={<ConfigPage />} />
     </CustomRoutes>
     <Resource name="categories" list={CategoryList} create={CategoryCreate} edit={CategoryEdit} icon={CategoryIcon} />
     <Resource name="actors" list={ActorList} create={ActorCreate} edit={ActorEdit} icon={Diversity3Icon} />

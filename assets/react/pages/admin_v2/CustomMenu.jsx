@@ -1,5 +1,6 @@
 import { Menu } from 'react-admin';
 import AddHomeIcon from '@mui/icons-material/AddHome';
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 
 export const CustomMenu = () => {
   return (
@@ -14,6 +15,7 @@ export const CustomMenu = () => {
       <Menu>
         <Menu.Item to="/" primaryText="Accueil" leftIcon={<AddHomeIcon />} />
         <Menu.ResourceItems />
+        <Menu.Item to="/admin/configs" primaryText="Configuration" leftIcon={<MiscellaneousServicesIcon />} />
       </Menu>
     </>
   );
