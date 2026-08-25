@@ -7,9 +7,11 @@ import {
   ReferenceArrayInput,
   ReferenceInput,
   required,
+  SaveButton,
   SelectInput,
   SimpleForm,
   TextInput,
+  Toolbar,
   useRecordContext,
 } from 'react-admin';
 import Editor from '../../../../components/editor/Editor';
@@ -19,11 +21,17 @@ const DescriptionEditor = ({ editorRef }) => {
   return <Editor ref={editorRef} label="Description" value={record?.description} />;
 };
 
+const VideoToolbar = () => (
+  <Toolbar>
+    <SaveButton alwaysEnable />
+  </Toolbar>
+);
+
 export const VideoForm = ({ isCreate, editorRef }) => {
   const record = useRecordContext();
 
   return (
-    <SimpleForm>
+    <SimpleForm toolbar={<VideoToolbar />}>
       <Typography variant="h5" gutterBottom>
         {isCreate ? 'Ajouter une vidéo' : `Modifier la vidéo ${record.title}`}
       </Typography>

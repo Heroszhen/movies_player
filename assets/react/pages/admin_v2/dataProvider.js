@@ -15,17 +15,25 @@ const dataProvider = {
 
     if (resource === 'movies') {
       if (data.type && typeof data.type === 'object') data.type = data.type.id;
-      if (Array.isArray(data.actors))
+      if (Array.isArray(data.actors)) {
         data.actors = data.actors.map((actor) => (typeof actor === 'object' ? actor.id : actor));
-      if (Array.isArray(data.categories))
+      }
+      if (Array.isArray(data.categories)) {
         data.categories = data.categories.map((category) => (typeof category === 'object' ? category.id : category));
+      }
     }
 
     return { data };
   },
   getMany: async (resource, params) => {
+    const validIds = params.ids.filter((id) => id !== null && id !== undefined && typeof id !== 'object');
+
+    if (validIds.length === 0) {
+      return { data: [] };
+    }
+
     const responses = await Promise.all(
-      params.ids.map((id) =>
+      validIds.map((id) =>
         httpClient(`${apiUrl}/${resource}/${id}`, {
           method: 'GET',
           headers: new Headers(getRequestHeaders()),
