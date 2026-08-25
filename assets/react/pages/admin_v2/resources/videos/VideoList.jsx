@@ -1,4 +1,14 @@
-import { Datagrid, FunctionField, List, NumberField, Pagination, TextField, TextInput } from 'react-admin';
+import {
+  BulkDeleteButton,
+  Datagrid,
+  EditButton,
+  FunctionField,
+  List,
+  NumberField,
+  Pagination,
+  TextField,
+  TextInput,
+} from 'react-admin';
 
 export const VideoList = () => {
   const filters = [
@@ -8,8 +18,12 @@ export const VideoList = () => {
 
   return (
     <>
-      <List perPage={20} filters={filters} pagination={<Pagination rowsPerPageOptions={[]} />}>
-        <Datagrid rowClick={false}>
+      <List
+        perPage={20}
+        filters={filters}
+        sort={{ field: 'id', order: 'DESC' }}
+        pagination={<Pagination rowsPerPageOptions={[]} />}>
+        <Datagrid rowClick={false} bulkActionButtons={<BulkDeleteButton mutationMode="pessimistic" />}>
           <NumberField source="id" />
           <TextField source="title" label="Titre" />
           <FunctionField
@@ -30,6 +44,14 @@ export const VideoList = () => {
             render={(record) =>
               record.actors.map((actor) => actor.name).map((name, index) => <div key={index}>{name}</div>)
             }
+          />
+          <FunctionField
+            label="Actions"
+            render={() => (
+              <>
+                <EditButton className="me-1" />
+              </>
+            )}
           />
         </Datagrid>
       </List>
