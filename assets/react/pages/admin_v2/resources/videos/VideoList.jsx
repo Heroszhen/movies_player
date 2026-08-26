@@ -5,7 +5,6 @@ import {
   FunctionField,
   List,
   NumberField,
-  Pagination,
   TextField,
   TextInput,
   useUpdate,
@@ -19,6 +18,7 @@ import { useState } from 'react';
 import { getModalStyle } from '../../../../services/data';
 import { wait } from '../../../../services/utils';
 import { deletePhoto } from '../../../../stores/fileStore';
+import { CustomPagination } from '../common/CustomPagination';
 
 export const VideoList = () => {
   const filters = [
@@ -60,7 +60,7 @@ export const VideoList = () => {
         perPage={20}
         filters={filters}
         sort={{ field: 'id', order: 'DESC' }}
-        pagination={<Pagination rowsPerPageOptions={[]} />}>
+        pagination={<CustomPagination rowsPerPageOptions={[]} />}>
         <Datagrid rowClick={false} bulkActionButtons={<BulkDeleteButton mutationMode="pessimistic" />}>
           <NumberField source="id" />
           <TextField source="title" label="Titre" />
@@ -71,7 +71,7 @@ export const VideoList = () => {
                 <img
                   src={`${process.env.AWS_FILE_PREFIX}${record.poster.imageName}`}
                   alt=""
-                  style={{ width: 100, height: 'auto', objectFit: 'cover' }}
+                  style={{ width: 200, height: 'auto', objectFit: 'cover' }}
                 />
               ) : null
             }
