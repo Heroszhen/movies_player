@@ -19,6 +19,7 @@ import { getModalStyle } from '../../../../services/data';
 import { wait } from '../../../../services/utils';
 import { deletePhoto } from '../../../../stores/fileStore';
 import { CustomPagination } from '../common/CustomPagination';
+import { TableClassInjector } from '../common/TableClassInjector';
 
 export const VideoList = () => {
   const filters = [
@@ -61,6 +62,7 @@ export const VideoList = () => {
         filters={filters}
         sort={{ field: 'id', order: 'DESC' }}
         pagination={<CustomPagination rowsPerPageOptions={[]} />}>
+        <TableClassInjector />
         <Datagrid rowClick={false} bulkActionButtons={<BulkDeleteButton mutationMode="pessimistic" />}>
           <NumberField source="id" />
           <TextField source="title" label="Titre" />
@@ -87,7 +89,7 @@ export const VideoList = () => {
             label="Actions"
             render={(record) => (
               <>
-                <div className="flex items-start">
+                <div className="flex items-center">
                   <EditButton className="me-3 mb-1" />
                   <Tooltip describeChild title="Photo">
                     <PhotoIcon className="me-3 mb-1 cursor-pointer" onClick={() => toggleModal(1, record)} />

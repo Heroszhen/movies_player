@@ -19,6 +19,7 @@ import { PhotoEdit } from '../common/PhotoEdit';
 import { deletePhoto, addFile, getPhotoByActorId } from '../../../../stores/fileStore';
 import { wait } from '../../../../services/utils';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { TableClassInjector } from '../common/TableClassInjector';
 
 export const ActorList = () => {
   const filters = [
@@ -93,6 +94,7 @@ export const ActorList = () => {
   return (
     <>
       <List perPage={20} filters={filters} pagination={<Pagination rowsPerPageOptions={[]} />}>
+        <TableClassInjector />
         <Datagrid rowClick={false}>
           <NumberField source="id" />
           <TextField source="name" />
