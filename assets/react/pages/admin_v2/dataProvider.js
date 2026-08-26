@@ -130,8 +130,6 @@ const dataProvider = {
     };
   },
   deleteMany: async (resource, params) => {
-    console.log(resource, params);
-    console.log('deleteMany called with ids:', params.ids);
     const requests = params.ids.map((id) =>
       httpClient(`${apiUrl}/${resource}/${id}`, {
         method: 'DELETE',

@@ -79,7 +79,7 @@ export const UserList = () => {
                   variant="outlined"
                   color="error"
                   component={Link}
-                  to={`/admin_v2/users/${record.id}/password`}>
+                  to={`/admin/users/${record.id}/password`}>
                   Mot de passe
                 </Button>
               </>
