@@ -15,6 +15,7 @@ import { getModalStyle } from '../../../../services/data';
 import { useState } from 'react';
 import { PhotoEdit } from '../common/PhotoEdit';
 import { deletePhoto } from '../../../../stores/fileStore';
+import { TableClassInjector } from '../common/TableClassInjector';
 
 export const UserList = () => {
   const UserBulkActionButtons = () => <BulkDeleteButton mutationMode="pessimistic" />;
@@ -37,6 +38,7 @@ export const UserList = () => {
   return (
     <>
       <List pagination={false}>
+        <TableClassInjector />
         <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
           <TextField source="id" />
           <EmailField source="email" label="Mail" />

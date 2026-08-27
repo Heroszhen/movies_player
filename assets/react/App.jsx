@@ -67,7 +67,7 @@ function App() {
   useEffect(() => {
     (async () => {
       window.fetch = async (...args) => {
-        setLoader(true);
+        if (!reactLocation.pathname.includes('/admin/')) setLoader(true);
 
         const [url, options = {}] = args;
         if (options.method?.toLowerCase() === 'patch') {
@@ -98,7 +98,7 @@ function App() {
           } finally {
             if (clonedResponse.status === 401 && reactLocation.pathname !== '/') navigate('/');
           }
-        } else if (reactLocation.pathname.includes('admin')) {
+        } else if (reactLocation.pathname.includes('admin_v1/')) {
           setAlertDuration(500);
           setAlertSeverity('success');
           setAlertMessages('Envoyé');
