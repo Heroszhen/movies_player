@@ -91,7 +91,7 @@ const Nav = () => {
             )}
             {user?.roles.includes('ROLE_ADMIN') && (
               <li className="nav-item">
-                <NavLink to="/admin/users" className={({ isActive }) => getRouteClassNames(isActive)}>
+                <NavLink to="/admin/movies" className={({ isActive }) => getRouteClassNames(isActive)}>
                   Admin
                 </NavLink>
               </li>

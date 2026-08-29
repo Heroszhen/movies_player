@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import {
   AutocompleteArrayInput,
+  Button,
   DateInput,
   maxLength,
   NumberInput,
@@ -15,23 +16,30 @@ import {
   useRecordContext,
 } from 'react-admin';
 import Editor from '../../../../components/editor/Editor';
+import { NavLink, useNavigate } from 'react-router-dom';
+import PreviewIcon from '@mui/icons-material/Preview';
 
 const DescriptionEditor = ({ editorRef }) => {
   const record = useRecordContext();
   return <Editor ref={editorRef} label="Description" value={record?.description} />;
 };
 
-const VideoToolbar = () => (
-  <Toolbar>
+const VideoToolbar = ({ navigate, videoId }) => (
+  <Toolbar className="flex justify-between">
     <SaveButton alwaysEnable />
+    <NavLink to={`/video/${videoId}`} className="mb-1" target="_blank">
+      <PreviewIcon />
+    </NavLink>
+    <Button onClick={() => navigate(-1)}>Retour</Button>
   </Toolbar>
 );
 
 export const VideoForm = ({ isCreate, editorRef }) => {
   const record = useRecordContext();
+  const navigate = useNavigate();
 
   return (
-    <SimpleForm toolbar={<VideoToolbar />}>
+    <SimpleForm toolbar={<VideoToolbar navigate={navigate} videoId={record.id} />}>
       <Typography variant="h5" gutterBottom>
         {isCreate ? 'Ajouter une vidéo' : `Modifier la vidéo ${record.title}`}
       </Typography>
