@@ -27,9 +27,11 @@ const DescriptionEditor = ({ editorRef }) => {
 const VideoToolbar = ({ navigate, videoId }) => (
   <Toolbar className="flex justify-between">
     <SaveButton alwaysEnable />
-    <NavLink to={`/video/${videoId}`} className="mb-1" target="_blank">
-      <PreviewIcon />
-    </NavLink>
+    {videoId && (
+      <NavLink to={`/video/${videoId}`} className="mb-1" target="_blank">
+        <PreviewIcon />
+      </NavLink>
+    )}
     <Button onClick={() => navigate(-1)}>Retour</Button>
   </Toolbar>
 );
@@ -39,9 +41,9 @@ export const VideoForm = ({ isCreate, editorRef }) => {
   const navigate = useNavigate();
 
   return (
-    <SimpleForm toolbar={<VideoToolbar navigate={navigate} videoId={record.id} />}>
+    <SimpleForm toolbar={<VideoToolbar navigate={navigate} videoId={record?.id} />}>
       <Typography variant="h5" gutterBottom>
-        {isCreate ? 'Ajouter une vidéo' : `Modifier la vidéo ${record.title}`}
+        {isCreate ? 'Ajouter une vidéo' : `Modifier la vidéo ${record?.title}`}
       </Typography>
 
       <TextInput source="title" type="text" label="Titre" validate={[required(), maxLength(255)]} />
