@@ -7,20 +7,17 @@ import {
   NumberField,
   TextField,
   TextInput,
-  useUpdate,
 } from 'react-admin';
 import { NavLink } from 'react-router-dom';
 import PhotoIcon from '@mui/icons-material/Photo';
 import PreviewIcon from '@mui/icons-material/Preview';
-import { Box, Modal, Tooltip, Typography } from '@mui/material';
-import { PhotoEdit } from '../common/PhotoEdit';
+import { Box, Modal, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import { getModalStyle } from '../../../../services/data';
-import { wait } from '../../../../services/utils';
-import { deletePhoto } from '../../../../stores/fileStore';
 import { CustomPagination } from '../common/CustomPagination';
 import { TableClassInjector } from '../common/TableClassInjector';
 import { ScrollAfterViewInit } from '../common/ScrollAfterViewInit';
+import { VideoPhotoEdit } from './VideoPhotoEdit';
 
 export const VideoList = () => {
   const filters = [
@@ -30,7 +27,6 @@ export const VideoList = () => {
   const [videoToModify, setVideoToModify] = useState(null);
   const [open, setOpen] = useState(false);
   const [formType, setFormType] = useState(null);
-  const [update] = useUpdate();
 
   const toggleModal = async (newFormType = null, video = null) => {
     setVideoToModify(video);
@@ -40,20 +36,6 @@ export const VideoList = () => {
       return;
     }
     setOpen(true);
-  };
-
-  const modifyPhoto = async (newPhoto) => {
-    if (newPhoto['@id']) {
-      const oldPhotoId = videoToModify?.poster?.id;
-      await update('movies', {
-        id: videoToModify.id,
-        data: { poster: newPhoto['@id'] },
-        previousData: videoToModify,
-      });
-
-      await wait(0.5);
-      if (oldPhotoId) await deletePhoto(oldPhotoId);
-    }
   };
 
   return (
@@ -116,10 +98,7 @@ export const VideoList = () => {
         <Box sx={getModalStyle(500)}>
           {formType === 1 && (
             <>
-              <Typography id="modal-modal-title" variant="h5" component="h2" sx={{ mb: 4 }}>
-                Editer la photo de {videoToModify?.name}
-              </Typography>
-              <PhotoEdit modifyPhoto={modifyPhoto} />
+              <VideoPhotoEdit video={videoToModify} />
             </>
           )}
         </Box>

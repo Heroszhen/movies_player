@@ -1,5 +1,6 @@
 import { ImageInput, ImageField, SimpleForm } from 'react-admin';
 import { addFile } from '../../../../stores/fileStore';
+import { CustomToolbar } from './CustomToolbar';
 
 export const PhotoEdit = (props) => {
   const handleSubmit = async (data) => {
@@ -9,7 +10,7 @@ export const PhotoEdit = (props) => {
     }
   };
   return (
-    <SimpleForm onSubmit={handleSubmit}>
+    <SimpleForm onSubmit={handleSubmit} toolbar={<CustomToolbar />}>
       <ImageInput
         source="photo"
         label="Photo"

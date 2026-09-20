@@ -93,7 +93,11 @@ export const ActorList = () => {
 
   return (
     <>
-      <List perPage={20} filters={filters} pagination={<Pagination rowsPerPageOptions={[]} />}>
+      <List
+        perPage={20}
+        filters={filters}
+        sort={{ field: 'id', order: 'DESC' }}
+        pagination={<Pagination rowsPerPageOptions={[]} />}>
         <TableClassInjector />
         <Datagrid rowClick={false}>
           <NumberField source="id" />
