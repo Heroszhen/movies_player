@@ -79,3 +79,7 @@ main {
     }
   }
 }
+
+.MuiModal-root[aria-hidden='true'] {
+  pointer-events: none !important;
+}
