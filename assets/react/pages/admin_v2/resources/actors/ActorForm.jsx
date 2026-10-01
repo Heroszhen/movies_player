@@ -1,6 +1,6 @@
 import { Box, Typography, Modal, Button } from '@mui/material';
 import { useState } from 'react';
-import { DateInput, required, SimpleForm, TextInput, useRecordContext, useUpdate } from 'react-admin';
+import { DateInput, required, SimpleForm, TextInput, useRecordContext, useRefresh, useUpdate } from 'react-admin';
 import Editor from '../../../../components/editor/Editor';
 import { getModalStyle } from '../../../../services/data';
 import { wait } from '../../../../services/utils';
@@ -17,6 +17,7 @@ export const ActorForm = ({ isCreate, editorRef }) => {
 
   const [update] = useUpdate();
   const [open, setOpen] = useState(false);
+  const refresh = useRefresh();
 
   const modifyPhoto = async (newPhoto) => {
     if (!record) return;
@@ -30,6 +31,8 @@ export const ActorForm = ({ isCreate, editorRef }) => {
 
       await wait(0.5);
       if (oldPhotoId) await deletePhoto(oldPhotoId);
+
+      refresh();
     }
   };
 

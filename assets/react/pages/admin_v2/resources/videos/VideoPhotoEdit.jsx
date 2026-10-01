@@ -1,11 +1,12 @@
 import { Typography } from '@mui/material';
-import { useUpdate } from 'react-admin';
+import { useUpdate, useRefresh } from 'react-admin';
 import { wait } from '../../../../services/utils';
 import { deletePhoto } from '../../../../stores/fileStore';
 import { PhotoEdit } from '../common/PhotoEdit';
 
 export const VideoPhotoEdit = ({ video }) => {
   const [update] = useUpdate();
+  const refresh = useRefresh();
 
   const modifyPhoto = async (newPhoto) => {
     if (newPhoto['@id']) {
@@ -18,6 +19,8 @@ export const VideoPhotoEdit = ({ video }) => {
 
       await wait(0.5);
       if (oldPhotoId) await deletePhoto(oldPhotoId);
+
+      refresh();
     }
   };
 
